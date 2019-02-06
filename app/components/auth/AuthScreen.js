@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Platform, StyleSheet, Text, View, Button, Alert } from 'react-native';
-import AuthService from './auth/AuthService';
+import AuthService from '../../auth/AuthService';
 
 class App extends Component {
   constructor(props) {

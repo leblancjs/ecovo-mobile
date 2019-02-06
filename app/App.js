@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import { Provider } from 'react-redux';
-import { createStore } from 'redux';
+import { createStore, applyMiddleware } from 'redux';
 import AppReducer from './reducers';
-import WelcomeScreen from './components/welcome/WelcomeScreen';
+import { AppNavigatorMiddleware, AppWithNavigationState } from './AppNavigator';
 
-const store = createStore(AppReducer, {});
+const store = createStore(AppReducer, applyMiddleware(AppNavigatorMiddleware));
 
 class App extends Component {
   constructor(props) {
@@ -14,7 +14,7 @@ class App extends Component {
   render() {
     return (
       <Provider store={store}>
-        <WelcomeScreen />
+        <AppWithNavigationState />
       </Provider>
     );
   }

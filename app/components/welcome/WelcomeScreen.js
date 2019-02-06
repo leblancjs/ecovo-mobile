@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import {StyleSheet, View, Text, Button} from 'react-native';
+import { connect } from 'react-redux';
+import { NavigationActions } from 'react-navigation';
 
 class WelcomeScreen extends Component {
     constructor(props) {
@@ -7,7 +9,7 @@ class WelcomeScreen extends Component {
     }
 
     _getStarted = () => {
-        // TODO: Navigate to next screen
+        this.props.goToAuth();
     }
 
     render() {
@@ -37,4 +39,12 @@ const styles = StyleSheet.create({
     }
 });
 
-export default WelcomeScreen;
+const mapStateToProps = () => ({});
+
+const mapDispatchToProps = dispatch => ({
+    goToAuth: () => {
+        dispatch(NavigationActions.navigate({ routeName: 'Auth' }))
+    }
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(WelcomeScreen);
