@@ -1,6 +1,10 @@
 import React, { Component } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { Provider } from 'react-redux';
+import { createStore } from 'redux';
+import AppReducer from './reducers';
 import WelcomeScreen from './components/welcome/WelcomeScreen';
+
+const store = createStore(AppReducer, {});
 
 class App extends Component {
   constructor(props) {
@@ -9,20 +13,11 @@ class App extends Component {
   
   render() {
     return (
-      <View style={styles.container}>
+      <Provider store={store}>
         <WelcomeScreen />
-      </View>
+      </Provider>
     );
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
-  }
-});
 
 export default App;
