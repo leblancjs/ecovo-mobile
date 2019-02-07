@@ -4,6 +4,7 @@ import { clientId, domain } from '../../auth0.config.json';
 
 const auth0 = new Auth0({ domain, clientId });
 
+// Login
 export const LOGIN_REQUEST = 'LOGIN_REQUEST';
 const loginRequest = () => ({
     type: LOGIN_REQUEST
@@ -39,6 +40,7 @@ export const login = () => {
     }
 };
 
+// Logout
 export const LOGOUT_REQUEST = 'LOGOUT_REQUEST';
 const logoutRequest = () => ({
     type: LOGOUT_REQUEST
@@ -70,3 +72,68 @@ export const logout = () => {
         }
     }
 }
+
+// User Info
+export const USER_INFO_REQUEST = 'USER_INFO_REQUEST';
+const userInfoRequest = () => ({
+    type: USER_INFO_REQUEST
+});
+
+export const USER_INFO_SUCCESS = 'USER_INFO_SUCCESS';
+const userInfoSuccess = (userInfo) => ({
+    type: USER_INFO_SUCCESS,
+    userInfo: {
+        ...userInfo
+    }
+});
+
+export const USER_INFO_ERROR = 'USER_INFO_ERROR';
+const userInfoError = (error) => ({
+    type: USER_INFO_ERROR,
+    error: {
+        ...error
+    }
+});
+
+export const getUserInfo = (accessToken) => {
+    return dispatch => {
+        dispatch(userInfoRequest());
+
+        return auth0.auth.userInfo({ token: accessToken })
+            .then(userInfo => dispatch(userInfoSuccess(userInfo)))
+            .catch(error => dispatch(userInfoError(error)));
+    }
+};
+
+// Profile
+export const PROFILE_REQUEST = 'PROFILE_REQUEST';
+const profileRequest = () => ({
+    type: PROFILE_REQUEST
+});
+
+export const PROFILE_SUCCESS = 'PROFILE_SUCCESS';
+const profileSuccess = (profile) => ({
+    type: PROFILE_SUCCESS,
+    profile: {
+        ...profile
+    }
+});
+
+export const PROFILE_ERROR = 'PROFILE_ERROR';
+const profileError = (error) => ({
+    type: PROFILE_ERROR,
+    error: {
+        ...error
+    }
+});
+
+export const getProfileById = (accessToken, userId) => {
+    return dispatch => {
+        dispatch(profileRequest());
+
+        return auth0.users(accessToken)
+            .getUser({ id: userId })
+            .then(profile => dispatch(profileSuccess(profile)))
+            .catch(error => dispatch(profileError(error)));
+    }
+};

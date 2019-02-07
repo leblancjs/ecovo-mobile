@@ -1,6 +1,8 @@
 import {
     LOGIN_REQUEST, LOGIN_SUCCESS, LOGIN_ERROR,
-    LOGOUT_REQUEST, LOGOUT_SUCCESS, LOGOUT_ERROR
+    LOGOUT_REQUEST, LOGOUT_SUCCESS, LOGOUT_ERROR,
+    USER_INFO_REQUEST, USER_INFO_SUCCESS, USER_INFO_ERROR,
+    PROFILE_REQUEST, PROFILE_SUCCESS, PROFILE_ERROR
 } from '../actions/auth';
 
 const initialState = {
@@ -12,7 +14,9 @@ const initialState = {
         idToken: null,
         expiresIn: null,
         tokenType: null
-    }
+    },
+    userInfo: null,
+    profile: null
 };
 
 const auth = (state = initialState, action) => {
@@ -47,6 +51,45 @@ const auth = (state = initialState, action) => {
         case LOGOUT_ERROR:
             return {
                 ...initialState,
+                error: action.error
+            };
+        case USER_INFO_REQUEST:
+            return {
+                ...state,
+                isFetching: true
+            };
+        case USER_INFO_SUCCESS:
+            return {
+                ...state,
+                isFetching: false,
+                userInfo: {
+                    ...action.userInfo
+                }
+            };
+        case USER_INFO_ERROR:
+            return {
+                ...state,
+                isFetching: false,
+                userInfo: null
+            };
+        case PROFILE_REQUEST:
+            return {
+                ...state,
+                isFetching: true
+            };
+        case PROFILE_SUCCESS:
+            return {
+                ...state,
+                isFetching: false,
+                profile: {
+                    ...action.profile
+                }
+            };
+        case PROFILE_ERROR:
+            return {
+                ...state,
+                isFetching: false,
+                profile: null,
                 error: action.error
             };
         default:
