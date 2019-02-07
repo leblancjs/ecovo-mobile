@@ -1,15 +1,12 @@
 import React, { Component } from 'react';
-import {StyleSheet, View, Text, Button} from 'react-native';
+import { StyleSheet, View, Text, Button } from 'react-native';
 import { connect } from 'react-redux';
 import { NavigationActions } from 'react-navigation';
+import { login } from '../../actions/auth';
 
 class WelcomeScreen extends Component {
     constructor(props) {
         super(props);
-    }
-
-    _getStarted = () => {
-        this.props.goToAuth();
     }
 
     render() {
@@ -17,7 +14,7 @@ class WelcomeScreen extends Component {
             <View style={styles.container}>
                 <Text style={styles.welcome}>Welcome to Ecovo</Text>
                 <Button
-                    onPress={this._getStarted}
+                    onPress={this.props.login}
                     title='Get Started'
                 />
             </View>
@@ -42,9 +39,8 @@ const styles = StyleSheet.create({
 const mapStateToProps = () => ({});
 
 const mapDispatchToProps = dispatch => ({
-    goToAuth: () => {
-        dispatch(NavigationActions.navigate({ routeName: 'Auth' }))
-    }
+    login: () => dispatch(login())
+        .then(() => dispatch(NavigationActions.navigate({ routeName: 'Profile' })))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(WelcomeScreen);

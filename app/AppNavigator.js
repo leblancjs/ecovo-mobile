@@ -2,17 +2,14 @@ import { connect } from 'react-redux';
 import { createStackNavigator } from 'react-navigation';
 import { reduxifyNavigator, createReactNavigationReduxMiddleware } from 'react-navigation-redux-helpers';
 import WelcomeScreen from './components/welcome/WelcomeScreen';
-import AuthScreen from './components/auth/AuthScreen';
+import ProfileScreen from './components/profile/ProfileScreen';
 
 const AppNavigator = createStackNavigator({
-    Main: { screen: WelcomeScreen },
-    Auth: { screen: AuthScreen }
+    Welcome: { screen: WelcomeScreen },
+    Profile: { screen: ProfileScreen }
 }, {
-    initialRouteName: 'Main',
-    navigationOptions: {
-        header: null,
-        gesturesEnabled: false
-    }
+    initialRouteName: 'Welcome',
+    navigationOptions: {}
 });
 
 const AppNavigatorMiddleware = createReactNavigationReduxMiddleware(
