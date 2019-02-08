@@ -28,7 +28,7 @@ const loginError = (error) => ({
 
 export const login = () => {
     return dispatch => {
-        dispatch(loginRequest())
+        dispatch(loginRequest());
 
         params = {
             scope: 'openid profile email',
@@ -36,8 +36,8 @@ export const login = () => {
         };
         return auth0.webAuth.authorize(params)
             .then(credentials => dispatch(loginSuccess(credentials)))
-            .catch(error => dispatch(loginError));
-    }
+            .catch(error => dispatch(loginError(error)));
+    };
 };
 
 // Logout
@@ -70,7 +70,7 @@ export const logout = () => {
 
             return Promise.resolve();
         }
-    }
+    };
 }
 
 // User Info
@@ -102,7 +102,7 @@ export const getUserInfo = (accessToken) => {
         return auth0.auth.userInfo({ token: accessToken })
             .then(userInfo => dispatch(userInfoSuccess(userInfo)))
             .catch(error => dispatch(userInfoError(error)));
-    }
+    };
 };
 
 // Profile
@@ -135,5 +135,5 @@ export const getProfileById = (accessToken, userId) => {
             .getUser({ id: userId })
             .then(profile => dispatch(profileSuccess(profile)))
             .catch(error => dispatch(profileError(error)));
-    }
+    };
 };
