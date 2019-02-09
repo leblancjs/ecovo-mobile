@@ -41,6 +41,7 @@
 		ED2971652150620600B7C4FE /* JavaScriptCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ED2971642150620600B7C4FE /* JavaScriptCore.framework */; };
 		C32B9F1C42A346E4AD6565D5 /* libA0Auth0.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1BCF3CC0FDB7436BB1388307 /* libA0Auth0.a */; };
 		3DF844F0E7F64D6DB57A22C5 /* libRNGestureHandler.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2E5C24C54E6D479DB0E56724 /* libRNGestureHandler.a */; };
+		294FA007217A4A14A728FF2F /* Ionicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C6711A7308B5470F8BD3998F /* Ionicons.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -352,6 +353,7 @@
 		1BCF3CC0FDB7436BB1388307 /* libA0Auth0.a */ = {isa = PBXFileReference; name = "libA0Auth0.a"; path = "libA0Auth0.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
 		323ACA5639B346F8914F000D /* RNGestureHandler.xcodeproj */ = {isa = PBXFileReference; name = "RNGestureHandler.xcodeproj"; path = "../node_modules/react-native-gesture-handler/ios/RNGestureHandler.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
 		2E5C24C54E6D479DB0E56724 /* libRNGestureHandler.a */ = {isa = PBXFileReference; name = "libRNGestureHandler.a"; path = "libRNGestureHandler.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
+		C6711A7308B5470F8BD3998F /* Ionicons.ttf */ = {isa = PBXFileReference; name = "Ionicons.ttf"; path = "../node_modules/react-native-ionicons/fonts/Ionicons.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -594,6 +596,7 @@
 				00E356EF1AD99517003FC87E /* ecovoTests */,
 				83CBBA001A601CBA00E9B192 /* Products */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
+				E24E06B4E8AE4385AB90D54F /* Resources */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -619,6 +622,15 @@
 			);
 			name = Products;
 			sourceTree = "<group>";
+		};
+		E24E06B4E8AE4385AB90D54F /* Resources */ = {
+			isa = "PBXGroup";
+			children = (
+				C6711A7308B5470F8BD3998F /* Ionicons.ttf */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+			path = "";
 		};
 /* End PBXGroup section */
 
@@ -1066,6 +1078,7 @@
 			files = (
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
+				294FA007217A4A14A728FF2F /* Ionicons.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -3,9 +3,13 @@ import { createStackNavigator } from 'react-navigation';
 import { reduxifyNavigator, createReactNavigationReduxMiddleware } from 'react-navigation-redux-helpers';
 import WelcomeScreen from './components/welcome/WelcomeScreen';
 import ProfileScreen from './components/profile/ProfileScreen';
+import AddPersonnalInfoScreen from './components/signup/AddPersonnalInfoScreen';
+import AddPreferences from './components/signup/AddPreferencesScreen';
 
 const AppNavigator = createStackNavigator({
     Welcome: { screen: WelcomeScreen },
+    AddPersonnalInfo: { screen: AddPersonnalInfoScreen },
+    AddPreferences: { screen: AddPreferences },
     Profile: { screen: ProfileScreen }
 }, {
     initialRouteName: 'Welcome',
