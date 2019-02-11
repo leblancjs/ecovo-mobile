@@ -1,6 +1,9 @@
-import { Platform } from 'react-native';
+import { Platform, AsyncStorage } from 'react-native';
 import Auth0 from 'react-native-auth0';
+import { NavigationActions } from 'react-navigation';
 import { clientId, domain } from '../../auth0.config.json';
+
+const USER_KEY_STORAGE = "ecovo_auth_key";
 
 const auth0 = new Auth0({ domain, clientId });
 
@@ -28,15 +31,40 @@ const loginError = (error) => ({
 
 export const login = () => {
     return dispatch => {
-        dispatch(loginRequest());
+        AsyncStorage.getItem(USER_KEY_STORAGE)
+            .then(res => {
+                if (res != null) {
+                    let credentials = {
+                        "accessToken": res
+                    };
+                    dispatch(loginSuccess(credentials));
+                    dispatch(NavigationActions.navigate({ routeName: 'Profile' }));
+                } else {
+                    dispatch(loginRequest());
 
-        params = {
-            scope: 'openid profile email',
-            audience: `https://${domain}/userinfo`
-        };
-        return auth0.webAuth.authorize(params)
-            .then(credentials => dispatch(loginSuccess(credentials)))
-            .catch(error => dispatch(loginError(error)));
+                    params = {
+                        scope: 'openid profile email',
+                        audience: `https://${domain}/userinfo`,
+                        prompt: 'login'
+                    };
+                    return auth0.webAuth.authorize(params)
+                        .then(credentials => {
+                            dispatch(loginSuccess(credentials));
+                            AsyncStorage.setItem(USER_KEY_STORAGE, credentials.accessToken)
+                            dispatch(NavigationActions.navigate({ routeName: 'Profile' }));
+                        })
+                        .catch(error => {
+                            console.log("ERROR");
+                            console.log(error);
+                            dispatch(loginError(error));
+                            dispatch(NavigationActions.navigate({ routeName: 'Welcome' }));
+                        });
+                }
+            })
+            .catch(error => {
+                dispatch(loginError(error));
+                dispatch(NavigationActions.navigate({ routeName: 'Welcome' }));
+            });
     };
 };
 
@@ -48,7 +76,7 @@ const logoutRequest = () => ({
 
 export const LOGOUT_SUCCESS = 'LOGOUT_SUCCESS';
 const logoutSuccess = () => ({
-    type: LOGIN_SUCCESS
+    type: LOGOUT_SUCCESS
 });
 
 export const LOGOUT_ERROR = 'LOGOUT_ERROR';
@@ -60,16 +88,17 @@ const logoutError = (error) => ({
 export const logout = () => {
     return dispatch => {
         dispatch(logoutRequest());
+        AsyncStorage.removeItem(USER_KEY_STORAGE);
 
-        if (Platform.OS === 'ios') {
-            return auth0.webAuth.clearSession({})
-                .then(() => dispatch(logoutSuccess()))
-                .catch(error => dispatch(logoutError(error)));
-        } else {
-            dispatch(logoutSuccess);
-
-            return Promise.resolve();
-        }
+        return auth0.webAuth.clearSession({})
+            .then(() => {
+                dispatch(logoutSuccess());
+                dispatch(NavigationActions.navigate({ routeName: 'Welcome' }));
+            })
+            .catch(error => {
+                dispatch(logoutError(error));
+                dispatch(NavigationActions.navigate({ routeName: 'Welcome' }));
+            });
     };
 }
 

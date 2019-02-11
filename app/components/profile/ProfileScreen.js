@@ -73,8 +73,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-    logout: () => dispatch(logout())
-        .then(() => dispatch(NavigationActions.navigate({ routeName: 'Welcome' }))),
+    logout: () => dispatch(logout()),
     getUserInfo: (accessToken) => dispatch(getUserInfo(accessToken)),
     getProfileById: (accessToken, userId) => dispatch(getProfileById(accessToken, userId))
 });
