@@ -5,6 +5,7 @@ import { createLogger } from 'redux-logger';
 import thunkMiddleware from 'redux-thunk';
 import AppReducer from './reducers';
 import { AppNavigatorMiddleware, AppWithNavigationState } from './AppNavigator';
+import { getUserAuth } from './actions/storage';
 
 const loggerMiddleware = createLogger();
 
@@ -20,6 +21,7 @@ const store = createStore(
 class App extends Component {
 	constructor(props) {
 		super(props);
+		store.dispatch(getUserAuth());
 	}
 
 	render() {

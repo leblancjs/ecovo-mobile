@@ -46,14 +46,7 @@ const auth = (state = initialState, action) => {
             };
         case LOGOUT_SUCCESS:
             return {
-                ...initialState,
-                isLoggedIn: false,
-                credentials: {
-                    accessToken: null,
-                    idToken: null,
-                    expiresIn: null,
-                    tokenType: null
-                }
+                ...initialState
             };
         case LOGOUT_ERROR:
             return {

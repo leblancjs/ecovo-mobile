@@ -9,6 +9,14 @@ class WelcomeScreen extends Component {
         super(props);
     }
 
+    shouldComponentUpdate(nextProps, nextState){
+        if(nextProps.auth.isLoggedIn && (nextProps.auth.credentials.accessToken != null && nextProps.auth.credentials.accessToken != undefined)) {
+            this.props.navigation.dispatch(NavigationActions.navigate({ routeName: 'Profile' }));
+            return true;
+        }
+        return false;
+    }
+
     render() {
         return (
             <View style={styles.container}>
@@ -44,10 +52,13 @@ const styles = StyleSheet.create({
     }
 });
 
-const mapStateToProps = () => ({});
+const mapStateToProps = state => ({
+    auth: state.auth
+});
 
 const mapDispatchToProps = dispatch => ({
     login: () => dispatch(login())
+        .then(() => dispatch(NavigationActions.navigate({ routeName: 'Profile' })))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(WelcomeScreen);
