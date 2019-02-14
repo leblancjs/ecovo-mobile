@@ -1,62 +1,69 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, Alert } from 'react-native';
+import { StyleSheet, Text, Image } from 'react-native';
 import { Input, Icon, Container, Form, Button, Item, Content, DatePicker, Picker, Right, View } from 'native-base';
 import { connect } from 'react-redux';
-import { NavigationActions } from 'react-navigation';
+import { updateFirstName, updateLastName, updateBirthdate, updateSexe, setFormFilled } from '../../actions/ui/signup';
 
 class AddPersonnalInfoScreen extends Component {
     constructor(props) {
         super(props);
-        this.state = { 
-            personnalInfo: {
-                firstName: '',
-                lastName: '',
-                chosenDate: new Date(),
-                sexe: undefined
-            }
-        };
-        this.setDate = this.setDate.bind(this);
     }
 
-    setDate(newDate) {
-        this.setState({ chosenDate: newDate });
+    _updateFirstName = (firstName) => {
+        this.props.updateFirstName(firstName);
     }
 
-    onValueChange2(value) {
-        this.setState({
-            sexe: value
-        });
+    _updateLastName = (lastName) => {
+        this.props.updateLastName(lastName);
     }
 
-    _submitPersonnalInfo = () => {
-        this.props.submitPersonnalInfo(this.props.auth.credentials.accessToken, this.state.personnalInfo);
+    _updateBirthdate = (birthdate) => {
+        this.props.updateBirthdate(birthdate);
     }
+
+    _updateSexe = (sexe) => {
+        this.props.updateSexe(sexe);
+    }
+
+    // componentDidUpdate() {
+    //     if(this.props.user.personnalInfo.firstName != ''
+    //         && this.props.user.personnalInfo.lastName != ''
+    //         && this.props.user.personnalInfo.birthdate != undefined
+    //         && this.props.user.personnalInfo.sexe != undefined) {
+    //             this.props.setFormFilled(true);
+    //         } 
+    // }
 
     render() {
         return (
             <Container style={styles.container}>
                 <Text style={styles.title}>Personnal Info</Text>
                 <Content>
-                    <Button transparent>
-                        <Icon active name='person' />
+                    <Button style={styles.addPictureBtn} transparent>
+                        <Image style={styles.profilePicIcon} source={require('../../../assets/profile_pic.png')}/>
                         <Text style={styles.text}>Choose a picture</Text>
                     </Button>
                     <Form>
                         <Item style={styles.item}>
-                            <Input style={styles.text} placeholder="First Name" />
+                            <Input style={styles.text} 
+                                onChangeText={(firstName) => this._updateFirstName(firstName)}
+                                placeholder="First Name"/>
                         </Item>
                         <Item style={styles.item}>
-                            <Input style={styles.text} placeholder="Last Name" />
+                            <Input style={styles.text}
+                                onChangeText={(lastName) => this._updateLastName(lastName)}
+                                placeholder="Last Name"/>
                         </Item>
                         <Item style={styles.item}>
                             <DatePicker
+                                defaultDate={new Date(1990, 1, 1)}
                                 locale={"en"}
                                 timeZoneOffsetInMinutes={undefined}
                                 modalTransparent={false}
                                 animationType={"fade"}
                                 androidMode={"default"}
                                 placeHolderText="Birthdate"
-                                onDateChange={this.setDate}
+                                onDateChange={(birthdate) => this._updateBirthdate(birthdate)}
                                 disabled={false}
                                 style={styles.text}/>
                             <Right>
@@ -68,15 +75,17 @@ class AddPersonnalInfoScreen extends Component {
                                 mode="dropdown"
                                 iosIcon={<Icon name="arrow-down" />}
                                 style={{ width: undefined }}
-                                placeholder="Sexe"
-                                selectedValue={this.state.sexe}
-                                onValueChange={this.onValueChange2.bind(this)}>
+                                placeholder="Sexe..."
+                                selectedValue={this.props.user.personnalInfo.sexe}
+                                onValueChange={(sexe) => this._updateSexe(sexe)}
+                                >
                                 <Picker.Item label="Male" value="male" />
                                 <Picker.Item label="Female" value="female" />
                             </Picker>
                         </Item>
                     </Form>
-                    <Button transparent style={styles.nextBtn} onPress={this.props._submitPersonnalInfo}>
+                    <Button transparent style={styles.nextBtn}
+                        onPress={this._updateUser}>
                         <Text style={styles.textGreen}>Next</Text>
                         <Icon style={styles.textGreen} name="ios-arrow-forward"/>
                     </Button>
@@ -113,16 +122,30 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-end',
         alignSelf: 'flex-end',
         marginBottom: 2
+    },
+    profilePicIcon: {
+        width: 70,
+        height: 70, 
+        marginRight: 10
+    },
+    addPictureBtn: {
+        margin: 10,
+        height: 70
     }
 });
 
 const mapStateToProps = state => ({
-    auth: state.auth
+    auth: state.auth,
+    user: state.ui.signup.user,
+    formFilled: state.ui.signup.formFilled 
 });
 
 const mapDispatchToProps = dispatch => ({
-    submitPersonnalInfo: (accessToken, personnalInfo) => dispatch(submitPersonnalInfo(accessToken, personnalInfo))
-        .then(() => dispatch(NavigationActions.navigate({ routeName: 'AddPreferences' })))
+    updateFirstName: (firstName) => dispatch(updateFirstName(firstName)),
+    updateLastName: (lastName) => dispatch(updateLastName(lastName)),
+    updateBirthdate: (birthdate) => dispatch(updateBirthdate(birthdate)),
+    updateSexe: (sexe) => dispatch(updateSexe(sexe)),
+    setFormFilled: (formFilled) => dispatch(setFormFilled(formFilled))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(AddPersonnalInfoScreen);

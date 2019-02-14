@@ -1,5 +1,9 @@
 import * as AuthActions from './auth';
+import * as UserActions from './user';
+import * as UI from './ui'
 
 export {
-    AuthActions
+    UI,
+    AuthActions,
+    UserActions
 };
