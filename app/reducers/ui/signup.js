@@ -1,20 +1,19 @@
 import {
     UPDATE_FIRSTNAME,
     UPDATE_LASTNAME,
-    UPDATE_BIRTHDATE,
-    UPDATE_SEXE,
+    UPDATE_DATE_OF_BIRTH,
+    UPDATE_GENDER,
     FORM_FILLED
 } from '../../actions/ui/signup';
 
 
 const initialState = {
     user: {
-        personnalInfo: {
-            firstName: '',
-            lastName: '',
-            birthdate: undefined,
-            sexe: 'male',
-        },
+        photo: '',
+        firstName: '',
+        lastName: '',
+        dateOfBirth: undefined,
+        gender: 'male',
         preferences: {
             smoking: 0,
             music: 0,
@@ -31,10 +30,7 @@ const signup = (state = initialState, action) => {
                 ...state,
                 user: {
                     ...state.user,
-                    personnalInfo: {
-                        ...state.user.personnalInfo,
                         firstName: action.firstName
-                    }
                 } 
             };
         case UPDATE_LASTNAME:
@@ -42,32 +38,23 @@ const signup = (state = initialState, action) => {
                 ...state,
                 user: {
                     ...state.user,
-                    personnalInfo: {
-                        ...state.user.personnalInfo,
                         lastName: action.lastName
-                    }
-                } 
+                }
             };
-        case UPDATE_BIRTHDATE:
+        case UPDATE_DATE_OF_BIRTH:
             return {
                 ...state,
                 user: {
                     ...state.user,
-                    personnalInfo: {
-                        ...state.user.personnalInfo,
-                        birthdate: action.birthdate
-                    }
+                        dateOfBirth: action.dateOfBirth
                 } 
             };
-        case UPDATE_SEXE:
+        case UPDATE_GENDER:
             return {
                 ...state,
                 user: {
                     ...state.user,
-                    personnalInfo: {
-                        ...state.user.personnalInfo,
-                        sexe: action.sexe
-                    }
+                        gender: action.gender
                 } 
             };
         case FORM_FILLED:

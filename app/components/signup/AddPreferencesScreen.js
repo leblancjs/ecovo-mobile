@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, Slider } from 'react-native';
-import { Icon, Container, Content, View, Button} from 'native-base';
+import { Container, Content, View, Button, Icon } from 'native-base';
 import { connect } from 'react-redux';
 
 class AddPreferences extends Component {
@@ -38,7 +38,7 @@ class AddPreferences extends Component {
                         <Text style={styles.text}>I like to smoke in the car</Text>
                     </View>
                     <View style={styles.sliderHeader}>
-                        <Icon name="smoking-ban" />
+                        <Icon name="logo-no-smoking" />
                         <Slider
                             style={styles.slider}
                             smokingValue = {this.state.smokingValue}
@@ -46,7 +46,7 @@ class AddPreferences extends Component {
                             step = { 50 }
                             minimumValue = { 0 }
                             maximumValue = { 100 } />
-                        <Icon name="smoking" />
+                        <Icon name="smoking-rooms" />
                     </View>
 
                     <View style={styles.sliderHeader}>

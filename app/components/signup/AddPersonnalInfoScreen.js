@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, Image } from 'react-native';
-import { Input, Icon, Container, Form, Button, Item, Content, DatePicker, Picker, Right, View } from 'native-base';
+import { Input, Icon, Container, Form, Button, Item, Content, DatePicker, Picker, Right } from 'native-base';
+import { NavigationActions } from 'react-navigation';
 import { connect } from 'react-redux';
-import { updateFirstName, updateLastName, updateBirthdate, updateSexe, setFormFilled } from '../../actions/ui/signup';
+import { updateFirstName, updateLastName, updateDateOfBirth, updateGender, setFormFilled } from '../../actions/ui/signup';
+import { createUser } from '../../actions/user'
 
 class AddPersonnalInfoScreen extends Component {
     constructor(props) {
@@ -17,22 +19,29 @@ class AddPersonnalInfoScreen extends Component {
         this.props.updateLastName(lastName);
     }
 
-    _updateBirthdate = (birthdate) => {
-        this.props.updateBirthdate(birthdate);
+    _updateDateOfBirth = (dateOfBirth) => {
+        this.props.updateDateOfBirth(dateOfBirth);
     }
 
-    _updateSexe = (sexe) => {
-        this.props.updateSexe(sexe);
+    _updateGender = (gender) => {
+        this.props.updateGender(gender);
     }
 
-    // componentDidUpdate() {
-    //     if(this.props.user.personnalInfo.firstName != ''
-    //         && this.props.user.personnalInfo.lastName != ''
-    //         && this.props.user.personnalInfo.birthdate != undefined
-    //         && this.props.user.personnalInfo.sexe != undefined) {
-    //             this.props.setFormFilled(true);
-    //         } 
-    // }
+    _createUser = () => {
+        this.props.createUser(this.props.auth.credentials.accessToken, this.props.user);
+    }
+
+    componentDidUpdate() {
+        if(this.props.user.firstName != ''
+            && this.props.user.lastName != ''
+            && this.props.user.dateOfBirth != undefined
+            && this.props.user.gender != '') {
+                this.props.setFormFilled(true);
+        } else {
+            this.props.setFormFilled(false);
+        } 
+            
+    }
 
     render() {
         return (
@@ -63,7 +72,7 @@ class AddPersonnalInfoScreen extends Component {
                                 animationType={"fade"}
                                 androidMode={"default"}
                                 placeHolderText="Birthdate"
-                                onDateChange={(birthdate) => this._updateBirthdate(birthdate)}
+                                onDateChange={(birthdate) => this._updateDateOfBirth(birthdate)}
                                 disabled={false}
                                 style={styles.text}/>
                             <Right>
@@ -75,20 +84,22 @@ class AddPersonnalInfoScreen extends Component {
                                 mode="dropdown"
                                 iosIcon={<Icon name="arrow-down" />}
                                 style={{ width: undefined }}
-                                placeholder="Sexe..."
-                                selectedValue={this.props.user.personnalInfo.sexe}
-                                onValueChange={(sexe) => this._updateSexe(sexe)}
+                                placeholder="Gender..."
+                                selectedValue={this.props.user.gender}
+                                onValueChange={(gender) => this._updateGender(gender)}
                                 >
                                 <Picker.Item label="Male" value="male" />
                                 <Picker.Item label="Female" value="female" />
                             </Picker>
                         </Item>
                     </Form>
-                    <Button transparent style={styles.nextBtn}
-                        onPress={this._updateUser}>
-                        <Text style={styles.textGreen}>Next</Text>
-                        <Icon style={styles.textGreen} name="ios-arrow-forward"/>
-                    </Button>
+                    { this.props.formFilled && 
+                        <Button transparent style={styles.nextBtn}
+                            onPress={this._createUser}>
+                            <Text style={styles.textGreen}>Next</Text>
+                            <Icon style={styles.textGreen} name="ios-arrow-forward"/>
+                        </Button>
+                    }
                 </Content>
             </Container>
         );
@@ -143,8 +154,10 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
     updateFirstName: (firstName) => dispatch(updateFirstName(firstName)),
     updateLastName: (lastName) => dispatch(updateLastName(lastName)),
-    updateBirthdate: (birthdate) => dispatch(updateBirthdate(birthdate)),
-    updateSexe: (sexe) => dispatch(updateSexe(sexe)),
+    updateDateOfBirth: (dateOfBirth) => dispatch(updateDateOfBirth(dateOfBirth)),
+    updateGender: (gender) => dispatch(updateGender(gender)),
+    createUser: (accessToken, user) => dispatch(createUser(accessToken, user))
+        .then(() => dispatch(NavigationActions.navigate({ routeName: 'AddPreferences' }))),
     setFormFilled: (formFilled) => dispatch(setFormFilled(formFilled))
 });
 
