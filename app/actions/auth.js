@@ -1,17 +1,18 @@
 import { Platform } from 'react-native';
 import Auth0 from 'react-native-auth0';
 import { clientId, domain } from '../../auth0.config.json';
+import { deleteUserAuth, setUserAuth } from './storage';
 
 const auth0 = new Auth0({ domain, clientId });
 
 // Login
 export const LOGIN_REQUEST = 'LOGIN_REQUEST';
-const loginRequest = () => ({
+export const loginRequest = () => ({
     type: LOGIN_REQUEST
 });
 
 export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
-const loginSuccess = (credentials) => ({
+export const loginSuccess = (credentials) => ({
     type: LOGIN_SUCCESS,
     credentials: {
         ...credentials
@@ -19,7 +20,7 @@ const loginSuccess = (credentials) => ({
 });
 
 export const LOGIN_ERROR = 'LOGIN_ERROR';
-const loginError = (error) => ({
+export const loginError = (error) => ({
     type: LOGIN_ERROR,
     error: {
         ...error
@@ -32,11 +33,20 @@ export const login = () => {
 
         params = {
             scope: 'openid profile email',
-            audience: `https://${domain}/userinfo`
+            audience: `https://${domain}/userinfo`,
+            prompt: 'login'
         };
         return auth0.webAuth.authorize(params)
-            .then(credentials => dispatch(loginSuccess(credentials)))
-            .catch(error => dispatch(loginError(error)));
+            .then(credentials => {
+                dispatch(loginSuccess(credentials));
+                setUserAuth(credentials.accessToken)
+            })
+            .catch(error => {
+                dispatch(loginError(error));
+                if (error.error == "a0.session.user_cancelled") {
+                    throw error.error_description;
+                }
+            });
     };
 };
 
@@ -48,7 +58,7 @@ const logoutRequest = () => ({
 
 export const LOGOUT_SUCCESS = 'LOGOUT_SUCCESS';
 const logoutSuccess = () => ({
-    type: LOGIN_SUCCESS
+    type: LOGOUT_SUCCESS
 });
 
 export const LOGOUT_ERROR = 'LOGOUT_ERROR';
@@ -63,10 +73,16 @@ export const logout = () => {
 
         if (Platform.OS === 'ios') {
             return auth0.webAuth.clearSession({})
-                .then(() => dispatch(logoutSuccess()))
-                .catch(error => dispatch(logoutError(error)));
+                .then(() => {
+                    dispatch(logoutSuccess());
+                    dispatch(deleteUserAuth);
+                })
+                .catch(error => {
+                    dispatch(logoutError(error));
+                });
         } else {
             dispatch(logoutSuccess);
+            dispatch(deleteUserAuth);
 
             return Promise.resolve();
         }
