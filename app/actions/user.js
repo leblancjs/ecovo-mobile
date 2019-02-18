@@ -1,8 +1,5 @@
-import Auth0 from 'react-native-auth0';
-import { clientId, domain } from '../../auth0.config.json';
 import { domain as domaineName, portNb as portNb } from '../../app.json';
 
-const auth0 = new Auth0({ domain, clientId });
 const baseUrl = "http://" + domaineName + ":" + portNb;
 
 // Create user
@@ -73,13 +70,13 @@ const getUserError = (error) => ({
 
 export const getUserById = (accessToken, userId) => {
     return dispatch => {
-        dispatch(createUserRequest());
+        dispatch(getUserRequest());
 
         return fetch(baseUrl + '/users/' + userId, 
             {
                 method: 'GET',
                 headers: {
-                    Accept: 'application/json',
+                    'Authorization': 'Bearer ' + accessToken,
                     'Content-Type': 'application/json',
                 }
             }
@@ -94,7 +91,6 @@ export const getUserById = (accessToken, userId) => {
 export const createUser = (accessToken, userData) => {
     return dispatch => {
         dispatch(createUserRequest());
-        console.log("USER DATA: " + JSON.stringify(userData))
 
         return fetch(baseUrl + '/users', 
             {
