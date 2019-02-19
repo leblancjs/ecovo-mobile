@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, Image } from 'react-native';
+import { StyleSheet, Text, Image, View } from 'react-native';
 import { Input, Icon, Container, Form, Button, Item, Content, DatePicker, Picker, Right } from 'native-base';
 import { NavigationActions } from 'react-navigation';
 import { connect } from 'react-redux';
@@ -10,7 +10,7 @@ class AddPersonnalInfoScreen extends Component {
     static navigationOptions = {
         header: null
     }
-    
+
     constructor(props) {
         super(props);
     }
@@ -97,15 +97,18 @@ class AddPersonnalInfoScreen extends Component {
                             </Picker>
                         </Item>
                     </Form>
+                </Content>
+                <View style={styles.nextBtn}>
                     { this.props.formFilled && 
-                        <Button transparent style={styles.nextBtn}
+                        <Button transparent
                             onPress={this._createUser}>
                             <Text style={styles.textGreen}>Next</Text>
                             <Icon style={styles.textGreen} name="ios-arrow-forward"/>
                         </Button>
                     }
-                </Content>
+                </View>
             </Container>
+           
         );
     }
 }
@@ -114,7 +117,7 @@ const styles = StyleSheet.create({
     container: {
       flex: 1,
       justifyContent: 'center',
-      margin: 10
+      margin: 15
     },
     title: {
       fontSize: 30,
@@ -130,10 +133,9 @@ const styles = StyleSheet.create({
         color: '#2BB267'
     },
     item: {
-        margin: 20
+        margin: 15
     }, 
     nextBtn: {
-        flex: 1,
         justifyContent: 'flex-end',
         alignSelf: 'flex-end',
         marginBottom: 2

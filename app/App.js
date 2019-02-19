@@ -13,7 +13,7 @@ const store = createStore(
 	AppReducer,
 	applyMiddleware(
 		thunkMiddleware,
-		// loggerMiddleware,
+		loggerMiddleware,
 		AppNavigatorMiddleware
 	)
 );
