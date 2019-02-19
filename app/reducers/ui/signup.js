@@ -3,6 +3,9 @@ import {
     UPDATE_LASTNAME,
     UPDATE_DATE_OF_BIRTH,
     UPDATE_GENDER,
+    UPDATE_CONVERSATION,
+    UPDATE_MUSIC,
+    UPDATE_SMOKING,
     FORM_FILLED
 } from '../../actions/ui/signup';
 
@@ -55,6 +58,39 @@ const signup = (state = initialState, action) => {
                 user: {
                     ...state.user,
                         gender: action.gender
+                } 
+            };
+        case UPDATE_MUSIC:
+            return {
+                ...state,
+                user: {
+                    ...state.user,
+                        preferences: {
+                            ...state.user.preferences,
+                                music: action.music
+                        }
+                } 
+            };
+        case UPDATE_CONVERSATION:
+            return {
+                ...state,
+                user: {
+                    ...state.user,
+                        preferences: {
+                            ...state.user.preferences,
+                                conversation: action.conversation
+                        }
+                } 
+            };
+        case UPDATE_SMOKING:
+            return {
+                ...state,
+                user: {
+                    ...state.user,
+                        preferences: {
+                            ...state.user.preferences,
+                                smoking: action.smoking
+                        }
                 } 
             };
         case FORM_FILLED:

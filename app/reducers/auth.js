@@ -24,6 +24,7 @@ const initialState = {
     userInfo: null,
     profile: null,
     user: {
+        id: '',
         firstName: '',
         lastName: '',
         dateOfBirth: '',
@@ -111,53 +112,53 @@ const auth = (state = initialState, action) => {
             };
         case CREATE_USER_REQUEST:
             return {
-                ...initialState,
+                ...state,
                 isSudmitting: true
             };
         case CREATE_USER_SUCCESS:
             return {
-                ...initialState,
+                ...state,
                 user: {
                     ...action.user
                 }
             };
         case CREATE_USER_ERROR:
             return {
-                ...initialState,
+                ...state,
                 error: action.error,
             };
         case UPDATE_USER_REQUEST:
             return {
-                ...initialState,
+                ...state,
                 isSudmitting: true
             };
         case UPDATE_USER_SUCCESS:
             return {
-                ...initialState,
+                ...state,
                 user: {
                     ...action.user
                 }
             };
         case UPDATE_USER_ERROR:
             return {
-                ...initialState,
+                ...state,
                 error: action.error,
             };
         case GET_USER_REQUEST:
             return {
-                ...initialState,
+                ...state,
                 isFetching: true
             };
         case GET_USER_SUCCESS:
             return {
-                ...initialState,
+                ...state,
                 user: {
                     ...action.user
                 }
             };
         case GET_USER_ERROR:
             return {
-                ...initialState,
+                ...state,
                 error: action.error,
             };
 

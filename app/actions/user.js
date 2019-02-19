@@ -76,8 +76,7 @@ export const getUserById = (accessToken, userId) => {
             {
                 method: 'GET',
                 headers: {
-                    'Authorization': 'Bearer ' + accessToken,
-                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + accessToken
                 }
             }
         ).then(user => dispatch(getUserSuccess(user)))
@@ -101,11 +100,9 @@ export const createUser = (accessToken, userData) => {
                 },
                 body: JSON.stringify(userData)
             }
-        ).then(user => dispatch(createUserSuccess(user)))
-        .catch(error => { 
-            console.log("ERROR: " + error)
-            dispatch(createUserError(error))
-        });
+        ).then(response => response.json())
+        .then(responseData => dispatch(createUserSuccess(responseData))) 
+        .catch(error => { dispatch(createUserError(error))});
     };
 };
 
@@ -117,12 +114,13 @@ export const updateUser = (accessToken, userId, userData) => {
             {
                 method: 'PATCH',
                 headers: {
-                    Accept: 'application/json',
-                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + accessToken,
+                    'Content-Type': 'application/json'
                 },
                 body: JSON.stringify(userData)
             }
-        ).then(user => dispatch(updateUserSuccess(user)))
+        ).then(response => response.json())
+        .then(responseData => dispatch(updateUserSuccess(responseData))) 
         .catch(error => { 
             dispatch(updateUserError(error))
         });

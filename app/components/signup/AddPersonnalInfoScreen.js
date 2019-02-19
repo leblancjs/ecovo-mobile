@@ -7,6 +7,10 @@ import { updateFirstName, updateLastName, updateDateOfBirth, updateGender, setFo
 import { createUser } from '../../actions/user'
 
 class AddPersonnalInfoScreen extends Component {
+    static navigationOptions = {
+        header: null
+    }
+    
     constructor(props) {
         super(props);
     }
@@ -160,5 +164,6 @@ const mapDispatchToProps = dispatch => ({
         .then(() => dispatch(NavigationActions.navigate({ routeName: 'AddPreferences' }))),
     setFormFilled: (formFilled) => dispatch(setFormFilled(formFilled))
 });
+
 
 export default connect(mapStateToProps, mapDispatchToProps)(AddPersonnalInfoScreen);
