@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { StyleSheet, Text, Slider } from 'react-native';
 import { Container, Content, View, Button, Icon, Right, Left } from 'native-base';
 import { connect } from 'react-redux';
-import { updateMusic, updateSmoking, updateConversation } from '../../actions/ui/signup';
 import { updateUser } from '../../actions/user';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
@@ -14,22 +13,58 @@ class AddPreferences extends Component {
 
     constructor(props) {
         super(props);
+        this.state = {
+            user: {
+                preferences: {
+                    music: 0,
+                    conversation: 0,
+                    smoking: 0
+                }
+            }
+        }
     }
 
-    _updateConversation = (conversation) => {
-        this.props.updateConversation(conversation);
+    _setMusic = (music) => {
+        this.setState(state => ({ 
+            ...state,
+            user: {
+              ...state.user,
+              preferences: {
+                  ...state.user.preferences,
+                  music
+              }
+            },
+          }));
     }
 
-    _updateMusic = (music) => {
-        this.props.updateMusic(music);
+    _setConversation = (conversation) => {
+        this.setState(state => ({ 
+            ...state,
+            user: {
+              ...state.user,
+              preferences: {
+                  ...state.user.preferences,
+                  conversation
+              }
+            },
+          }));
     }
 
-    _updateSmoking = (smoking) => {
-        this.props.updateSmoking(smoking);
+    _setSmoking = (smoking) => {
+        this.setState(state => ({ 
+            ...state,
+            user: {
+              ...state.user,
+              preferences: {
+                  ...state.user.preferences,
+                  smoking
+              }
+            },
+          }));
     }
-
+    
     _updateUser = () => {
-        this.props.updateUser(this.props.auth.credentials.accessToken, this.props.auth.user.id, this.props.user);
+        this.props.updateUser(this.props.auth.credentials.accessToken, this.props.auth.user.id, this.state.user);
     }
 
     render() {
@@ -45,7 +80,7 @@ class AddPreferences extends Component {
                             <FontAwesome5 style={styles.icon} name="music-off" solid/>
                             <Slider
                                 style={styles.slider}
-                                onValueChange = {(music) => this._updateMusic(music)}
+                                onValueChange = {(music) => this._setMusic(music)}
                                 step = { 1 }
                                 minimumValue = { 0 }
                                 maximumValue = { 2 } />
@@ -66,7 +101,7 @@ class AddPreferences extends Component {
                             <MaterialIcons style={styles.icon} name="smoke-free" solid/>
                             <Slider
                                 style={styles.slider}
-                                onValueChange = {(smoking) => this._updateSmoking(smoking)}
+                                onValueChange = {(smoking) => this._setSmoking(smoking)}
                                 step = { 1 }
                                 minimumValue = { 0 }
                                 maximumValue = { 2 } />
@@ -87,7 +122,7 @@ class AddPreferences extends Component {
                             <FontAwesome5 style={styles.icon} name="microphone-slash" solid/>
                             <Slider
                                 style={styles.slider}
-                                onValueChange = {(conversation) => this._updateMusic(conversation)}
+                                onValueChange = {(conversation) => this._setConversation(conversation)}
                                 step = { 1 }
                                 minimumValue = { 0 }
                                 maximumValue = { 2 } />
@@ -160,14 +195,10 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = state => ({
-    auth: state.auth,
-    user: state.ui.signup.user
+    auth: state.auth
 });
 
 const mapDispatchToProps = dispatch => ({
-    updateMusic: (music) => dispatch(updateMusic(music)),
-    updateSmoking: (smoking) => dispatch(updateSmoking(smoking)),
-    updateConversation: (conversation) => dispatch(updateConversation(conversation)),
     updateUser: (accessToken, userId, userData) => dispatch(updateUser(accessToken, userId, userData))
         .then(() => dispatch(NavigationActions.navigate({ routeName: '' }))),
 });

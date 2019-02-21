@@ -25,6 +25,7 @@ const initialState = {
     profile: null,
     user: {
         id: '',
+        photo: '',
         firstName: '',
         lastName: '',
         dateOfBirth: '',
