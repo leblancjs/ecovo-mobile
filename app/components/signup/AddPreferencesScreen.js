@@ -6,7 +6,7 @@ import { updateUser } from '../../actions/user';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 
-class AddPreferences extends Component {
+class AddPreferencesScreen extends Component {
     static navigationOptions = {
         header: null
     }
@@ -199,8 +199,9 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
+    // TODO - Reroute to main screen when it is created.
     updateUser: (accessToken, userId, userData) => dispatch(updateUser(accessToken, userId, userData))
         .then(() => dispatch(NavigationActions.navigate({ routeName: '' }))),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(AddPreferences);
+export default connect(mapStateToProps, mapDispatchToProps)(AddPreferencesScreen);

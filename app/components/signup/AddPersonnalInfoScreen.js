@@ -13,62 +13,65 @@ class AddPersonnalInfoScreen extends Component {
 
     constructor(props) {
         super(props);
-        this.defaultGender = 'Male';
         this.state = {
             user: {
                 photo: '',
                 firstName: '',
                 lastName: '',
                 dateOfBirth: undefined,
-                gender: this.defaultGender,
-            },
-            formFilled: false
+                gender: 'Male',
+            }
         };
     }
 
     _setPhoto = (photo) => {
-        this.setState({
+        this.setState(state => ({ 
+            ...state,
             user: {
-              ...this.state.user,
+              ...state.user,
               photo,
             },
-          });
+          }));
     }
 
     _setFirstName = (firstName) => {
-        this.setState({
+        this.setState(state => ({ 
+            ...state,
             user: {
-              ...this.state.user,
+              ...state.user,
               firstName,
             },
-          });
+          }));
     }
 
     _setLastName = (lastName) => {
-        this.setState({
+        this.setState(state => ({ 
+            ...state,
             user: {
-              ...this.state.user,
+              ...state.user,
               lastName,
             },
-          });
+          }));
     }
 
     _setDateOfBirth = (dateOfBirth) => {
-        this.setState({
+        this.setState(state => ({ 
+            ...state,
             user: {
-              ...this.state.user,
+              ...state.user,
               dateOfBirth,
             },
-          });
+          }));
     }
 
     _setGender = (gender) => {
-        this.setState({
+        this.setState(state => ({ 
+            ...state,
             user: {
-              ...this.state.user,
+              ...state.user,
               gender,
             },
-          });
+          }));
     }
 
     _createUser = () => {
@@ -91,7 +94,7 @@ class AddPersonnalInfoScreen extends Component {
                     <PhotoUpload
                         onPhotoSelect={photo => {
                             if (photo) {
-                                this.setState({user: {photo: photo}});
+                                this._setPhoto(photo);
                             }
                         }}
                         >

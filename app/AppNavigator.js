@@ -4,12 +4,12 @@ import { reduxifyNavigator, createReactNavigationReduxMiddleware } from 'react-n
 import WelcomeScreen from './components/welcome/WelcomeScreen';
 import ProfileScreen from './components/profile/ProfileScreen';
 import AddPersonnalInfoScreen from './components/signup/AddPersonnalInfoScreen';
-import AddPreferences from './components/signup/AddPreferencesScreen';
+import AddPreferencesScreen from './components/signup/AddPreferencesScreen';
 
 const AppNavigator = createStackNavigator({
     Welcome: { screen: WelcomeScreen },
     AddPersonnalInfo: { screen: AddPersonnalInfoScreen },
-    AddPreferences: { screen: AddPreferences },
+    AddPreferences: { screen: AddPreferencesScreen },
     Profile: { screen: ProfileScreen }
 }, {
     initialRouteName: 'Welcome',
