@@ -5,6 +5,12 @@ import {
     PROFILE_REQUEST, PROFILE_SUCCESS, PROFILE_ERROR
 } from '../actions/auth';
 
+import {
+    CREATE_USER_REQUEST, CREATE_USER_SUCCESS, CREATE_USER_ERROR,
+    UPDATE_USER_REQUEST, UPDATE_USER_SUCCESS, UPDATE_USER_ERROR,
+    GET_USER_REQUEST, GET_USER_SUCCESS, GET_USER_ERROR
+} from '../actions/user'
+
 const initialState = {
     isFetching: false,
     isLoggedIn: false,
@@ -16,7 +22,20 @@ const initialState = {
         tokenType: null
     },
     userInfo: null,
-    profile: null
+    profile: null,
+    user: {
+        id: '',
+        photo: '',
+        firstName: '',
+        lastName: '',
+        dateOfBirth: '',
+        gender: '',
+        preferences: {
+            smoking: 0,
+            music: 0,
+            talking: 0
+        }
+    }
 };
 
 const auth = (state = initialState, action) => {
@@ -92,6 +111,58 @@ const auth = (state = initialState, action) => {
                 profile: null,
                 error: action.error
             };
+        case CREATE_USER_REQUEST:
+            return {
+                ...state,
+                isSudmitting: true
+            };
+        case CREATE_USER_SUCCESS:
+            return {
+                ...state,
+                user: {
+                    ...action.user
+                }
+            };
+        case CREATE_USER_ERROR:
+            return {
+                ...state,
+                error: action.error,
+            };
+        case UPDATE_USER_REQUEST:
+            return {
+                ...state,
+                isSudmitting: true
+            };
+        case UPDATE_USER_SUCCESS:
+            return {
+                ...state,
+                user: {
+                    ...action.user
+                }
+            };
+        case UPDATE_USER_ERROR:
+            return {
+                ...state,
+                error: action.error,
+            };
+        case GET_USER_REQUEST:
+            return {
+                ...state,
+                isFetching: true
+            };
+        case GET_USER_SUCCESS:
+            return {
+                ...state,
+                user: {
+                    ...action.user
+                }
+            };
+        case GET_USER_ERROR:
+            return {
+                ...state,
+                error: action.error,
+            };
+
         default:
             return state
     }

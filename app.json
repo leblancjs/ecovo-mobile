@@ -1,4 +1,6 @@
 {
   "name": "ecovo",
-  "displayName": "Ecovo"
+  "displayName": "Ecovo",
+  "domain": "10.0.2.2",
+  "portNb": "8080"
 }
