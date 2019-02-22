@@ -1,6 +1,4 @@
-import { domain as domaineName, portNb as portNb } from '../../app.json';
-
-const baseUrl = "http://" + domaineName + ":" + portNb;
+import { domain as fetchURL } from '../../app.json';
 
 // Create user
 export const CREATE_USER_REQUEST = 'CREATE_USER_REQUEST';
@@ -72,7 +70,7 @@ export const getUserById = (accessToken, userId) => {
     return dispatch => {
         dispatch(getUserRequest());
 
-        return fetch(baseUrl + '/users/' + userId, 
+        return fetch(fetchURL + '/users/' + userId, 
             {
                 method: 'GET',
                 headers: {
@@ -91,7 +89,7 @@ export const createUser = (accessToken, userData) => {
     return dispatch => {
         dispatch(createUserRequest());
 
-        return fetch(baseUrl + '/users', 
+        return fetch(fetchURL + '/users', 
             {
                 method: 'POST',
                 headers: {
@@ -110,7 +108,7 @@ export const updateUser = (accessToken, userId, userData) => {
     return dispatch => {
         dispatch(updateUserRequest());
 
-        return fetch(baseUrl + '/users/' + userId, 
+        return fetch(fetchURL + '/users/' + userId, 
             {
                 method: 'PATCH',
                 headers: {
