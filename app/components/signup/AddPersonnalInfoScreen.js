@@ -19,7 +19,7 @@ class AddPersonnalInfoScreen extends Component {
                 firstName: this.props.auth.user.firstName,
                 lastName: this.props.auth.user.lastName,
                 dateOfBirth: this.props.auth.user.dateOfBirth,
-                gender: this.props.auth.gender,
+                gender: this.props.auth.user.gender,
             }
         };
     }
