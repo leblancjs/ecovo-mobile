@@ -15,11 +15,11 @@ class AddPersonnalInfoScreen extends Component {
         super(props);
         this.state = {
             user: {
-                photo: '',
-                firstName: '',
-                lastName: '',
-                dateOfBirth: undefined,
-                gender: 'Male',
+                photo: this.props.auth.user.photo,
+                firstName: this.props.auth.user.firstName,
+                lastName: this.props.auth.user.lastName,
+                dateOfBirth: this.props.auth.user.dateOfBirth,
+                gender: this.props.auth.user.gender,
             }
         };
     }
@@ -98,26 +98,38 @@ class AddPersonnalInfoScreen extends Component {
                             }
                         }}
                         >
-                        <Image
-                            style={picStyle}
-                            resizeMode='cover'
-                            source={require('../../../assets/profile_pic.png')}
-                        />
+                        { this.state.user.photo == '' &&
+                            <Image
+                                style={picStyle}
+                                resizeMode='cover'
+                                source={require('../../../assets/profile_pic.png')}
+                            />
+                        }
+
+                        { this.state.user.photo != '' &&
+                            <Image
+                                style={picStyle}
+                                resizeMode='cover'
+                                source={{uri: this.state.user.photo}}
+                            />
+                        }
                     </PhotoUpload>
                     <Form>
                         <Item style={styles.item}>
                             <Input style={styles.text} 
+                                value={this.state.user.firstName}
                                 onChangeText={(firstName) => this._setFirstName(firstName)}
                                 placeholder="First Name"/>
                         </Item>
                         <Item style={styles.item}>
                             <Input style={styles.text}
+                                value={this.state.user.lastName}
                                 onChangeText={(lastName) => this._setLastName(lastName)}
                                 placeholder="Last Name"/>
                         </Item>
                         <Item style={styles.item}>
                             <DatePicker
-                                defaultDate={new Date(1990, 1, 1)}
+                                defaultDate={this.state.user.dateOfBirth}
                                 locale={"en"}
                                 timeZoneOffsetInMinutes={undefined}
                                 modalTransparent={false}
@@ -148,7 +160,7 @@ class AddPersonnalInfoScreen extends Component {
                 <View style={styles.nextBtn}>
                     { this.state.user.firstName != ''
                         && this.state.user.lastName != ''
-                        && this.state.user.dateOfBirth != undefined 
+                        && this.state.user.dateOfBirth != ''
                         && 
                             <Button transparent
                                 onPress={this._createUser}>
