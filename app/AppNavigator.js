@@ -8,7 +8,8 @@ import ProfileScreen from './components/screens/profile/ProfileScreen'
 import AddPersonalInfoScreen from './components/screens/signup/AddPersonalInfoScreen'
 import AddPreferencesScreen from './components/screens/signup/AddPreferencesScreen'
 import MapScreen from './components/screens/trips/MapScreen'
-import GenericErrorScreen from './components/screens/error/GenericErrorScreen';
+import VehiculeScreen from './components/screens/vehicules/VehiculeScreen'
+import GenericErrorScreen from './components/screens/error/GenericErrorScreen'
 
 const defaultNavigationOptions = {
     headerStyle: {
@@ -65,6 +66,18 @@ const TripsNavigator = createStackNavigator({
     initialRouteName: ScreenNames.Trips.MAP
 })
 
+const VehiculeNavigator = createStackNavigator({
+    [ScreenNames.Vehicules.HOME]: {
+        screen: VehiculeScreen,
+        navigationOptions: {
+            title: 'Vehicules'
+        }
+    }
+},{
+    initialRouteName: ScreenNames.Vehicules.HOME,
+    defaultNavigationOptions
+})
+
 const ErrorNavigator = createStackNavigator({
     [ScreenNames.Errors.GENERIC]: {
         screen: GenericErrorScreen,
@@ -87,6 +100,7 @@ const AppNavigator = createSwitchNavigator({
     [ScreenNames.SignUp.HOME]: SignUpNavigator,
     [ScreenNames.Profile.HOME]: ProfileNavigator,
     [ScreenNames.Trips.HOME]: TripsNavigator,
+    [ScreenNames.Vehicules.HOME]: VehiculeNavigator,
     [ScreenNames.Errors.HOME]: ErrorNavigator
 }, {
     initialRouteName: ScreenNames.BOOTSTRAP
