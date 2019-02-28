@@ -4,7 +4,7 @@ import { Container, Content, View, Button, Icon, Right, Left } from 'native-base
 import { connect } from 'react-redux';
 import { updateUser } from '../../actions/user';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 class AddPreferencesScreen extends Component {
     static navigationOptions = {
@@ -25,44 +25,44 @@ class AddPreferencesScreen extends Component {
     }
 
     _setMusic = (music) => {
-        this.setState(state => ({ 
+        this.setState(state => ({
             ...state,
             user: {
-              ...state.user,
-              preferences: {
-                  ...state.user.preferences,
-                  music
-              }
+                ...state.user,
+                preferences: {
+                    ...state.user.preferences,
+                    music
+                }
             },
-          }));
+        }));
     }
 
     _setConversation = (conversation) => {
-        this.setState(state => ({ 
+        this.setState(state => ({
             ...state,
             user: {
-              ...state.user,
-              preferences: {
-                  ...state.user.preferences,
-                  conversation
-              }
+                ...state.user,
+                preferences: {
+                    ...state.user.preferences,
+                    conversation
+                }
             },
-          }));
+        }));
     }
 
     _setSmoking = (smoking) => {
-        this.setState(state => ({ 
+        this.setState(state => ({
             ...state,
             user: {
-              ...state.user,
-              preferences: {
-                  ...state.user.preferences,
-                  smoking
-              }
+                ...state.user,
+                preferences: {
+                    ...state.user.preferences,
+                    smoking
+                }
             },
-          }));
+        }));
     }
-    
+
     _updateUser = () => {
         this.props.updateUser(this.props.auth.credentials.accessToken, this.props.auth.user.id, this.state.user);
     }
@@ -77,14 +77,14 @@ class AddPreferencesScreen extends Component {
                             <Text style={styles.text}>I like to listen to music in the car</Text>
                         </View>
                         <View style={styles.sliderHeader}>
-                            <FontAwesome5 style={styles.icon} name="music-off" solid/>
+                            <MaterialCommunityIcons style={styles.icon} name="music-note-off" solid />
                             <Slider
                                 style={styles.slider}
-                                onValueChange = {(music) => this._setMusic(music)}
-                                step = { 1 }
-                                minimumValue = { 0 }
-                                maximumValue = { 2 } />
-                            <MaterialIcons style={styles.icon} name="music-note" solid/>
+                                onValueChange={(music) => this._setMusic(music)}
+                                step={1}
+                                minimumValue={0}
+                                maximumValue={2} />
+                            <MaterialIcons style={styles.icon} name="music-note" solid />
                         </View>
                         <View style={styles.sliderLegend}>
                             <Left><Text style={styles.text}>0</Text></Left>
@@ -98,14 +98,14 @@ class AddPreferencesScreen extends Component {
                             <Text style={styles.text}>I like to smoke in the car</Text>
                         </View>
                         <View style={styles.sliderHeader}>
-                            <MaterialIcons style={styles.icon} name="smoke-free" solid/>
+                            <MaterialIcons style={styles.icon} name="smoke-free" solid />
                             <Slider
                                 style={styles.slider}
-                                onValueChange = {(smoking) => this._setSmoking(smoking)}
-                                step = { 1 }
-                                minimumValue = { 0 }
-                                maximumValue = { 2 } />
-                            <MaterialIcons style={styles.icon} name="smoking-rooms" solid/>
+                                onValueChange={(smoking) => this._setSmoking(smoking)}
+                                step={1}
+                                minimumValue={0}
+                                maximumValue={2} />
+                            <MaterialIcons style={styles.icon} name="smoking-rooms" solid />
                         </View>
                         <View style={styles.sliderLegend}>
                             <Left><Text style={styles.text}>0</Text></Left>
@@ -119,14 +119,14 @@ class AddPreferencesScreen extends Component {
                             <Text style={styles.text}>I like to talk in the car</Text>
                         </View>
                         <View style={styles.sliderHeader}>
-                            <FontAwesome5 style={styles.icon} name="microphone-slash" solid/>
+                            <MaterialCommunityIcons style={styles.icon} name="comment-remove-outline" solid />
                             <Slider
                                 style={styles.slider}
-                                onValueChange = {(conversation) => this._setConversation(conversation)}
-                                step = { 1 }
-                                minimumValue = { 0 }
-                                maximumValue = { 2 } />
-                            <FontAwesome5 style={styles.icon} name="microphone" solid/>
+                                onValueChange={(conversation) => this._setConversation(conversation)}
+                                step={1}
+                                minimumValue={0}
+                                maximumValue={2} />
+                            <MaterialCommunityIcons style={styles.icon} name="comment-text-outline" solid />
                         </View>
                         <View style={styles.sliderLegend}>
                             <Left><Text style={styles.text}>0</Text></Left>
@@ -138,7 +138,7 @@ class AddPreferencesScreen extends Component {
                 <View style={styles.nextBtn}>
                     <Button transparent style={styles.nextBtn} onPress={this._updateUser}>
                         <Text style={styles.textGreen}>Finish</Text>
-                        <Icon style={styles.textGreen} name="ios-arrow-forward"/>
+                        <Icon style={styles.textGreen} name="ios-arrow-forward" />
                     </Button>
                 </View>
             </Container>
@@ -148,14 +148,14 @@ class AddPreferencesScreen extends Component {
 
 const styles = StyleSheet.create({
     container: {
-      flex: 1,
-      justifyContent: 'center',
-      margin: 15
+        flex: 1,
+        justifyContent: 'center',
+        margin: 15
     },
     title: {
-      fontSize: 30,
-      textAlign: 'left',
-      margin: 20
+        fontSize: 30,
+        textAlign: 'left',
+        margin: 20
     },
     sliderContainer: {
         alignContent: 'center',
@@ -168,7 +168,7 @@ const styles = StyleSheet.create({
     slider: {
         flexDirection: 'row',
         width: 300
-    }, 
+    },
     nextBtn: {
         justifyContent: 'flex-end',
         alignSelf: 'flex-end',
