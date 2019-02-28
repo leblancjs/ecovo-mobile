@@ -1,18 +1,18 @@
 import {
     LOGIN_REQUEST, LOGIN_SUCCESS, LOGIN_ERROR,
-    LOGOUT_REQUEST, LOGOUT_SUCCESS, LOGOUT_ERROR,
-    USER_INFO_REQUEST, USER_INFO_SUCCESS, USER_INFO_ERROR,
-    PROFILE_REQUEST, PROFILE_SUCCESS, PROFILE_ERROR
-} from '../actions/auth';
+    LOGOUT_REQUEST, LOGOUT_SUCCESS, LOGOUT_ERROR
+} from '../actions/auth'
 
 import {
     CREATE_USER_REQUEST, CREATE_USER_SUCCESS, CREATE_USER_ERROR,
     UPDATE_USER_REQUEST, UPDATE_USER_SUCCESS, UPDATE_USER_ERROR,
-    GET_USER_REQUEST, GET_USER_SUCCESS, GET_USER_ERROR
+    GET_USER_REQUEST, GET_USER_SUCCESS, GET_USER_ERROR,
+    GET_CURRENT_USER_INFO_REQUEST, GET_CURRENT_USER_INFO_SUCCESS, GET_CURRENT_USER_INFO_ERROR
 } from '../actions/user'
 
 const initialState = {
     isFetching: false,
+    isSubmitting: false,
     isLoggedIn: false,
     error: null,
     credentials: {
@@ -21,8 +21,6 @@ const initialState = {
         expiresIn: null,
         tokenType: null
     },
-    userInfo: null,
-    profile: null,
     user: {
         id: '',
         photo: '',
@@ -34,9 +32,10 @@ const initialState = {
             smoking: 0,
             music: 0,
             talking: 0
-        }
+        },
+        signUpPhase: ''
     }
-};
+}
 
 const auth = (state = initialState, action) => {
     switch (action.type) {
@@ -44,7 +43,7 @@ const auth = (state = initialState, action) => {
             return {
                 ...initialState,
                 isFetching: true
-            };
+            }
         case LOGIN_SUCCESS:
             return {
                 ...initialState,
@@ -52,120 +51,103 @@ const auth = (state = initialState, action) => {
                 credentials: {
                     ...action.credentials
                 }
-            };
+            }
         case LOGIN_ERROR:
             return {
                 ...initialState,
                 error: action.error,
-            };
+            }
         case LOGOUT_REQUEST:
             return {
                 ...state,
                 isFetching: true
-            };
+            }
         case LOGOUT_SUCCESS:
             return {
                 ...initialState
-            };
+            }
         case LOGOUT_ERROR:
             return {
                 ...initialState,
                 error: action.error
-            };
-        case USER_INFO_REQUEST:
-            return {
-                ...state,
-                isFetching: true
-            };
-        case USER_INFO_SUCCESS:
-            return {
-                ...state,
-                isFetching: false,
-                userInfo: {
-                    ...action.userInfo
-                }
-            };
-        case USER_INFO_ERROR:
-            return {
-                ...state,
-                isFetching: false,
-                userInfo: null
-            };
-        case PROFILE_REQUEST:
-            return {
-                ...state,
-                isFetching: true
-            };
-        case PROFILE_SUCCESS:
-            return {
-                ...state,
-                isFetching: false,
-                profile: {
-                    ...action.profile
-                }
-            };
-        case PROFILE_ERROR:
-            return {
-                ...state,
-                isFetching: false,
-                profile: null,
-                error: action.error
-            };
+            }
         case CREATE_USER_REQUEST:
             return {
                 ...state,
-                isSudmitting: true
-            };
+                isSubmitting: true
+            }
         case CREATE_USER_SUCCESS:
             return {
                 ...state,
+                isSubmitting: false,
                 user: {
                     ...action.user
                 }
-            };
+            }
         case CREATE_USER_ERROR:
             return {
                 ...state,
+                isSubmitting: false,
                 error: action.error,
-            };
+            }
         case UPDATE_USER_REQUEST:
             return {
                 ...state,
-                isSudmitting: true
-            };
+                isSubmitting: true
+            }
         case UPDATE_USER_SUCCESS:
             return {
                 ...state,
+                isSubmitting: false,
                 user: {
+                    ...state.user,
                     ...action.user
                 }
-            };
+            }
         case UPDATE_USER_ERROR:
             return {
                 ...state,
+                isSubmitting: false,
                 error: action.error,
-            };
+            }
         case GET_USER_REQUEST:
             return {
                 ...state,
                 isFetching: true
-            };
+            }
         case GET_USER_SUCCESS:
             return {
                 ...state,
                 user: {
                     ...action.user
                 }
-            };
+            }
         case GET_USER_ERROR:
             return {
                 ...state,
                 error: action.error,
-            };
+            }
+        case GET_CURRENT_USER_INFO_REQUEST:
+            return {
+                ...state,
+                isFetching: true
+            }
+        case GET_CURRENT_USER_INFO_SUCCESS:
+            return {
+                ...state,
+                user: {
+                    ...action.user
+                }
+            }
+        case GET_CURRENT_USER_INFO_ERROR:
+            return {
+                ...state,
+                error: action.error,
+            }
 
         default:
             return state
     }
-};
+}
 
-export default auth;
+export default auth
