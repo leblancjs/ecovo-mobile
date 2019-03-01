@@ -88,8 +88,8 @@
 		<string>Zocial.ttf</string>
 	</array>
 	<key>NSPhotoLibraryUsageDescription</key>
-    <string>PROFILE_PICTURE</string>
-    <key>NSCameraUsageDescription</key>
-    <string>PROFILE_PICTURE</string>
+	<string>PROFILE_PICTURE</string>
+	<key>NSCameraUsageDescription</key>
+	<string>PROFILE_PICTURE</string>
 </dict>
 </plist>

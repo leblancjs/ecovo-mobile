@@ -8,7 +8,8 @@ import ProfileScreen from './components/screens/profile/ProfileScreen'
 import AddPersonalInfoScreen from './components/screens/signup/AddPersonalInfoScreen'
 import AddPreferencesScreen from './components/screens/signup/AddPreferencesScreen'
 import MapScreen from './components/screens/trips/MapScreen'
-import GenericErrorScreen from './components/screens/error/GenericErrorScreen';
+import GenericErrorScreen from './components/screens/error/GenericErrorScreen'
+import AstuvuNativeDemoScreen from './components/screens/AstuvuNativeDemoScreen'
 
 const defaultNavigationOptions = {
     headerStyle: {
@@ -87,8 +88,10 @@ const AppNavigator = createSwitchNavigator({
     [ScreenNames.SignUp.HOME]: SignUpNavigator,
     [ScreenNames.Profile.HOME]: ProfileNavigator,
     [ScreenNames.Trips.HOME]: TripsNavigator,
-    [ScreenNames.Errors.HOME]: ErrorNavigator
+    [ScreenNames.Errors.HOME]: ErrorNavigator,
+    astuvu: AstuvuNativeDemoScreen
 }, {
+    // initialRouteName: 'astuvu'
     initialRouteName: ScreenNames.BOOTSTRAP
 })
 

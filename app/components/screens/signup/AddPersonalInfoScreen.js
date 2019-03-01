@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { StyleSheet, Text, Image, View, Button as ReactButton } from 'react-native'
-import { Input, Icon, Container, Form, Button, Item, Content, DatePicker, Picker, Right } from 'native-base'
+import { Icon, Container, Button, Content } from 'native-base'
 import PhotoUpload from 'react-native-photo-upload'
 import { NavigationActions, StackActions } from 'react-navigation'
 import { connect } from 'react-redux'
@@ -8,6 +8,7 @@ import { withStatusBar } from '../../hoc'
 import { createUser, updateUser } from '../../../actions/user'
 import { logout } from '../../../actions/auth'
 import { ScreenNames } from '../'
+import PersonalInfoForm from '../../profile/PersonalInfoForm'
 
 class AddPersonalInfoScreen extends Component {
     static navigationOptions = ({ navigation }) => {
@@ -26,13 +27,11 @@ class AddPersonalInfoScreen extends Component {
         super(props)
 
         this.state = {
-            user: {
-                photo: this.props.auth.user.photo || '',
-                firstName: this.props.auth.user.firstName || '',
-                lastName: this.props.auth.user.lastName || '',
-                dateOfBirth: this.props.auth.user.dateOfBirth || new Date(),
-                gender: this.props.auth.user.gender || 'Male',
-            }
+            photo: this.props.auth.user.photo || '',
+            firstName: this.props.auth.user.firstName || '',
+            lastName: this.props.auth.user.lastName || '',
+            dateOfBirth: this.props.auth.user.dateOfBirth,
+            gender: this.props.auth.user.gender || ''
         }
     }
 
@@ -41,53 +40,17 @@ class AddPersonalInfoScreen extends Component {
     }
 
     _setPhoto = (photo) => {
-        this.setState(state => ({
-            ...state,
-            user: {
-                ...state.user,
-                photo,
-            },
-        }))
+        this.setState({
+            ...this.state,
+            photo: photo
+        })
     }
 
-    _setFirstName = (firstName) => {
-        this.setState(state => ({
-            ...state,
-            user: {
-                ...state.user,
-                firstName,
-            },
-        }))
-    }
-
-    _setLastName = (lastName) => {
-        this.setState(state => ({
-            ...state,
-            user: {
-                ...state.user,
-                lastName,
-            },
-        }))
-    }
-
-    _setDateOfBirth = (dateOfBirth) => {
-        this.setState(state => ({
-            ...state,
-            user: {
-                ...state.user,
-                dateOfBirth,
-            },
-        }))
-    }
-
-    _setGender = (gender) => {
-        this.setState(state => ({
-            ...state,
-            user: {
-                ...state.user,
-                gender,
-            },
-        }))
+    _onFieldChange = (field, value) => {
+        this.setState({
+            ...this.state,
+            [field]: value
+        })
     }
 
     _createUser = () => {
@@ -96,7 +59,7 @@ class AddPersonalInfoScreen extends Component {
                 this.props.updateUser(
                     this.props.auth.credentials.accessToken,
                     {
-                        ...this.state.user,
+                        ...this.state,
                         id: this.props.auth.user.id
                     }
                 )
@@ -110,7 +73,7 @@ class AddPersonalInfoScreen extends Component {
             if (!this.props.auth.isSumitting) {
                 this.props.createUser(
                     this.props.auth.credentials.accessToken,
-                    this.state.user
+                    this.state
                 )
                     .then(() => this.props.goToPreferences())
                     .catch(error => {
@@ -133,16 +96,17 @@ class AddPersonalInfoScreen extends Component {
     render() {
         let picStyle
 
-        if (this.state.user.photo == '') {
+        if (this.state.photo == '') {
             picStyle = styles.defaultImagePicker
         } else {
             picStyle = styles.imagePicker
         }
 
         let buttonVisible = 
-            this.state.user.firstName != '' &&
-            this.state.user.lastName != '' &&
-            this.state.user.dateOfBirth
+            this.state.firstName != '' &&
+            this.state.lastName != '' &&
+            this.state.dateOfBirth &&
+            this.state.gender != ''
 
         return (
             <Container style={styles.container}>
@@ -155,7 +119,7 @@ class AddPersonalInfoScreen extends Component {
                             }
                         }}
                     >
-                        {this.state.user.photo == '' &&
+                        {this.state.photo == '' &&
                             <Image
                                 style={picStyle}
                                 resizeMode='cover'
@@ -163,62 +127,20 @@ class AddPersonalInfoScreen extends Component {
                             />
                         }
 
-                        {this.state.user.photo != '' &&
+                        {this.state.photo != '' &&
                             <Image
                                 style={picStyle}
                                 resizeMode='cover'
-                                source={{ uri: this.state.user.photo }}
+                                source={{ uri: this.state.photo }}
                             />
                         }
                     </PhotoUpload>
-                    <Form>
-                        <Item style={styles.item}>
-                            <Input style={styles.text}
-                                value={this.state.user.firstName}
-                                onChangeText={(firstName) => this._setFirstName(firstName)}
-                                placeholder="First Name" />
-                        </Item>
-                        <Item style={styles.item}>
-                            <Input style={styles.text}
-                                value={this.state.user.lastName}
-                                onChangeText={(lastName) => this._setLastName(lastName)}
-                                placeholder="Last Name" />
-                        </Item>
-                        <Item style={styles.item}>
-                            <DatePicker
-                                defaultDate={this.state.user.dateOfBirth}
-                                locale={"en"}
-                                timeZoneOffsetInMinutes={undefined}
-                                modalTransparent={false}
-                                animationType={"fade"}
-                                androidMode={"default"}
-                                placeHolderText="Date of birth"
-                                onDateChange={(dateOfBirth) => this._setDateOfBirth(dateOfBirth)}
-                                disabled={false}
-                                style={styles.text} />
-                            <Right>
-                                <Icon name='calendar' />
-                            </Right>
-                        </Item>
-                        <Item style={styles.item}>
-                            <Picker
-                                mode="dropdown"
-                                iosIcon={<Icon name="arrow-down" />}
-                                placeholder="Gender..."
-                                selectedValue={this.state.user.gender}
-                                onValueChange={(gender) => this._setGender(gender)}
-                            >
-                                <Picker.Item label="Male" value="Male" />
-                                <Picker.Item label="Female" value="Female" />
-                                <Picker.Item label="Other" value="Other" />
-                            </Picker>
-                        </Item>
-                    </Form>
+                    <PersonalInfoForm user={this.props.auth.user} onFieldChange={this._onFieldChange} />
                 </Content>
                 <View style={styles.nextBtn}>
                     {
                         buttonVisible &&
-                        <Button transparent
+                        <Button transparent disabled={this.props.auth.isSumitting}
                             onPress={this._createUser}
                         >
                             <Text style={styles.textGreen}>Next</Text>
@@ -241,10 +163,6 @@ const styles = StyleSheet.create({
         fontSize: 30,
         textAlign: 'left',
         margin: 20,
-    },
-    text: {
-        fontSize: 15,
-        opacity: 1
     },
     textGreen: {
         fontSize: 20,
