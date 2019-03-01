@@ -94,7 +94,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "2D02E47A1E0B4A5D006451C7"
-            BuildableName = "ecovo-tvOS"
+            BuildableName = "ecovo-tvOS.app"
             BlueprintName = "ecovo-tvOS"
             ReferencedContainer = "container:ecovo.xcodeproj">
          </BuildableReference>
