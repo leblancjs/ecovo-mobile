@@ -221,11 +221,6 @@ const styles = StyleSheet.create({
         fontSize: 20,
         color: '#2BB267'
     },
-    topTextGreen: {
-        paddingVertical: 30,
-        fontSize: 20,
-        color: '#2BB267'
-    },
     text: {
         justifyContent: 'center',
         fontSize: 15
