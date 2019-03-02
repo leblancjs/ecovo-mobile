@@ -10,6 +10,8 @@ import AddPreferencesScreen from './components/screens/signup/AddPreferencesScre
 import MapScreen from './components/screens/trips/MapScreen'
 import GenericErrorScreen from './components/screens/error/GenericErrorScreen'
 import AstuvuNativeDemoScreen from './components/screens/AstuvuNativeDemoScreen'
+import { NavigationOptions } from './components/astuvu-native/NavigationHeader';
+import UpdateProfileScreen from './components/screens/profile/UpdateProfileScreen';
 
 const defaultNavigationOptions = {
     headerStyle: {
@@ -51,7 +53,16 @@ const ProfileNavigator = createStackNavigator({
     [ScreenNames.Profile.HOME]: {
         screen: ProfileScreen,
         navigationOptions: {
-            title: 'Profile'
+            ...NavigationOptions,
+            title: 'Profile',
+        },
+        initialRouteName: ScreenNames.Trips.MAP
+    },
+    [ScreenNames.Profile.UPDATE]: {
+        screen: UpdateProfileScreen,
+        navigationOptions: {
+            ...NavigationOptions,
+            title: 'Update Profile',
         }
     }
 }, {
