@@ -11,10 +11,7 @@ import GenericErrorScreen from './components/screens/error/GenericErrorScreen'
 import AstuvuNativeDemoScreen from './components/screens/AstuvuNativeDemoScreen'
 import { NavigationOptions } from './components/astuvu-native/NavigationHeader';
 import UpdateProfileScreen from './components/screens/profile/UpdateProfileScreen';
-<<<<<<< HEAD
-=======
 import MyProfileScreen from './components/screens/profile/MyProfileScreen';
->>>>>>> Add components for profile
 
 const defaultNavigationOptions = {
     headerStyle: {
