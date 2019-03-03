@@ -15,7 +15,7 @@ class AddPreferencesScreen extends Component {
             headerRight: (
                 <ReactButton
                     title='Logout'
-                    onPress={navigation.getParam('logout')}
+                    onPress={() => { console.log("Hello") }}
                     color='#fff'
                 />
             )
