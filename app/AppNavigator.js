@@ -10,6 +10,7 @@ import AddPreferencesScreen from './components/screens/signup/AddPreferencesScre
 import MapScreen from './components/screens/trips/MapScreen'
 import GenericErrorScreen from './components/screens/error/GenericErrorScreen'
 import AstuvuNativeDemoScreen from './components/screens/AstuvuNativeDemoScreen'
+import VehiculeScreen from './components/screens/vehicules/VehiculeScreen'
 
 const defaultNavigationOptions = {
     headerStyle: {
@@ -66,6 +67,18 @@ const TripsNavigator = createStackNavigator({
     initialRouteName: ScreenNames.Trips.MAP
 })
 
+const VehiculeNavigator = createStackNavigator({
+    [ScreenNames.Vehicules.HOME]: {
+        screen: VehiculeScreen,
+        navigationOptions: {
+            title: 'Vehicules'
+        }
+    }
+},{
+    initialRouteName: ScreenNames.Vehicules.HOME,
+    defaultNavigationOptions
+})
+
 const ErrorNavigator = createStackNavigator({
     [ScreenNames.Errors.GENERIC]: {
         screen: GenericErrorScreen,
@@ -89,7 +102,8 @@ const AppNavigator = createSwitchNavigator({
     [ScreenNames.Profile.HOME]: ProfileNavigator,
     [ScreenNames.Trips.HOME]: TripsNavigator,
     [ScreenNames.Errors.HOME]: ErrorNavigator,
-    astuvu: AstuvuNativeDemoScreen
+    astuvu: AstuvuNativeDemoScreen,
+    [ScreenNames.Vehicules.HOME]: VehiculeNavigator,
 }, {
     // initialRouteName: 'astuvu'
     initialRouteName: ScreenNames.BOOTSTRAP

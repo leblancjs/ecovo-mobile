@@ -15,6 +15,9 @@ export const ScreenNames = {
         HOME: 'trips',
         MAP: 'map'
     },
+    Vehicules: {
+        HOME: 'vehicule'
+    },
     Errors: {
         HOME: 'errors',
         GENERIC: 'genericError'
