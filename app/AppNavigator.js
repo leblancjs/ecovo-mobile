@@ -9,7 +9,6 @@ import AddPreferencesScreen from './components/screens/signup/AddPreferencesScre
 import MapScreen from './components/screens/trips/MapScreen'
 import GenericErrorScreen from './components/screens/error/GenericErrorScreen'
 import AstuvuNativeDemoScreen from './components/screens/AstuvuNativeDemoScreen'
-import { NavigationOptions } from './components/astuvu-native/NavigationHeader';
 import UpdateProfileScreen from './components/screens/profile/UpdateProfileScreen';
 import MyProfileScreen from './components/screens/profile/MyProfileScreen';
 
@@ -60,7 +59,6 @@ const ProfileNavigator = createStackNavigator({
     [ScreenNames.Profile.UPDATE]: {
         screen: UpdateProfileScreen,
         navigationOptions: {
-            ...NavigationOptions,
             title: 'Update Profile',
         }
     }
