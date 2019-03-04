@@ -5,7 +5,18 @@ TODO: Give a short introduction of your project. Let this section explain the ob
 To build and run the project, enter one of the following commands in your terminal, depending on which platform you want to use.
 
 ## Android
-`yarn android`
+```
+npm run android
+```
+
+### Developer Menu
+To show the developer menu in the Android emulator, enter the following command in your terminal:
+
+```
+adb shell input keyevent 82
+```
 
 ## iOS
-`yarn ios`
+```
+npm run ios
+```
