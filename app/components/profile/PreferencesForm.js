@@ -36,6 +36,7 @@ class PreferencesForm extends Component {
                     minIcon='music-note-off'
                     minIconType='community'
                     maxIcon='music-note'
+                    disabled={this.props.disabled}
                     description='I like to listen to music in the car' />
 
                 <PreferenceSlider
@@ -44,6 +45,7 @@ class PreferencesForm extends Component {
                     onValueChange={value => this._onFieldChange('smoking', value)}
                     minIcon='smoke-free'
                     maxIcon='smoking-rooms'
+                    disabled={this.props.disabled}
                     description='I like to smoke in the car' />
 
                 <PreferenceSlider
@@ -53,6 +55,7 @@ class PreferencesForm extends Component {
                     minIconType='community'
                     maxIcon='comment-text-outline'
                     maxIconType='community'
+                    disabled={this.props.disabled}
                     description='I like to talk in the car' />
             </View>
         )
@@ -70,7 +73,7 @@ const styles = StyleSheet.create({
 
 PreferencesForm.propTypes = {
     preferences: PropTypes.object,
-    onFieldChange: PropTypes.func.isRequired
+    onFieldChange: PropTypes.func,
 }
 
 export default PreferencesForm

@@ -41,6 +41,7 @@ class PreferenceSlider extends Component {
                         step={1}
                         minimumValue={0}
                         minimumTrackTintColor={this.props.color}
+                        disabled={this.props.disabled}
                         maximumValue={2} />
 
                     {this.props.maxIconType === 'community' ?
@@ -99,7 +100,8 @@ PreferenceSlider.propTypes = {
     maxIconType: PropTypes.oneOf(['community']),
     description: PropTypes.string,
     color: PropTypes.string,
-    style: PropTypes.object
+    style: PropTypes.object,
+    disabled: PropTypes.bool,
 }
 
 PreferenceSlider.defaultProps = {

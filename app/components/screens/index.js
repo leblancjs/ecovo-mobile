@@ -9,7 +9,8 @@ export const ScreenNames = {
         PREFERENCES: 'preferences'
     },
     Profile: {
-        HOME: 'profile'
+        HOME: 'profile',
+        UPDATE: 'updateProfile'
     },
     Trips: {
         HOME: 'trips',
