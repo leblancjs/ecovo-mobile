@@ -9,10 +9,9 @@ import AddPreferencesScreen from './components/screens/signup/AddPreferencesScre
 import MapScreen from './components/screens/trips/MapScreen'
 import GenericErrorScreen from './components/screens/error/GenericErrorScreen'
 import AstuvuNativeDemoScreen from './components/screens/AstuvuNativeDemoScreen'
-import VehiculeScreen from './components/screens/vehicules/VehiculeScreen'
 import CreateVehiculeScreen from './components/screens/vehicules/CreateVehiculeScreen'
 import UpdateProfileScreen from './components/screens/profile/UpdateProfileScreen';
-import MyProfileScreen from './components/screens/profile/MyProfileScreen';
+import ProfileTab from './components/screens/profile/ProfileTab';
 
 const defaultNavigationOptions = {
     headerStyle: {
@@ -52,7 +51,7 @@ const SignUpNavigator = createStackNavigator({
 
 const ProfileNavigator = createStackNavigator({
     [ScreenNames.Profile.HOME]: {
-        screen: MyProfileScreen,
+        screen: ProfileTab,
         navigationOptions: {
             title: 'Profile',
         },
@@ -62,6 +61,12 @@ const ProfileNavigator = createStackNavigator({
         screen: UpdateProfileScreen,
         navigationOptions: {
             title: 'Update Profile',
+        }
+    },
+    [ScreenNames.Vehicules.CREATE]: {
+        screen: CreateVehiculeScreen,
+        navigationOptions: {
+            title: 'Create a vehicule'
         }
     }
 }, {
@@ -74,24 +79,6 @@ const TripsNavigator = createStackNavigator({
 }, {
     headerMode: 'none',
     initialRouteName: ScreenNames.Trips.MAP
-})
-
-const VehiculeNavigator = createStackNavigator({
-    [ScreenNames.Vehicules.HOME]: {
-        screen: VehiculeScreen,
-        navigationOptions: {
-            title: 'Vehicules'
-        }
-    },
-    [ScreenNames.Vehicules.CREATE]: {
-        screen: CreateVehiculeScreen,
-        navigationOptions: {
-            title: 'Create a vehicule'
-        }
-    }
-},{
-    initialRouteName: ScreenNames.Vehicules.HOME,
-    defaultNavigationOptions
 })
 
 const ErrorNavigator = createStackNavigator({
@@ -117,8 +104,7 @@ const AppNavigator = createSwitchNavigator({
     [ScreenNames.Profile.HOME]: ProfileNavigator,
     [ScreenNames.Trips.HOME]: TripsNavigator,
     [ScreenNames.Errors.HOME]: ErrorNavigator,
-    astuvu: AstuvuNativeDemoScreen,
-    [ScreenNames.Vehicules.HOME]: VehiculeNavigator,
+    astuvu: AstuvuNativeDemoScreen
 }, {
     // initialRouteName: 'astuvu'
     initialRouteName: ScreenNames.BOOTSTRAP

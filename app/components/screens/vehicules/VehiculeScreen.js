@@ -3,40 +3,15 @@ import { StyleSheet, Text, View, ScrollView, Button, Alert } from 'react-native'
 import { Icon, Container, Fab, Card, CardItem, Body, H1, H2, H3 } from 'native-base'
 import { connect } from 'react-redux'
 import { NavigationActions, StackActions } from 'react-navigation'
-import { withStatusBar } from '../../hoc'
 import { logout } from '../../../actions/auth'
 import { deleteVehicule } from '../../../actions/vehicules'
 import { getVehiculeList } from '../../../actions/vehicules'
 import { ScreenNames } from '../'
 
 class VehiculeScreen extends Component {
-    static navigationOptions = ({ navigation }) => {
-        return {
-            headerRight: (
-                <Button
-                    title='Logout'
-                    onPress={navigation.getParam('logout')}
-                    color='#fff'
-                />
-            ),
-            headerLeft: (
-                <Button
-                    title='Trip'
-                    onPress={navigation.getParam('trip')}
-                    color='#fff'
-                />
-            )
-        }
-    }
-
     constructor(props) {
         super(props)
         this._getVehiculeList();
-    }
-
-    componentDidMount() {
-        this.props.navigation.setParams({ logout: this._logout })
-        this.props.navigation.setParams({ trip: this.props.goToTrip })
     }
 
     _getVehiculeList = () => {
@@ -48,16 +23,6 @@ class VehiculeScreen extends Component {
         }).catch(error => {
             console.log(error)
         })
-    }
-
-    _logout = () => {
-        this.props.logout()
-            .then(() => this.props.goToWelcome())
-            .catch(err => this._error(err))
-    }
-
-    _error = (err) => {
-        alert('Oh no! Something went wrong, looks like your stuck here (' + JSON.stringify(err) + ').')
     }
 
     _deleteVehicule = (vehiculeId) => {
@@ -150,9 +115,7 @@ const mapDispatchToProps = dispatch => ({
     logout: () => dispatch(logout()),
     deleteVehicule: (accessToken, userId, vehiculeId) => dispatch(deleteVehicule(accessToken, userId, vehiculeId)),
     getVehiculeList: (accessToken, userId) => dispatch(getVehiculeList(accessToken, userId)),
-    goToWelcome: () => dispatch(NavigationActions.navigate({ routeName: ScreenNames.SignIn.HOME })),
-    goToTrip: () => dispatch(NavigationActions.navigate({ routeName: ScreenNames.Trips.HOME })),
     goToCreateVehicule: () => dispatch(StackActions.push({ routeName: ScreenNames.Vehicules.CREATE }))
 })
 
-export default withStatusBar(connect(mapStateToProps, mapDispatchToProps)(VehiculeScreen))
+export default connect(mapStateToProps, mapDispatchToProps)(VehiculeScreen)

@@ -21,10 +21,6 @@ class MapScreen extends Component {
                     title='Profile'
                     onPress={this.props.goToProfile}
                 />
-                <Button
-                    title='Vehicule'
-                    onPress={this.props.goToVehicule}
-                />
             </View>
         )
     }
@@ -43,8 +39,7 @@ const styles = StyleSheet.create({
 const mapStateToProps = state => ({})
 
 const mapDispatchToProps = dispatch => ({
-    goToProfile: () => dispatch(NavigationActions.navigate({ routeName: ScreenNames.Profile.HOME })),
-    goToVehicule: () => dispatch(NavigationActions.navigate({ routeName: ScreenNames.Vehicules.HOME }))
+    goToProfile: () => dispatch(NavigationActions.navigate({ routeName: ScreenNames.Profile.HOME }))
 })
 
 export default withStatusBar(connect(mapStateToProps, mapDispatchToProps)(MapScreen));

@@ -10,24 +10,6 @@ import { ScreenNames } from '../'
 import VehiculesForm from "../../vehicules/VehiculesForm"
 
 class CreateVehiculeScreen extends Component {
-    static navigationOptions = ({ navigation }) => {
-        return {
-            headerRight: (
-                <ReactButton
-                    title='Logout'
-                    onPress={navigation.getParam('logout')}
-                    color='#fff'
-                />
-            ),
-            headerLeft: (
-                <ReactButton
-                    title='Vehicule'
-                    onPress={navigation.getParam('vehicule')}
-                    color='#fff'
-                />
-            )
-        }
-    }
 
     constructor(props) {
         super(props)
@@ -38,11 +20,6 @@ class CreateVehiculeScreen extends Component {
             year: '',
             color: ''
         }
-    }
-
-    componentDidMount() {
-        this.props.navigation.setParams({ logout: this._logout })
-        this.props.navigation.setParams({ vehicule: this.props.goToVehicule })
     }
 
     _onFieldChange = (field, value) => {
@@ -56,18 +33,8 @@ class CreateVehiculeScreen extends Component {
         const { credentials, user } = this.props.auth;
 
         this.props.createVehicule(credentials.accessToken, user.id, this.state)
-            .then(() => this.props.goToVehicule())
+            .then(() => this.props.goToProfile())
             .catch(err => console.log(err))
-    }
-
-    _logout = () => {
-        this.props.logout()
-            .then(() => this.props.goToWelcome())
-            .catch(err => this._error(err))
-    }
-
-    _error = (err) => {
-        alert('Oh no! Something went wrong, looks like your stuck here (' + JSON.stringify(err) + ').')
     }
 
     render() {
@@ -131,8 +98,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
     logout: () => dispatch(logout()),
     createVehicule: (accessToken, userId, vehiculeData) => dispatch(createVehicule(accessToken, userId, vehiculeData)),
-    goToWelcome: () => dispatch(NavigationActions.navigate({ routeName: ScreenNames.SignIn.HOME })),
-    goToVehicule: () => dispatch(StackActions.pop({ routeName: ScreenNames.Vehicules.HOME }))
+    goToProfile: () => dispatch(StackActions.pop({ routeName: ScreenNames.Profile.HOME }))
 })
 
 export default withStatusBar(connect(mapStateToProps, mapDispatchToProps)(CreateVehiculeScreen))

@@ -1,38 +1,17 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, ActivityIndicator,  Button as ReactButton } from 'react-native';
+import { StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
-import { NavigationActions, StackActions } from 'react-navigation';
+import { StackActions } from 'react-navigation';
 import ProfileComponent from '../../profile/ProfileComponent';
-import { withStatusBar } from '../../hoc';
 import { ScreenNames } from '../'
 
 class MyProfileScreen extends Component {
-    static navigationOptions = ({ navigation }) => {
-        return {
-            headerLeft: (
-                <ReactButton
-                    title='< Back'
-                    onPress={navigation.getParam('back')}
-                    color='#fff'
-                />
-            )
-        }
-    }
 
     constructor(props) {
         super(props);
         this.state = {
             user: props.auth.user,
         };
-    }
-    
-    _back = () => {
-        this.props.goMapScreen();
-
-    }
-
-    componentWillMount() {
-        this.props.navigation.setParams({ back: this._back })
     }
 
     componentWillReceiveProps(nextProps) {
@@ -63,9 +42,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-    goToUpdateProfileScreen: () => dispatch(StackActions.push({ routeName: ScreenNames.Profile.UPDATE })),
-    goMapScreen: () => dispatch(NavigationActions.navigate({ routeName: ScreenNames.Trips.HOME })),
-
+    goToUpdateProfileScreen: () => dispatch(StackActions.push({ routeName: ScreenNames.Profile.UPDATE }))
 });
 
-export default withStatusBar(connect(mapStateToProps, mapDispatchToProps)(MyProfileScreen));
+export default connect(mapStateToProps, mapDispatchToProps)(MyProfileScreen);
