@@ -11,7 +11,7 @@ import GenericErrorScreen from './components/screens/error/GenericErrorScreen'
 import AstuvuNativeDemoScreen from './components/screens/AstuvuNativeDemoScreen'
 import CreateVehiculeScreen from './components/screens/vehicules/CreateVehiculeScreen'
 import UpdateProfileScreen from './components/screens/profile/UpdateProfileScreen';
-import ProfileTab from './components/screens/profile/ProfileTab';
+import ProfileTabScreen from './components/screens/profile/ProfileTabScreen';
 
 const defaultNavigationOptions = {
     headerStyle: {
@@ -51,7 +51,7 @@ const SignUpNavigator = createStackNavigator({
 
 const ProfileNavigator = createStackNavigator({
     [ScreenNames.Profile.HOME]: {
-        screen: ProfileTab,
+        screen: ProfileTabScreen,
         navigationOptions: {
             title: 'Profile',
         },

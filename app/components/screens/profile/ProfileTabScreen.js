@@ -8,7 +8,7 @@ import VehiculeScreen from '../vehicules/VehiculeScreen'
 import { withStatusBar } from '../../hoc';
 import { ScreenNames } from '../'
 
-class ProfileTab extends Component {
+class ProfileTabScreen extends Component {
     static navigationOptions = ({ navigation }) => {
         return {
             headerLeft: (
@@ -56,4 +56,4 @@ const mapDispatchToProps = dispatch => ({
     goMapScreen: () => dispatch(NavigationActions.navigate({ routeName: ScreenNames.Trips.HOME }))
 });
 
-export default withStatusBar(connect(mapStateToProps, mapDispatchToProps)(ProfileTab));
+export default withStatusBar(connect(mapStateToProps, mapDispatchToProps)(ProfileTabScreen));

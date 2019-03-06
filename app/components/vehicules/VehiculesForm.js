@@ -74,11 +74,16 @@ class VehiculesForm extends Component {
                             placeholder="Color"
                             selectedValue={this.state.color}
                             onValueChange={value => this._onFieldChange('color', value)}>
-                            <Picker.Item label="White" value="White" />
                             <Picker.Item label="Black" value="Black" />
-                            <Picker.Item label="Red" value="Red" />
                             <Picker.Item label="Blue" value="Blue" />
+                            <Picker.Item label="Brown" value="Brown" />
+                            <Picker.Item label="Gray" value="Gray" />
                             <Picker.Item label="Green" value="Green" />
+                            <Picker.Item label="Orange" value="Orange" />
+                            <Picker.Item label="Red" value="Red" />
+                            <Picker.Item label="Silver" value="Silver" />
+                            <Picker.Item label="White" value="White" />
+                            <Picker.Item label="Yellow" value="Yellow" />
                         </Picker>
                     </View>
                 </Item>

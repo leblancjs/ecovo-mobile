@@ -201,7 +201,6 @@ export const deleteVehicule = (accessToken, userId, vehiculeId) => {
                 return Promise.resolve(response)
             })
             .catch(error => {
-                console.log(error)
                 dispatch(deleteVehiculeError(error))
                 return Promise.reject(error)
             })

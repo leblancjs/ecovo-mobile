@@ -3,7 +3,7 @@ import {
     DELETE_VEHICULE_ERROR, DELETE_VEHICULE_REQUEST, DELETE_VEHICULE_SUCCESS,
     GET_VEHICULE_ERROR, GET_VEHICULE_REQUEST, GET_VEHICULE_SUCCESS,
     GET_VEHICULE_LIST_ERROR, GET_VEHICULE_LIST_REQUEST, GET_VEHICULE_LIST_SUCCESS
-} from '../../actions/vehicules'
+} from '../actions/vehicules'
 
 const initialState = {
     isFetching: false,
