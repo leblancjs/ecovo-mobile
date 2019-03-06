@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { StyleSheet } from 'react-native'
-import { View, Form, Item, Input, DatePicker, Picker, Right, Icon } from 'native-base'
+import { View, Form, Item, Input, DatePicker, Picker, Right, Icon, Text } from 'native-base'
 
 class PersonalInfoForm extends Component {
     constructor(props) {
@@ -15,7 +15,10 @@ class PersonalInfoForm extends Component {
             firstName: props.user ? props.user.firstName : '',
             lastName: props.user ? props.user.lastName : '',
             dateOfBirth: dateOfBirth,
-            gender: props.user ? props.user.gender : ''
+            gender: props.user ? props.user.gender : '',
+            firstNameError: null,
+            lastNameError: null,
+            dateOfBirthError: null,
         }
     }
 
@@ -25,9 +28,52 @@ class PersonalInfoForm extends Component {
             [field]: value
         })
 
-        if (this.props.onFieldChange) {
+        var fieldIsValid = false
+
+        switch(field) {
+            case 'firstName':
+                if (value.trim() === "") {
+                    this.setState(() => ({firstNameError: "First name required."}));
+                } else {
+                    fieldIsValid = true
+                    this.setState(() => ({firstNameError: null}));
+                }
+                break;
+            case 'lastName':
+                if (value.trim() === "") {
+                    this.setState(() => ({lastNameError: "Last name required."}));
+                } else {
+                    fieldIsValid = true
+                    this.setState(() => ({lastNameError: null}));
+                }
+                break;
+            case 'dateOfBirth': {
+                if (this._getAge(value) < 18) {
+                    this.setState(() => ({dateOfBirthError: "Must be 18 and older.", dateOfBirth: null}));
+                } else {
+                    fieldIsValid = true
+                    this.setState(() => ({dateOfBirthError: null}));
+                }
+                break;
+            }
+            default:
+                break;
+        }
+
+        if (fieldIsValid && this.props.onFieldChange) {
             this.props.onFieldChange(field, value)
         }
+    }
+
+    _getAge(dateOfBirth) {
+        var today = new Date();
+        var birthDate = new Date(dateOfBirth);
+        var age = today.getFullYear() - birthDate.getFullYear();
+        var m = today.getMonth() - birthDate.getMonth();
+        if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+            age--;
+        }    
+        return age;
     }
 
     render() {
@@ -39,12 +85,22 @@ class PersonalInfoForm extends Component {
                         value={this.state.firstName}
                         onChangeText={value => this._onFieldChange('firstName', value)} />
                 </Item>
+                {!!this.state.firstNameError && (
+                    <Item style={styles.item}>
+                        <Text style={styles.errorMsg}>{this.state.firstNameError}</Text>
+                    </Item>
+                )}
                 <Item style={styles.item}>
                     <Input style={styles.input}
                         placeholder='Last Name'
                         value={this.state.lastName}
                         onChangeText={value => this._onFieldChange('lastName', value)} />
                 </Item>
+                {!!this.state.lastNameError && (
+                    <Item style={styles.item}>
+                        <Text style={styles.errorMsg}>{this.state.lastNameError}</Text>
+                    </Item>
+                )}
                 <Item style={styles.item} picker stackedLabel>
                     <View style={styles.datePickerContainer}>
                         <DatePicker
@@ -64,6 +120,11 @@ class PersonalInfoForm extends Component {
                         </Right>
                     </View>
                 </Item>
+                {!!this.state.dateOfBirthError && (
+                    <Item style={styles.item}>
+                        <Text style={styles.errorMsg}>{this.state.dateOfBirthError}</Text>
+                    </Item>
+                )}
                 <Item style={styles.lastItem} picker>
                     <View style={styles.genderPickerContainer}>
                         <Picker style={styles.genderPicker}
@@ -143,6 +204,9 @@ const styles = StyleSheet.create({
     },
     datePickerIcon: {
         opacity: 0.8
+    },
+    errorMsg: {
+        color: '#FF0000'
     }
 })
 

@@ -1,7 +1,7 @@
 import { NavigationActions } from 'react-navigation'
 import { ScreenNames } from '../components/screens'
 import { getUserAuth } from '../storage'
-import { login, loginSuccess } from './auth'
+import { login, loginSuccess, logout } from './auth'
 import { getCurrentUserInfo } from './user'
 
 const _redirect = (dispatch, accessToken) => {
@@ -74,7 +74,13 @@ export const bootstrap = () => {
                 if (!credentials) {
                     return _login(dispatch)
                 } else {
-                    return _restoreSession(dispatch, credentials)
+                    return _restoreSession(dispatch, credentials).catch(error => {
+                        if(error.code == 401 || error.message == "unauthorized"){
+                            dispatch(logout()).then(() => {
+                                return _login(dispatch)
+                            });
+                        }
+                    })
                 }
             })
     }

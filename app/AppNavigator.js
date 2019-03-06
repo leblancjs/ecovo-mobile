@@ -4,7 +4,6 @@ import { reduxifyNavigator, createReactNavigationReduxMiddleware } from 'react-n
 import { ScreenNames } from './components/screens'
 import BootstrapScreen from './components/screens/BootstrapScreen'
 import SignInScreen from './components/screens/signin/SignInScreen'
-import ProfileScreen from './components/screens/profile/ProfileScreen'
 import AddPersonalInfoScreen from './components/screens/signup/AddPersonalInfoScreen'
 import AddPreferencesScreen from './components/screens/signup/AddPreferencesScreen'
 import MapScreen from './components/screens/trips/MapScreen'
@@ -12,6 +11,8 @@ import GenericErrorScreen from './components/screens/error/GenericErrorScreen'
 import AstuvuNativeDemoScreen from './components/screens/AstuvuNativeDemoScreen'
 import VehiculeScreen from './components/screens/vehicules/VehiculeScreen'
 import CreateVehiculeScreen from './components/screens/vehicules/CreateVehiculeScreen'
+import UpdateProfileScreen from './components/screens/profile/UpdateProfileScreen';
+import MyProfileScreen from './components/screens/profile/MyProfileScreen';
 
 const defaultNavigationOptions = {
     headerStyle: {
@@ -51,14 +52,21 @@ const SignUpNavigator = createStackNavigator({
 
 const ProfileNavigator = createStackNavigator({
     [ScreenNames.Profile.HOME]: {
-        screen: ProfileScreen,
+        screen: MyProfileScreen,
         navigationOptions: {
-            title: 'Profile'
+            title: 'Profile',
+        },
+        initialRouteName: ScreenNames.Trips.MAP
+    },
+    [ScreenNames.Profile.UPDATE]: {
+        screen: UpdateProfileScreen,
+        navigationOptions: {
+            title: 'Update Profile',
         }
     }
 }, {
+    defaultNavigationOptions,
     initialRouteName: ScreenNames.Profile.HOME,
-    defaultNavigationOptions
 })
 
 const TripsNavigator = createStackNavigator({
