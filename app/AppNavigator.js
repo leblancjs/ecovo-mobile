@@ -11,6 +11,7 @@ import MapScreen from './components/screens/trips/MapScreen'
 import GenericErrorScreen from './components/screens/error/GenericErrorScreen'
 import AstuvuNativeDemoScreen from './components/screens/AstuvuNativeDemoScreen'
 import VehiculeScreen from './components/screens/vehicules/VehiculeScreen'
+import CreateVehiculeScreen from './components/screens/vehicules/CreateVehiculeScreen'
 
 const defaultNavigationOptions = {
     headerStyle: {
@@ -72,6 +73,12 @@ const VehiculeNavigator = createStackNavigator({
         screen: VehiculeScreen,
         navigationOptions: {
             title: 'Vehicules'
+        }
+    },
+    [ScreenNames.Vehicules.CREATE]: {
+        screen: CreateVehiculeScreen,
+        navigationOptions: {
+            title: 'Create a vehicule'
         }
     }
 },{

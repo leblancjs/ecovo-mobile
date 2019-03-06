@@ -16,7 +16,8 @@ export const ScreenNames = {
         MAP: 'map'
     },
     Vehicules: {
-        HOME: 'vehicule'
+        HOME: 'vehicule',
+        CREATE: 'create_vehicule'
     },
     Errors: {
         HOME: 'errors',

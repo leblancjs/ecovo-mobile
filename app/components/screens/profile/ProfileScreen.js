@@ -15,6 +15,13 @@ class ProfileScreen extends Component {
                     onPress={navigation.getParam('logout')}
                     color='#fff'
                 />
+            ),
+            headerLeft: (
+                <Button
+                    title='Trip'
+                    onPress={navigation.getParam('trip')}
+                    color='#fff'
+                />
             )
         }
     }
@@ -25,6 +32,7 @@ class ProfileScreen extends Component {
 
     componentDidMount() {
         this.props.navigation.setParams({ logout: this._logout })
+        this.props.navigation.setParams({ trip: this.props.goToTrip })
     }
 
     _logout = () => {
@@ -63,7 +71,8 @@ const mapStateToProps = state => ({})
 
 const mapDispatchToProps = dispatch => ({
     logout: () => dispatch(logout()),
-    goToWelcome: () => dispatch(NavigationActions.navigate({ routeName: ScreenNames.SignIn.HOME }))
+    goToWelcome: () => dispatch(NavigationActions.navigate({ routeName: ScreenNames.SignIn.HOME })),
+    goToTrip: () => dispatch(NavigationActions.navigate({ routeName: ScreenNames.Trips.HOME }))
 })
 
 export default withStatusBar(connect(mapStateToProps, mapDispatchToProps)(ProfileScreen))

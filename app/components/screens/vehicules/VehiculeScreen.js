@@ -1,11 +1,12 @@
 import React, { Component } from 'react'
-import { StyleSheet, Text, View } from 'react-native'
-import { Input, Icon, Container, Form, Button, Item, Content, DatePicker, Picker, Right } from 'native-base'
+import { StyleSheet, Text, View, ScrollView, Button, Alert } from 'react-native'
+import { Icon, Container, Fab, Card, CardItem, Body, H1, H2, H3 } from 'native-base'
 import { connect } from 'react-redux'
-import moment from 'moment'
 import { NavigationActions, StackActions } from 'react-navigation'
 import { withStatusBar } from '../../hoc'
 import { logout } from '../../../actions/auth'
+import { deleteVehicule } from '../../../actions/vehicules'
+import { getVehiculeList } from '../../../actions/vehicules'
 import { ScreenNames } from '../'
 
 class VehiculeScreen extends Component {
@@ -30,11 +31,23 @@ class VehiculeScreen extends Component {
 
     constructor(props) {
         super(props)
+        this._getVehiculeList();
     }
 
     componentDidMount() {
         this.props.navigation.setParams({ logout: this._logout })
         this.props.navigation.setParams({ trip: this.props.goToTrip })
+    }
+
+    _getVehiculeList = () => {
+        const { credentials, user } = this.props.auth;
+
+        this.props.getVehiculeList(credentials.accessToken, user.id).then(v => {
+            console.log("Vehicule Screen")
+            console.log(v)
+        }).catch(error => {
+            console.log(error)
+        })
     }
 
     _logout = () => {
@@ -47,68 +60,61 @@ class VehiculeScreen extends Component {
         alert('Oh no! Something went wrong, looks like your stuck here (' + JSON.stringify(err) + ').')
     }
 
+    _deleteVehicule = (vehiculeId) => {
+        const { credentials, user } = this.props.auth;
+
+        Alert.alert(
+            'Vehocile delete',
+            'Are you sure to delete this vehicule?',
+            [
+                { text: 'Yes', onPress: () => this.props.deleteVehicule(credentials.accessToken, user.id, vehiculeId) },
+                {
+                    text: 'No',
+                    onPress: () => console.log('Cancel Pressed'),
+                    style: 'cancel',
+                }
+            ],
+            { cancelable: false },
+        );
+    }
+
     render() {
+        const { vehicules } = this.props.vehicules
         return (
             <Container style={styles.container}>
-                <Text style={styles.title}>Add a vehicule</Text>
-                <Content>
-                    <Form>
-                        <Item style={styles.item}>
-                            <Input style={styles.text}
-                                value=""
-                                onChangeText={(make) => console.log("Make : " +make)}
-                                placeholder="Make" />
-                        </Item>
-                        <Item style={styles.item}>
-                            <Input style={styles.text}
-                                value=""
-                                onChangeText={(model) => console.log("model : " +model)}
-                                placeholder="Model" />
-                        </Item>
-                        <Item style={styles.item}>
-                            <DatePicker
-                                defaultDate=""
-                                locale={"en"}
-                                timeZoneOffsetInMinutes={undefined}
-                                modalTransparent={false}
-                                animationType={"fade"}
-                                androidMode={"default"}
-                                placeHolderText="Year"
-                                onDateChange={(year) => console.log("Year : " +year)}
-                                disabled={false}
-                                formatChosenDate={date => {return moment(date).format('YYYY');}}
-                                style={styles.text} />
-                            <Right>
-                                <Icon name='calendar' />
-                            </Right>
-                        </Item>
-                        <Item style={styles.item}>
-                            <Picker
-                                mode="dropdown"
-                                iosIcon={<Icon name="arrow-down" />}
-                                placeholder="Color"
-                                selectedValue=""
-                                onValueChange={(color) => console.log("Color : "+ color)}
-                            >
-                                <Picker.Item label="White" value="White" />
-                                <Picker.Item label="Black" value="Black" />
-                                <Picker.Item label="Red" value="Red" />
-                                <Picker.Item label="Blue" value="Blue" />
-                                <Picker.Item label="Green" value="Green" />
-                            </Picker>
-                        </Item>
-                    </Form>
-                </Content>
-                <View style={styles.saveBtn}>
-                    {
-                        //buttonVisible &&
-                        <Button transparent
-                            //onPress={this._createUser}
-                        >
-                            <Text style={styles.textGreen}>Save</Text>
-                            <Icon style={styles.textGreen} name="ios-arrow-forward" />
-                        </Button>
-                    }
+                <View>
+                    <ScrollView>
+                        {vehicules.map((v, i) => {
+                            return (
+                                <Card key={i}>
+                                    <CardItem>
+                                        <Body>
+                                            <View style={styles.titleCard}>
+                                                <H1>{v.make.toUpperCase()}</H1>
+                                                <H2> - {v.model}</H2>
+                                            </View>
+                                            <H3>{v.year}</H3>
+                                            <Text>{v.color.toUpperCase()}</Text>
+                                            <View style={styles.deletebtn}>
+                                                <Button title='DELETE' color='#2bb267' onPress={() => this._deleteVehicule(v.id)} />
+                                            </View>
+                                        </Body>
+                                    </CardItem>
+                                </Card>
+                            )
+                        })}
+                    </ScrollView>
+                </View>
+                <View style={styles.fabView}>
+                    <Fab
+                        active={true}
+                        direction="up"
+                        containerStyle={{}}
+                        style={styles.fab}
+                        position="bottomRight"
+                        onPress={this.props.goToCreateVehicule}>
+                        <Icon name="md-add" />
+                    </Fab>
                 </View>
             </Container>
         )
@@ -117,37 +123,36 @@ class VehiculeScreen extends Component {
 
 const styles = StyleSheet.create({
     container: {
-      flex: 1
+        flex: 1
     },
-    title: {
-        fontSize: 30,
-        textAlign: 'left',
-        margin: 20,
+    titleCard: {
+        flex: 1,
+        flexDirection: 'row'
     },
-    item: {
-        margin: 15
-    },
-    text: {
-        fontSize: 15,
-        opacity: 1
-    },
-    saveBtn: {
+    deletebtn: {
         justifyContent: 'flex-end',
         alignSelf: 'flex-end',
-        marginBottom: 2
     },
-    textGreen: {
-        fontSize: 20,
-        color: '#2BB267'
+    fabView: {
+        flex: 1
     },
+    fab: {
+        backgroundColor: '#2BB267'
+    }
 })
 
-const mapStateToProps = state => ({})
+const mapStateToProps = state => ({
+    auth: state.auth,
+    vehicules: state.ui.vehicules
+})
 
 const mapDispatchToProps = dispatch => ({
     logout: () => dispatch(logout()),
+    deleteVehicule: (accessToken, userId, vehiculeId) => dispatch(deleteVehicule(accessToken, userId, vehiculeId)),
+    getVehiculeList: (accessToken, userId) => dispatch(getVehiculeList(accessToken, userId)),
     goToWelcome: () => dispatch(NavigationActions.navigate({ routeName: ScreenNames.SignIn.HOME })),
-    goToTrip: () => dispatch(NavigationActions.navigate({ routeName: ScreenNames.Trips.HOME }))
+    goToTrip: () => dispatch(NavigationActions.navigate({ routeName: ScreenNames.Trips.HOME })),
+    goToCreateVehicule: () => dispatch(StackActions.push({ routeName: ScreenNames.Vehicules.CREATE }))
 })
 
 export default withStatusBar(connect(mapStateToProps, mapDispatchToProps)(VehiculeScreen))
