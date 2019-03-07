@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { View, ScrollView } from 'react-native'
-import VehiculeItemList from './VehiculeItemList'
+import VehiculeListItem from './VehiculeListItem'
 
 class VehiculeList extends Component {
     constructor(props) {
@@ -17,7 +17,7 @@ class VehiculeList extends Component {
                     {doMap &&
                         vehicules.map((v, i) => {
                             return (
-                                <VehiculeItemList key={i} vehicule={v} />
+                                <VehiculeListItem key={i} vehicule={v} />
                             )
                         })}
                 </ScrollView>

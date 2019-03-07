@@ -5,7 +5,7 @@ import { Card, CardItem, Body, H1, H2, H3 } from 'native-base'
 import { connect } from 'react-redux'
 import { deleteVehicule } from '../../actions/vehicules'
 
-class VehiculeItemList extends Component {
+class VehiculeListItem extends Component {
     constructor(props) {
         super(props)
     }
@@ -61,7 +61,7 @@ const styles = StyleSheet.create({
     }
 })
 
-VehiculeItemList.propTypes = {
+VehiculeListItem.propTypes = {
     vehicule: PropTypes.object
 }
 
@@ -72,4 +72,4 @@ const mapDispatchToProps = dispatch => ({
     deleteVehicule: (accessToken, userId, vehiculeId) => dispatch(deleteVehicule(accessToken, userId, vehiculeId))
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(VehiculeItemList)
+export default connect(mapStateToProps, mapDispatchToProps)(VehiculeListItem)
