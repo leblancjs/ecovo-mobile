@@ -66,6 +66,7 @@ VehiculeListItem.propTypes = {
 }
 
 const mapStateToProps = state => ({
+    auth: state.auth
 })
 
 const mapDispatchToProps = dispatch => ({
