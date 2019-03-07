@@ -9,8 +9,9 @@ import AddPreferencesScreen from './components/screens/signup/AddPreferencesScre
 import MapScreen from './components/screens/trips/MapScreen'
 import GenericErrorScreen from './components/screens/error/GenericErrorScreen'
 import AstuvuNativeDemoScreen from './components/screens/AstuvuNativeDemoScreen'
+import CreateVehiculeScreen from './components/screens/vehicules/CreateVehiculeScreen'
 import UpdateProfileScreen from './components/screens/profile/UpdateProfileScreen';
-import MyProfileScreen from './components/screens/profile/MyProfileScreen';
+import ProfileTabScreen from './components/screens/profile/ProfileTabScreen';
 
 const defaultNavigationOptions = {
     headerStyle: {
@@ -50,7 +51,7 @@ const SignUpNavigator = createStackNavigator({
 
 const ProfileNavigator = createStackNavigator({
     [ScreenNames.Profile.HOME]: {
-        screen: MyProfileScreen,
+        screen: ProfileTabScreen,
         navigationOptions: {
             title: 'Profile',
         },
@@ -60,6 +61,12 @@ const ProfileNavigator = createStackNavigator({
         screen: UpdateProfileScreen,
         navigationOptions: {
             title: 'Update Profile',
+        }
+    },
+    [ScreenNames.Vehicules.CREATE]: {
+        screen: CreateVehiculeScreen,
+        navigationOptions: {
+            title: 'Create a vehicule'
         }
     }
 }, {

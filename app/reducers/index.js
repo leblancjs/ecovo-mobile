@@ -1,10 +1,10 @@
-import { combineReducers } from 'redux';
-import ui from './ui';
-import navigation from './navigation';
-import auth from './auth';
+import { combineReducers } from 'redux'
+import auth from './auth'
+import navigation from './navigation'
+import vehicules from './vehicules'
 
 export default combineReducers({
-    ui,
+    auth,
     navigation,
-    auth
-});
+    vehicules
+})
