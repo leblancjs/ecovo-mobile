@@ -9,7 +9,7 @@ class VehiculeList extends Component {
     }
 
     render() {
-        const { vehicules } = this.props.vehicules
+        const { vehicules } = this.props
         let doMap = vehicules != undefined && vehicules.length > 0
         return (
             <View>
