@@ -14,7 +14,8 @@ export const ScreenNames = {
     },
     Trips: {
         HOME: 'trips',
-        MAP: 'map'
+        MAP: 'map',
+        RESULTS: 'tripResults',
     },
     Vehicules: {
         HOME: 'vehicule',
