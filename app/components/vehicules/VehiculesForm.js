@@ -13,7 +13,8 @@ class VehiculesForm extends Component {
             make: props.vehicule ? props.vehicule.make : '',
             model: props.vehicule ? props.vehicule.model : '',
             year: props.vehicule ? props.vehicule.year : '',
-            color: props.vehicule ? props.vehicule.color : ''
+            color: props.vehicule ? props.vehicule.color : '',
+            seats: props.vehicule ? props.vehicule.seats : 1,
         }
     }
 
@@ -34,6 +35,11 @@ class VehiculesForm extends Component {
 
         for (let i = moment().year(); i >= 1950; i--) {
             yearItem.push(<Picker.Item key={i} label={i} value={i} />)
+        }
+
+        let seatsItem = [];
+        for (let i = 1; i <= 8; i++){
+            seatsItem.push(<Picker.Item key={i} label={i} value={i} />)
         }
 
         return (
@@ -61,6 +67,20 @@ class VehiculesForm extends Component {
                             selectedValue={this.state.year}
                             onValueChange={value => this._onFieldChange('year', value)}>
                             {yearItem}
+                        </Picker>
+                    </View>
+                </Item>
+                <Item style={styles.item} picker>
+                    <View style={styles.pickerContainer}>
+                        <Picker
+                            style={styles.picker}
+                            textStyle={styles.pickerText}
+                            mode="dropdown"
+                            iosIcon={<Icon name="arrow-down" />}
+                            placeholder="Seats"
+                            selectedValue={this.state.seats}
+                            onValueChange={value => this._onFieldChange('seats', value)}>
+                            {seatsItem}
                         </Picker>
                     </View>
                 </Item>

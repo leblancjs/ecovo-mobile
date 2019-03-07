@@ -18,6 +18,7 @@ const initialState = {
         model: '',
         color: '',
         photo: '',
+        seats: 1,
         accessories: []
     }
 }

@@ -18,7 +18,8 @@ class CreateVehiculeScreen extends Component {
             make: '',
             model: '',
             year: '',
-            color: ''
+            color: '',
+            seats: 1
         }
     }
 
