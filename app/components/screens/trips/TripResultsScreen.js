@@ -2,10 +2,11 @@ import React, { Component } from 'react'
 import { StyleSheet, View, Image, Button, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { connect } from 'react-redux';
 import { withStatusBar } from '../../hoc';
-import { Container, Header, Content, Item, Input, Icon, Text } from 'native-base';
-
+import TripCardCarousel from '../../astuvu-native/TripCardCarousel';
 
 class TripResultsScreen extends Component {
+    items = [{ title: 'test' }, { title: "HGello" }];
+
     constructor(props) {
         super(props);
         this.state = {
@@ -23,9 +24,7 @@ class TripResultsScreen extends Component {
     render() {
         return (
             <View style={styles.container}>
-                <Text>Loading Results</Text>
-
-                <ActivityIndicator size="large" color="#2bb267" />
+                <TripCardCarousel items={this.items}></TripCardCarousel>
             </View>
 
         );
