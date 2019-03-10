@@ -1,13 +1,16 @@
 import React, { Component } from 'react'
-import { StyleSheet, View, Image, Button, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, Image, TouchableOpacity, PermissionsAndroid, Platform } from 'react-native';
 import { connect } from 'react-redux';
 import { NavigationActions, StackActions } from 'react-navigation';
 import { ScreenNames } from '../';
-import MapView from 'react-native-maps';
-import { Container, Header, Content, Item, Input, Icon, Text } from 'native-base';
+import Marker from 'react-native-maps';
+import { Container, Icon, Text } from 'native-base';
 import SlidingUpPanel from 'rn-sliding-up-panel';
 import SearchTripComponent from './SearchTripComponent';
 import { withStatusBar } from '../../hoc';
+import isEqual from 'lodash/isEqual';
+import EcovoMapView from '../../astuvu-native/EcovoMapView';
+
 class MapScreen extends Component {
     static navigationOptions = {
         header: null
@@ -18,35 +21,29 @@ class MapScreen extends Component {
             user: props.auth.user,
         };
     }
+
     _slideDown = () => {
         this._panel.hide();
     }
     _goToMyProfile = () => {
         this.props.goToProfile();
     }
-    _searchTrips = (params) => { 
+    _searchTrips = (params) => {
         this.props.goToResults();
     }
+
     render() {
         return (
             <Container style={styles.container}>
 
-                <MapView
-                    style={styles.map}
-                    initialRegion={{
-                        latitude: 37.78825,
-                        longitude: -122.4324,
-                        latitudeDelta: 0.0922,
-                        longitudeDelta: 0.0421,
-                    }}
-                />
+                <EcovoMapView></EcovoMapView>
                 <View style={styles.menuWrapper}>
-                    <TouchableOpacity style={styles.touchableIcon}  onPress={this._goToMyProfile}>
+                    <TouchableOpacity style={styles.touchableIcon} onPress={this._goToMyProfile}>
                         <Image style={styles.profile} source={{ uri: this.state.user.photo }} />
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.touchableIcon} onPress={this._goToMyProfile}>
                         <Container style={styles.iconTripsWrapper} >
-                        <Icon style={styles.iconTrips} type="FontAwesome5" name="map-marked"></Icon>
+                            <Icon style={styles.iconTrips} type="FontAwesome5" name="map-marked"></Icon>
                         </Container>
                     </TouchableOpacity>
                 </View>
@@ -100,7 +97,7 @@ const styles = StyleSheet.create({
         width: 40,
         height: 40,
         borderRadius: 20,
-        justifyContent:'center'
+        justifyContent: 'center'
     },
     iconTrips: {
         fontSize: 18,
