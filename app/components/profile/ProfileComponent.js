@@ -25,13 +25,6 @@ class ProfileComponent extends Component {
         }
     }
 
-    componentWillReceiveProps(props) {
-        this.setState({
-            props
-        })
-        this.render();
-      }
-
     _calculateAge = (birthday) => {
         if (birthday != "") {
             birthday = new Date(birthday);

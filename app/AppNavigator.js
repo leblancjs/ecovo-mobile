@@ -12,6 +12,7 @@ import AstuvuNativeDemoScreen from './components/screens/AstuvuNativeDemoScreen'
 import CreateVehiculeScreen from './components/screens/vehicules/CreateVehiculeScreen'
 import UpdateProfileScreen from './components/screens/profile/UpdateProfileScreen';
 import ProfileTabScreen from './components/screens/profile/ProfileTabScreen';
+import TripResultsScreen from './components/screens/trips/TripResultsScreen';
 
 const defaultNavigationOptions = {
     headerStyle: {
@@ -75,9 +76,10 @@ const ProfileNavigator = createStackNavigator({
 })
 
 const TripsNavigator = createStackNavigator({
-    [ScreenNames.Trips.MAP]: MapScreen
+    [ScreenNames.Trips.MAP]: MapScreen,
+    [ScreenNames.Trips.RESULTS]: TripResultsScreen,
 }, {
-    headerMode: 'none',
+    defaultNavigationOptions,
     initialRouteName: ScreenNames.Trips.MAP
 })
 
