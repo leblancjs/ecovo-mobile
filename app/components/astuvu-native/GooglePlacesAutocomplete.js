@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { StyleSheet } from 'react-native';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import PropTypes from 'prop-types';
-import { googleMapsApiKey } from '../../app.json'
+import { googleMapsApiKey } from '../../../app.json'
 
 class GooglePlacesInput extends Component {
     constructor(props) {
