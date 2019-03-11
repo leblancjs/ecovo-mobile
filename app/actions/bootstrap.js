@@ -17,7 +17,7 @@ const _redirect = (dispatch, accessToken) => {
                     screenName = ScreenNames.SignUp.PREFERENCES
                     break
                 case 'done':
-                    screenName = ScreenNames.Trips.HOME
+                    screenName = ScreenNames.Trips.RESULTS // TODO change back to HOME
                     break
                 default:
                     screenName = ScreenNames.Errors.GENERIC

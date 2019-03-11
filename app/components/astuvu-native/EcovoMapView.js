@@ -55,7 +55,7 @@ class EcovoMapView extends React.Component {
                     };
                     if (this.map !== undefined) {
                         this.setRegion(region);
-                     }
+                    }
                 },
                 (error) => {
                 }
@@ -100,7 +100,7 @@ class EcovoMapView extends React.Component {
                 onRegionChangeComplete={this.onRegionChangeComplete}
                 style={StyleSheet.absoluteFill}
                 textStyle={{ color: '#bc8b00' }}
-                containerStyle={{ backgroundColor: 'white', borderColor: '#BC8B00' }}>
+                containerStyle={{ backgroundColor: 'white', borderColor: '#BC8B00', zIndex: -1 }}>
 
                 {children && children || null}
 
