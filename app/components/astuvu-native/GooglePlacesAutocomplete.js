@@ -9,7 +9,7 @@ class GooglePlacesInput extends Component {
     }
 
 
-    _onClosePressed = (data, details) => {
+    _onSearchResults = (data, details) => {
         if (this.props.onSearchResult) {
             this.props.onSearchResult(data, details);
         }
