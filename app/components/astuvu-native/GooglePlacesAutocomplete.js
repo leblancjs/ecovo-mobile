@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { StyleSheet } from 'react-native';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import PropTypes from 'prop-types';
+import { googleMapsApiKey } from '../../app.json'
 
 class GooglePlacesInput extends Component {
     constructor(props) {
@@ -28,7 +29,7 @@ class GooglePlacesInput extends Component {
                 renderDescription={row => row.description} // custom description render
                 onPress={this._onSearchResults}
                 query={{
-                    key: 'AIzaSyAeJwTf3l8i7YPyXY5VnDGWkapiPpGqRlE',
+                    key: googleMapsApiKey,
                     language: 'en', // language of the results
                 }}
 
