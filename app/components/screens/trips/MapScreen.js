@@ -34,7 +34,7 @@ class MapScreen extends Component {
         return (
             <Container style={styles.container}>
 
-                <EcovoMapView></EcovoMapView>
+                <EcovoMapView />
                 <View style={styles.menuWrapper}>
                     <TouchableOpacity style={styles.touchableIcon} onPress={this._goToMyProfile}>
                         <Image style={styles.profile} source={{ uri: this.state.user.photo }} />
@@ -151,7 +151,7 @@ const mapStateToProps = state => ({
 });
 const mapDispatchToProps = dispatch => ({
     goToProfile: () => dispatch(NavigationActions.navigate({ routeName: ScreenNames.Profile.HOME })),
-    goToResults: () => dispatch(StackActions.push({ routeName: ScreenNames.Trips.RESULTS })),
+    goToResults: () => dispatch(StackActions.push({ routeName: ScreenNames.Trips.DETAILS })),
 
 })
 

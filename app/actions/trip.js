@@ -159,3 +159,59 @@ export const deleteTrip = (accessToken, tripId) => {
         })
     }
 }
+
+// Get trip's list (search result)
+export const GET_TRIP_LIST_REQUEST = 'GET_TRIP_LIST_REQUEST'
+const getTripListRequest = () => ({
+    type: GET_TRIP_LIST_REQUEST
+})
+
+export const GET_TRIP_LIST_SUCCESS = 'GET_TRIP_LIST_SUCCESS'
+const getTripListSuccess = (trip) => ({
+    type: GET_TRIP_LIST_SUCCESS,
+    trip: {
+        ...trip
+    }
+})
+
+export const GET_TRIP_LIST_ERROR = 'GET_TRIP_LIST_ERROR'
+const getTripListError = (error) => ({
+    type: GET_TRIP_LIST_ERROR,
+    error: {
+        ...error
+    }
+})
+
+export const getTripList = (accessToken) => {
+    return dispatch => {
+        dispatch(getTripListRequest())
+
+        return fetch(fetchURL + '/trips', 
+            {
+                method: 'GET',
+                headers: {
+                    'Authorization': 'Bearer ' + accessToken
+                }
+            }
+        )
+        .then(response => {
+            console.log("RESULT")
+            console.log(response)
+            return response.json().then(data => {
+                return response.ok ?
+                    Promise.resolve(data) :
+                    Promise.reject(data)
+            })
+        })
+        .then(trips => {
+            dispatch(getTripListSuccess(trips))
+            return Promise.resolve(trips)
+        })
+        .catch(error => { 
+            console.log("ERROR");
+            console.log(error);
+            dispatch(getTripListError(error))
+            return Promise.reject(error)
+        })
+    }
+}
