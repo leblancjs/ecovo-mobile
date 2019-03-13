@@ -9,6 +9,7 @@
     "android": "react-native run-android"
   },
   "dependencies": {
+    "ably-react-native": "^1.1.1",
     "fbjs": "^1.0.0",
     "hoist-non-react-statics": "^3.3.0",
     "ionicons": "^4.5.5",
