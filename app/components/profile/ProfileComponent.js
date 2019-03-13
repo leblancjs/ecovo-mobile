@@ -34,7 +34,7 @@ class ProfileComponent extends Component {
     }
 
     render() {
-        const {photo, firstName, lastName, dateOfBirth, gender, phoneNumber, preferences, description} = this.state;
+        const {photo, firstName, lastName, dateOfBirth, gender, phoneNumber, preferences, description, driverRating, userRating} = this.state;
         return (
             <Container>
                 <ScrollView>
