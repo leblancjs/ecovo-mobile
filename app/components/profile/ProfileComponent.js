@@ -22,6 +22,8 @@ class ProfileComponent extends Component {
             gender: props.user ? props.user.gender : '',
             phoneNumber: props.user ? props.user.phoneNumber: '',
             description : props.user ? props.user.description : '',
+            driverRating: props.user ? props.user.driverRating : 0,
+            userRating: props.user ? props.user.userRating : 0,
             preferences: {
                 music: props.user.preferences ? props.user.preferences.music : 0,
                 smoking: props.user.preferences ? props.user.preferences.smoking : 0,
@@ -37,7 +39,7 @@ class ProfileComponent extends Component {
             <Container>
                 <ScrollView>
                     <ProfileHeaderComponent photo={photo} firstName={firstName} lastName={lastName} />
-                    <ProfileRating ratingWork={2} ratingDriver={5}/>
+                    <ProfileRating userRating={userRating} driverRating={driverRating}/>
                     <ProfileBasicInfoCard dateOfBirth={dateOfBirth} gender={gender} phoneNumber={phoneNumber}/>
                     <ProfileMoreAboutCard firstName={firstName} preferences={preferences} />
                     <ProfileDescriptionCard description={description} />

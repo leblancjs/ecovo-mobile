@@ -11,7 +11,7 @@ class ProfileRating extends Component {
     }
 
     render() {
-        const { ratingDriver, ratingWork } = this.props
+        const { driverRating, userRating } = this.props
         return (
             <View style={styles.viewMasterStyle}>
                 <View style={styles.viewChild}>
@@ -19,7 +19,7 @@ class ProfileRating extends Component {
                     <Rating
                         imageSize={20}
                         readonly
-                        startingValue={ratingWork}
+                        startingValue={userRating}
                     />
                 </View>
                 <View style={styles.viewChild}>
@@ -27,7 +27,7 @@ class ProfileRating extends Component {
                     <Rating
                         imageSize={20}
                         readonly
-                        startingValue={ratingDriver}
+                        startingValue={driverRating}
                     />
                 </View>
             </View>
@@ -52,13 +52,13 @@ const styles = StyleSheet.create({
 })
 
 ProfileRating.propTypes = {
-    ratingWork: PropTypes.number,
-    ratingDriver: PropTypes.number
+    userRating: PropTypes.number,
+    driverRating: PropTypes.number
 }
 
 ProfileRating.defaultProps = {
-    ratingWork: 0,
-    ratingDriver: 0
+    userRating: 0,
+    driverRating: 0
 }
 
 export default ProfileRating

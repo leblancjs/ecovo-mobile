@@ -33,7 +33,9 @@ const initialState = {
             music: 0,
             talking: 0
         },
-        signUpPhase: ''
+        signUpPhase: '',
+        userRating: 0,
+        driverRating: 0
     }
 }
 
