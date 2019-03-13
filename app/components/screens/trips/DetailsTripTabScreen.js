@@ -33,7 +33,7 @@ class DetailsTripTabScreen extends Component {
     render() {
         return (
             <Container>
-                <Tabs tabBarUnderlineStyle={{ backgroundColor: '#fff', height: 2 }}>
+                <Tabs tabBarUnderlineStyle={{ backgroundColor: '#fff', height: 2 }} locked={true}>
                     <Tab heading="TRIP"
                         tabStyle={{ backgroundColor: '#2bb267' }}
                         textStyle={{ color: '#fff' }}
