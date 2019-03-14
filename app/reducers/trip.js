@@ -26,7 +26,7 @@ const initialState = {
     trips: []
 }
 
-const auth = (state = initialState, action) => {
+const trip = (state = initialState, action) => {
     switch (action.type) {
         case GET_TRIP_REQUEST:
             return {
@@ -100,4 +100,4 @@ const auth = (state = initialState, action) => {
     }
 }
 
-export default auth
+export default trip

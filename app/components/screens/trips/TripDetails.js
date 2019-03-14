@@ -96,10 +96,9 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-end',
         padding: 5,
         paddingBottom: 0,
-        height: '65%'
+        height: '30%'
     },
     cardStyle: {
-        height: '45%',
         paddingBottom: 60
     }
 })
