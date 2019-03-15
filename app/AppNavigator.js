@@ -14,6 +14,7 @@ import UpdateProfileScreen from './components/screens/profile/UpdateProfileScree
 import ProfileTabScreen from './components/screens/profile/ProfileTabScreen';
 import TripResultsScreen from './components/screens/trips/TripResultsScreen';
 import AddTripScreen from './components/screens/trips/AddTripScreen';
+import DetailsTripTabScreen from './components/screens/trips/DetailsTripTabScreen'
 
 const defaultNavigationOptions = {
     headerStyle: {
@@ -79,6 +80,7 @@ const ProfileNavigator = createStackNavigator({
 const TripsNavigator = createStackNavigator({
     [ScreenNames.Trips.MAP]: MapScreen,
     [ScreenNames.Trips.RESULTS]: TripResultsScreen,
+    [ScreenNames.Trips.DETAILS]: DetailsTripTabScreen,
     [ScreenNames.Trips.ADD]: AddTripScreen,
 }, {
     defaultNavigationOptions,

@@ -18,13 +18,13 @@ const initialState = {
         seats: 1,
         stops: [],
         details: {
-            animals : 0,
+            animals: 0,
             luggages: 0,
         },
     }
 }
 
-const auth = (state = initialState, action) => {
+const trip = (state = initialState, action) => {
     switch (action.type) {
         case GET_TRIP_REQUEST:
             return {
@@ -83,4 +83,4 @@ const auth = (state = initialState, action) => {
     }
 }
 
-export default auth
+export default trip
