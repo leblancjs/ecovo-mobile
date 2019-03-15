@@ -99,12 +99,18 @@ export const stopSearch = (accessToken, searchId) => {
     }
 }
 
-export const RECEIVE_SEARCH_RESULT = 'RECEIVE_SEARCH_RESULT'
-export const receiveSearchResult = (result) => ({
-    type: RECEIVE_SEARCH_RESULT,
-    result: {
-        ...result
+export const ADD_SEARCH_RESULT = 'ADD_SEARCH_RESULT'
+export const addSearchResult = (trip) => ({
+    type: ADD_SEARCH_RESULT,
+    trip: {
+        ...trip
     }
+})
+
+export const REMOVE_SEARCH_RESULT = 'REMOVE_SEARCH_RESULT'
+export const removeSearchResult = (tripId) => ({
+    type: REMOVE_SEARCH_RESULT,
+    tripId
 })
 
 export const CLEAR_SEARCH_RESULTS = 'CLEAR_SEARCH_RESULTS'

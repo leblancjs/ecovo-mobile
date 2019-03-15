@@ -1,7 +1,7 @@
 import {
     START_SEARCH_REQUEST, START_SEARCH_SUCCESS, START_SEARCH_ERROR,
     STOP_SEARCH_REQUEST, STOP_SEARCH_SUCCESS, STOP_SEARCH_ERROR,
-    RECEIVE_SEARCH_RESULT, CLEAR_SEARCH_RESULTS
+    ADD_SEARCH_RESULT, REMOVE_SEARCH_RESULT, CLEAR_SEARCH_RESULTS
 } from '../actions/search'
 
 const initialState = {
@@ -47,13 +47,18 @@ const search = (state = initialState, action) => {
                 ...initialState,
                 error: action.error
             }
-        case RECEIVE_SEARCH_RESULT:
+        case ADD_SEARCH_RESULT:
             return {
                 ...state,
                 results: [
                     ...state.results,
-                    action.result
+                    action.result.trip
                 ]
+            }
+        case REMOVE_SEARCH_RESULT:
+            return {
+                ...state,
+                results: state.results.filter(trip => trip.id === action.tripId)
             }
         case CLEAR_SEARCH_RESULTS:
             return {

@@ -5,7 +5,11 @@ import { withStatusBar } from '../../hoc'
 import { Text } from 'native-base'
 import { NavigationActions } from 'react-navigation'
 import PubSubService from '../../../service/pubsub'
-import { startSearch, stopSearch, receiveSearchResult, clearSearchResults } from '../../../actions/search'
+import {
+    startSearch, stopSearch,
+    ADD_SEARCH_RESULT, REMOVE_SEARCH_RESULT, CLEAR_SEARCH_RESULTS,
+    addSearchResult, removeSearchResult, clearSearchResults
+} from '../../../actions/search'
 import { ScreenNames } from '../'
 
 class TripResultsScreen extends Component {
@@ -50,15 +54,20 @@ class TripResultsScreen extends Component {
         this.props.startSearch(this.props.accessToken, this.props.search.filters)
             .then((search) => {
                 PubSubService.subscribe(search.id, (msg) => {
+                    let payload = msg.data ? JSON.parse(msg.data) : {}
+                    
                     switch (msg.name) {
-                        case 'result':
-                            this.props.receiveSearchResult(JSON.parse(msg.data))
+                        case ADD_SEARCH_RESULT:
+                            this.props.addSearchResult(payload)
                             break
-                        case 'clearResults':
+                        case REMOVE_SEARCH_RESULT:
+                            this.props.removeSearchResult(payload.id)
+                            break
+                        case CLEAR_SEARCH_RESULTS:
                             this.props.clearSearchResults()
                             break
                         default:
-                            console.log(`unknown message name ${msg.name}`)
+                            console.error(`TripResultsScreen: received message with unknown name "${msg.name}"`)
                             break
                     }
                 })
@@ -97,7 +106,8 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
     startSearch: (accessToken, filters) => dispatch(startSearch(accessToken, filters)),
     stopSearch: (accessToken, id) => dispatch(stopSearch(accessToken, id)),
-    receiveSearchResult: (result) => dispatch(receiveSearchResult(result)),
+    addSearchResult: (trip) => dispatch(addSearchResult(trip)),
+    removeSearchResult: (tripId) => dispatch(removeSearchResult(tripId)),
     clearSearchResults: () => dispatch(clearSearchResults()),
     goToError: () => dispatch(NavigationActions.navigate({ routeName: ScreenNames.Errors.HOME }))
 })
