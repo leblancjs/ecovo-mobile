@@ -52,7 +52,7 @@ const search = (state = initialState, action) => {
                 ...state,
                 results: [
                     ...state.results,
-                    action.result.trip
+                    action.trip
                 ]
             }
         case REMOVE_SEARCH_RESULT:

@@ -32,7 +32,7 @@ export const startSearch = (accessToken, filters = {}) => {
                     'Authorization': 'Bearer ' + accessToken,
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify(filters)
+                body: JSON.stringify({ filters })
             }
         )
             .then(response => {
