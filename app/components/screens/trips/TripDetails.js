@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import { StyleSheet, View } from 'react-native'
 import { connect } from 'react-redux'
 import { Container, Card } from 'native-base'
-import { getTripList } from '../../../actions/trip'
 import EcovoMapView from '../../astuvu-native/EcovoMapView'
 import TripCarDetails from './TripCarDetails'
 import TripStopDetails from './TripStopDetails'
@@ -51,21 +50,6 @@ class TripDetails extends Component {
     }
     constructor(props) {
         super(props)
-        this.state = {
-            user: props.auth.user,
-        };
-        this._getTripList();
-    }
-
-    _getTripList = () => {
-        const { credentials, user } = this.props.auth;
-
-        this.props.getTripList(credentials.accessToken, user.id).then(t => {
-            console.log("Trip Screen")
-            console.log(t)
-        }).catch(error => {
-            console.log(error)
-        })
     }
 
     render() {
@@ -104,11 +88,8 @@ const styles = StyleSheet.create({
 })
 
 const mapStateToProps = state => ({
-    auth: state.auth,
-    trip: state.trip
 });
 const mapDispatchToProps = dispatch => ({
-    getTripList: (accessToken, userId) => dispatch(getTripList(accessToken, userId)),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(TripDetails);

@@ -1,8 +1,7 @@
 import {
     GET_TRIP_REQUEST, GET_TRIP_SUCCESS, GET_TRIP_ERROR,
     CREATE_TRIP_REQUEST, CREATE_TRIP_SUCCESS, CREATE_TRIP_ERROR,
-    DELETE_TRIP_REQUEST, DELETE_TRIP_SUCCESS, DELETE_TRIP_ERROR,
-    GET_TRIP_LIST_REQUEST, GET_TRIP_LIST_SUCCESS, GET_TRIP_LIST_ERROR
+    DELETE_TRIP_REQUEST, DELETE_TRIP_SUCCESS, DELETE_TRIP_ERROR
 } from '../actions/trip'
 
 const initialState = {
@@ -22,8 +21,7 @@ const initialState = {
             animals: 0,
             luggages: 0,
         },
-    },
-    trips: []
+    }
 }
 
 const trip = (state = initialState, action) => {
@@ -78,21 +76,6 @@ const trip = (state = initialState, action) => {
             return {
                 ...state,
                 isSubmitting: false,
-                error: action.error,
-            }
-        case GET_TRIP_LIST_REQUEST:
-            return {
-                ...state,
-                isFetching: true
-            }
-        case GET_TRIP_LIST_SUCCESS:
-            return {
-                ...state,
-                trips: action.trips
-            }
-        case GET_TRIP_LIST_ERROR:
-            return {
-                ...state,
                 error: action.error,
             }
         default:
