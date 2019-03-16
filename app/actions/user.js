@@ -47,7 +47,7 @@ const updateUserError = (error) => ({
 // Get current user info
 export const GET_CURRENT_USER_INFO_REQUEST = 'GET_CURRENT_USER_INFO_REQUEST'
 const getCurrentUserInfoRequest = () => ({
-    type: UPDATE_USER_REQUEST
+    type: GET_CURRENT_USER_INFO_REQUEST
 })
 
 export const GET_CURRENT_USER_INFO_SUCCESS = 'GET_CURRENT_USER_INFO_SUCCESS'

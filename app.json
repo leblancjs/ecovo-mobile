@@ -1,5 +1,6 @@
 {
   "name": "ecovo",
   "displayName": "ecovo",
-  "domain": "https://ecovo-api.herokuapp.com"
+  "domain": "https://ecovo-api.herokuapp.com",
+  "googleMapsApiKey": "AIzaSyAeJwTf3l8i7YPyXY5VnDGWkapiPpGqRlE",
 }

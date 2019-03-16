@@ -29,7 +29,7 @@ class MyProfileScreen extends Component {
 
     render() {
         return (
-            <ProfileComponent user={this.state.user} onFabTapped={this._goToUpdateProfileScreen}></ProfileComponent>
+            <ProfileComponent user={this.state.user} onFabTapped={this._goToUpdateProfileScreen} fabType="edit"/>
         )
     }
 }

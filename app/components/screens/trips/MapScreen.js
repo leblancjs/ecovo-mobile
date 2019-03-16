@@ -1,14 +1,12 @@
 import React, { Component } from 'react'
-import { StyleSheet, View, Image, TouchableOpacity, PermissionsAndroid, Platform } from 'react-native';
+import { StyleSheet, View, Image, TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
 import { NavigationActions, StackActions } from 'react-navigation';
 import { ScreenNames } from '../';
-import Marker from 'react-native-maps';
 import { Container, Icon, Text } from 'native-base';
 import SlidingUpPanel from 'rn-sliding-up-panel';
 import SearchTripComponent from './SearchTripComponent';
 import { withStatusBar } from '../../hoc';
-import isEqual from 'lodash/isEqual';
 import EcovoMapView from '../../astuvu-native/EcovoMapView';
 
 class MapScreen extends Component {
@@ -36,7 +34,7 @@ class MapScreen extends Component {
         return (
             <Container style={styles.container}>
 
-                <EcovoMapView></EcovoMapView>
+                <EcovoMapView />
                 <View style={styles.menuWrapper}>
                     <TouchableOpacity style={styles.touchableIcon} onPress={this._goToMyProfile}>
                         <Image style={styles.profile} source={{ uri: this.state.user.photo }} />

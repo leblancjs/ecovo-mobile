@@ -1,49 +1,58 @@
 import React from 'react';
-import {
-    Alert,
-    Platform,
-    StyleSheet
-} from 'react-native';
+import { StyleSheet } from 'react-native';
 import MapView from 'react-native-maps'
 import PropTypes from 'prop-types'
+import EcovoMapDirection from './EcovoMapDirection'
+import EcovoMarkersMap from './EcovoMarkersMap'
 
 const LATITUDE_DELTA = 0.01;
 const LONGITUDE_DELTA = 0.01;
 
 const initialRegion = {
-    latitude: -37.78825,
-    longitude: -122.4324,
-    latitudeDelta: 0.0922,
-    longitudeDelta: 0.0421,
+    latitude: 46.189945,
+    longitude: -72.431703,
+    latitudeDelta: 5.0,
+    longitudeDelta: 5.0,
 }
 
 class EcovoMapView extends React.Component {
 
     map = null;
 
-    state = {
-        region: {
-            latitude: -37.78825,
-            longitude: -122.4324,
-            latitudeDelta: 0.0922,
-            longitudeDelta: 0.0421,
-        },
-        ready: true,
-        filteredMarkers: []
-    };
+    constructor(props) {
+        super(props)
 
-    setRegion(region) {
-        if (this.state.ready) {
-            setTimeout(() => this.map.animateToRegion(region), 10);
+        let latitude = 46.189945;
+        let longitude = -72.431703;
+        if (props.source && props.destination) {
+            latitude = (props.source.latitude - props.destination.latitude) / 2 + props.source.latitude;
+            longitude = (props.source.longitude - props.destination.longitude) / 2 + props.source.longitude;
+        }
+
+        this.state = {
+            region: {
+                latitude: latitude,
+                longitude: longitude,
+                latitudeDelta: 5.0,
+                longitudeDelta: 5.0,
+            },
+            ready: true,
+            filteredMarkers: []
         }
     }
 
     componentDidMount() {
         console.log('Component did mount');
-        this.getCurrentPosition();
+        //this._getCurrentPosition();
     }
 
-    getCurrentPosition() {
+    _setRegion(region) {
+        if (this.state.ready) {
+            setTimeout(() => this.map.animateToRegion(region), 10);
+        }
+    }
+
+    _getCurrentPosition() {
         try {
             navigator.geolocation.getCurrentPosition(
                 (position) => {
@@ -54,7 +63,8 @@ class EcovoMapView extends React.Component {
                         longitudeDelta: LONGITUDE_DELTA,
                     };
                     if (this.map !== undefined) {
-                        this.setRegion(region);
+
+                        this._setRegion(region);
                     }
                 },
                 (error) => {
@@ -65,19 +75,19 @@ class EcovoMapView extends React.Component {
         }
     };
 
-    onMapReady = (e) => {
+    _onMapReady = (e) => {
         if (!this.state.ready) {
             this.setState({ ready: true });
         }
     };
 
-    onRegionChange = (region) => {
+    _onRegionChange = (region) => {
         if (this.props.onRegionChange) {
             this.props.onRegionChange(region);
         }
     };
 
-    onRegionChangeComplete = (region) => {
+    _onRegionChangeComplete = (region) => {
         if (this.props.onRegionChangeComplete) {
             this.props.onRegionChangeComplete(region);
         }
@@ -85,24 +95,31 @@ class EcovoMapView extends React.Component {
 
     render() {
 
-        const { children, renderMarker, markers } = this.props;
+        const { children, renderMarker, markers, origin, destination, stopPoints } = this.props;
 
         return (
             <MapView
                 showsUserLocation
                 ref={map => { this.map = map }}
-                data={markers}
                 initialRegion={initialRegion}
                 renderMarker={renderMarker}
-                onMapReady={this.onMapReady}
+                onMapReady={this._onMapReady}
                 showsMyLocationButton={false}
-                onRegionChange={this.onRegionChange}
-                onRegionChangeComplete={this.onRegionChangeComplete}
+                onRegionChange={this._onRegionChange}
+                onRegionChangeComplete={this._onRegionChangeComplete}
                 style={StyleSheet.absoluteFill}
                 textStyle={{ color: '#bc8b00' }}
                 containerStyle={{ backgroundColor: 'white', borderColor: '#BC8B00', zIndex: -1 }}>
 
                 {children && children || null}
+
+                {origin && destination && stopPoints &&
+                    <EcovoMapDirection origin={origin} destination={destination} stopPoints={stopPoints} />
+                }
+
+                {markers &&
+                    <EcovoMarkersMap markers={markers} />
+                }
 
             </MapView>
         );
@@ -112,7 +129,10 @@ class EcovoMapView extends React.Component {
 EcovoMapView.propTypes = {
     onRegionChange: PropTypes.func,
     onRegionChangeComplete: PropTypes.func,
-    markers: PropTypes.object,
+    markers: PropTypes.array,
+    origin: PropTypes.object,
+    destination: PropTypes.object,
+    stopPoints: PropTypes.array
 }
 
 export default EcovoMapView;
