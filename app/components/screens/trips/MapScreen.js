@@ -27,7 +27,8 @@ class MapScreen extends Component {
         this.props.goToProfile();
     }
     _searchTrips = (params) => {
-        this.props.goToResults();
+        //this.props.search.setSearchParams(params);
+        this.props.goToResults(params);
     }
 
     render() {
@@ -151,7 +152,7 @@ const mapStateToProps = state => ({
 });
 const mapDispatchToProps = dispatch => ({
     goToProfile: () => dispatch(NavigationActions.navigate({ routeName: ScreenNames.Profile.HOME })),
-    goToResults: () => dispatch(StackActions.push({ routeName: ScreenNames.Trips.RESULTS })),
+    goToResults: (params) => dispatch(StackActions.push({ routeName: ScreenNames.Trips.RESULTS, params: { searchFilters: params } })),
 
 })
 

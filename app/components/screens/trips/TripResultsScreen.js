@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { StyleSheet, View, Image, Button, TouchableOpacity, ActivityIndicator } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { connect } from 'react-redux';
 import { withStatusBar } from '../../hoc';
 import TripCardCarousel from '../../astuvu-native/TripCardCarousel';
@@ -15,22 +15,11 @@ import {
 import { ScreenNames } from '../'
 
 class TripResultsScreen extends Component {
-    items = [{ time: '3h25', price: 23.12, departure: new Date('2018-01-12'), arrival: new Date('2018-01-12'), stops: 1, car: { make: "Toyota", model: "Camry", year: 2016 } },
-        { time: '3h25', price: 23.12, departure: new Date('2018-01-12'), arrival: new Date('2018-01-12'), stops: 1, car: { make: "Toyota", model: "Camry", year: 2016 } }
-        ,{ time: '3h25', price : 23.12, departure: new Date('2018-01-12'), arrival: new Date('2018-01-12'), stops: 1, car: {make: "Toyota", model: "Camry", year : 2016}}];
-
     constructor(props) {
         super(props)
 
         this.state = {
-            searchParam: {
-                departureDate: null,
-                arrivalDate: null,
-                from: '',
-                to: '',
-                pickupRadius: 50,
-                driverRating: 0,
-            },
+            searchParam: props.navigation.getParam("searchFilters", {}),
             minDate: new Date()
         }
     }
@@ -49,7 +38,7 @@ class TripResultsScreen extends Component {
                 <EcovoMapView></EcovoMapView>
 
                 <View style={styles.bottom}>
-                    <TripCardCarousel style={styles.carousel} items={this.props.search}></TripCardCarousel>
+                    <TripCardCarousel style={styles.carousel} items={this.props.search.results}></TripCardCarousel>
                 </View>
             </Container>
 
@@ -57,7 +46,7 @@ class TripResultsScreen extends Component {
     }
 
     _subscribe = () => {
-        this.props.startSearch(this.props.accessToken, this.props.search.filters)
+        this.props.startSearch(this.props.accessToken, this.state.searchParam)
             .then((search) => {
                 PubSubService.subscribe(search.id, (msg) => {
                     let payload = msg.data ? JSON.parse(msg.data) : {}

@@ -1,36 +1,38 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import { Container, Content, Button } from 'native-base'
+import { Button } from 'native-base'
 import { StyleSheet, Text, View, Dimensions } from 'react-native'
 import Carousel from 'react-native-snap-carousel';
+import moment from "moment";
+
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get('window');
 
 class TripCardCarousel extends Component {
     constructor(props) {
         super(props)
-        this.state = {
-            items: props.items
-        }
     }
 
     _renderItem({ item, index }) {
         return (
             <View style={styles.slideDropShadow}>
                 <View style={styles.slide}>
-                    <Content>
-                    <Text style={styles.time}>{item.time}</Text>
-                    <Text style={styles.time}>{item.price}</Text>
+                    <View style={styles.inline}>
+                        <Text style={styles.time}>{item.time}</Text>
+                        <View style={styles.priceWrapper}>
+                            <Text style={styles.price}>{item.price}$</Text>
+                        </View>
+                    </View>
+                    <Text style={styles.departure}>Departure: {moment(item.departure).format("H:HH (L)")}</Text>
+                    <Text style={styles.arrival}>Arrival: {moment(item.arrival).format("H:HH (L)")}</Text>
+                    <Text style={styles.stop}>{item.stops} stop(s)</Text>
+                    <View style={styles.inline}>
+                        <View style={styles.inline}>
+                            <Text style={styles.carMake}>{item.car.make && item.car.make || ""} {item.car.model && item.car.model || ""}</Text>
+                            <Text style={styles.carYear}>{item.car.year && item.car.year || ""}</Text>
+                        </View>
+                        <Button style={styles.button}><Text style={styles.buttonText}>MORE</Text></Button>
+                    </View>
 
-                    </Content>
-                    <Text style={styles.time}>{item.departure.toString()}</Text>
-                    <Text style={styles.time}>{item.arrival.toString()}</Text>
-                    <Text style={styles.time}>{item.stops} stop(s)</Text>
-                    <Content>
-                        <Text style={styles.time}>{item.car.make && item.car.make || ""}</Text>
-                        <Text style={styles.time}>{item.car.model && item.car.model || ""}</Text>
-                        <Text style={styles.time}>{item.car.year && item.car.year || ""}</Text>
-                    </Content>
-                    <Button><Text>MORE</Text></Button>
                 </View>
             </View>
         );
@@ -40,7 +42,7 @@ class TripCardCarousel extends Component {
         return (
             <Carousel
                 ref={c => this._carousel = c}
-                data={this.state.items}
+                data={this.props.items}
                 renderItem={this._renderItem}
                 sliderWidth={viewportWidth}
                 itemWidth={viewportWidth - 40}
@@ -78,6 +80,45 @@ const styles = StyleSheet.create({
         height: 200,
         backgroundColor: '#fff'
     },
+    button: {
+        backgroundColor: '#fff',
+        position: 'absolute',
+        right: 0
+    },
+    buttonText: {
+        color: '#2BB267'
+
+    },
+    time: {
+        fontSize: 24,
+        fontWeight: 'bold'
+    },
+    priceWrapper: {
+        backgroundColor: '#2BB267',
+        height: 70,
+        width: 70,
+        padding: 10,
+        borderRadius: 35,
+        position: 'absolute',
+        right: 0,
+        justifyContent: 'center'
+    },
+    price: {
+        color: '#fff',
+        fontWeight: 'bold',
+        alignSelf: 'center',
+    },
+    carMake: {
+        color: '#222',
+    },
+    carYear: {
+        color: '#bbb'
+    },
+    inline: {
+        flexWrap: 'wrap',
+        alignItems: 'flex-start',
+        flexDirection: 'row',
+    }
 })
 
 TripCardCarousel.propTypes = {

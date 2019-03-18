@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, Slider } from 'react-native';
-import { ScrollView } from 'react-native-gesture-handler';
-import { Container, Text, Fab, Card, CardItem, Body, Icon, Input, Button, Form, Item } from 'native-base';
+import { Container, Text, Icon, Button, Form, Item } from 'native-base';
 import PropTypes from 'prop-types';
 import DatePicker from 'react-native-datepicker';
 import GooglePlacesInput from '../../astuvu-native/GooglePlacesAutocomplete';
@@ -12,12 +11,16 @@ class SearchTripComponent extends Component {
         super(props);
         this.state = {
             searchParam: {
-                departureDate: null,
-                arrivalDate: null,
-                from: '',
-                to: '',
-                pickupRadius: 50,
+                leaveAt: null,
+                arriveBy: null,
+                source: '',
+                destination: '',
+                radiusThresh: 5,
                 driverRating: 0,
+                seats: 1,
+                detailsAnimals: 0,
+                detailsLuggages: 0,
+                
             },
             minDate: new Date()
         }
@@ -34,7 +37,7 @@ class SearchTripComponent extends Component {
             ...this.state,
             searchParam: {
                 ...this.state.searchParam,
-                departureDate: date
+                leaveAt: date
             }
         })
     }
@@ -44,7 +47,7 @@ class SearchTripComponent extends Component {
             ...this.state,
             searchParam: {
                 ...this.state.searchParam,
-                arrivalDate: date
+                arriveBy: date
             }
         })
     }
@@ -54,7 +57,8 @@ class SearchTripComponent extends Component {
             ...this.state,
             searchParam: {
                 ...this.state.searchParam,
-                from: from
+                source: details.geometry.location,
+                sourceDescription: from.description,
             }
         })
     }
@@ -64,7 +68,8 @@ class SearchTripComponent extends Component {
             ...this.state,
             searchParam: {
                 ...this.state.searchParam,
-                to: to
+                destination: details.geometry.location,
+                destinationDescription: to.description,
             }
         })
     }
@@ -74,7 +79,7 @@ class SearchTripComponent extends Component {
             ...this.state,
             searchParam: {
                 ...this.state.searchParam,
-                pickupRadius: value
+                radiusThresh: value
             }
         })
     }
@@ -95,6 +100,18 @@ class SearchTripComponent extends Component {
         }
     }
 
+    _isAdvancedSearchButtonEnabled = () => {
+        return this.state.searchParam.source != ""
+            && this.state.searchParam.destination != ""
+            && (this.state.searchParam.leaveAt != null || this.state.searchParam.arriveBy);
+    
+    }
+    
+    _isSearchButtonEnabled = () => {
+        return this.state.searchParam.source != ""
+            && this.state.searchParam.destination != "";
+     }
+
     render() {
         return (
             <Container>
@@ -113,8 +130,12 @@ class SearchTripComponent extends Component {
                             <GooglePlacesInput placeholder='To' onSearchResult={this._updateTo} />
                         </Item>
                         <View style={{ flexDirection: 'row' }}>
-                            <Button transparent style={{ marginLeft: 'auto' }}>
-                                <Text style={styles.submitForm}>Search</Text>
+                            <Button
+                                transparent
+                                disabled={!this._isSearchButtonEnabled()}
+                                style={{ marginLeft: 'auto' }}
+                                onPress={this._searchTrips}>
+                                <Text style={this._isSearchButtonEnabled() ? styles.submitForm : styles.submitFormDisabled}>Search</Text>
                             </Button>
                         </View>
 
@@ -124,7 +145,7 @@ class SearchTripComponent extends Component {
                     style={{ width: '100%', padding: 20 }}
                     mode="datetime"
                     placeholder="select date"
-                    date={this.state.searchParam.departureDate}
+                    date={this.state.searchParam.leaveAt}
                     format="MMMM Do YYYY, h:mm:ss a"
                     minDate={this.state.minDate}
                     confirmBtnText="Confirm"
@@ -141,7 +162,7 @@ class SearchTripComponent extends Component {
                     style={{ width: '100%', padding: 20 }}
                     mode="datetime"
                     placeholder="select date"
-                    date={this.state.searchParam.arrivalDate}
+                    date={this.state.searchParam.arriveBy}
                     format="MMMM Do YYYY, h:mm:ss a"
                     minDate={this.state.minDate}
                     confirmBtnText="Confirm"
@@ -155,24 +176,21 @@ class SearchTripComponent extends Component {
                     }}
                 />
                 <View style={styles.containerFilter}>
-                    <Text style={styles.filterDescription}>Pickup range ({this.state.searchParam.pickupRadius} Km)</Text>
+                    <Text style={styles.filterDescription}>Pickup range ({this.state.searchParam.radiusThresh} Km)</Text>
                     <Slider
                         style={{width:'80%', alignSelf:'center'}}
-                        value={this.state.searchParam.pickupRadius}
+                        value={this.state.searchParam.radiusThresh}
                         onValueChange={value => this._updateRange(value)}
                         step={1}
                         minimumValue={0}
                         minimumTrackTintColor={'#2BB267'}
-                        maximumValue={500} />
-                </View>
-                <View style={styles.containerFilter}>
-                    <Text style={styles.filterDescription}>Driver's Minimal Rating</Text>
-                    <RartingStars onValueChange={this._updateMinimumRating}></RartingStars>
+                        maximumValue={50} />
                 </View>
                 <View style={styles.updateBtnWrapper}>
-                        <Button transparent
+                    <Button transparent
+                        disabled={!this._isAdvancedSearchButtonEnabled()}
                             onPress={this._searchTrips} style={styles.updatebutton}>
-                        <Text style={{color:'#fff'}}>Advanced Search</Text>
+                        <Text style={this._isAdvancedSearchButtonEnabled() ? {color:'#fff'} : {color:'#ddd'}}>Advanced Search</Text>
                         </Button>
                 </View>
             </Container>
@@ -193,7 +211,11 @@ const headerTitle = {
     color: '#fff',
     fontSize: 24
 };
-
+const submitForm = {
+    color: '#fff',
+    alignSelf: 'flex-end',
+    fontSize: 18,
+}
 const styles = StyleSheet.create({
     header: {
         backgroundColor: '#2BB267',
@@ -220,9 +242,12 @@ const styles = StyleSheet.create({
         ...inputStyle,
     },
     submitForm: {
-        color: '#fff',
-        alignSelf: 'flex-end',
-        fontSize: 18,
+        ...submitForm
+    },
+
+    submitFormDisabled: {
+        ...submitForm,
+        color: '#ddd',
     },
     dateInput: {
         ...inputStyle,
