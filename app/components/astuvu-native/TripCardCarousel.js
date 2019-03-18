@@ -13,6 +13,12 @@ class TripCardCarousel extends Component {
     }
 
     _renderItem({ item, index }) {
+        item.time = item.time ? item.time : "5h30";
+        item.price = item.price ? item.price : "";
+        item.time = item.time ? item.time : "5h30";
+        item.time = item.time ? item.time : "5h30";
+        item.time = item.time ? item.time : "5h30";
+
         return (
             <View style={styles.slideDropShadow}>
                 <View style={styles.slide}>
@@ -30,7 +36,7 @@ class TripCardCarousel extends Component {
                             <Text style={styles.carMake}>{item.car.make && item.car.make || ""} {item.car.model && item.car.model || ""}</Text>
                             <Text style={styles.carYear}>{item.car.year && item.car.year || ""}</Text>
                         </View>
-                        <Button style={styles.button}><Text style={styles.buttonText}>MORE</Text></Button>
+                        <Button style={styles.button} onTap={}><Text style={styles.buttonText}>MORE</Text></Button>
                     </View>
 
                 </View>

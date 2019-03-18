@@ -33,7 +33,7 @@ class GooglePlacesInput extends Component {
                     language: 'en', // language of the results
                 }}
 
-                currentLocation={true} // Will add a 'Current location' button at the top of the predefined places list
+                currentLocation={false} // Will add a 'Current location' button at the top of the predefined places list
                 currentLocationLabel="My current location"
                 nearbyPlacesAPI='GooglePlacesSearch' // Which API to use: GoogleReverseGeocoding or GooglePlacesSearch
                 filterReverseGeocodingByTypes={['locality', 'administrative_area_level_3']} // filter the reverse geocoding results by types - ['locality', 'administrative_area_level_3'] if you want to display only cities

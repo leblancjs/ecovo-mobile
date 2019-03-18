@@ -56,7 +56,7 @@ class MapScreen extends Component {
                     </TouchableOpacity>
 
                 </View>
-                <SlidingUpPanel allowDragging={false} ref={c => this._panel = c}>
+                <SlidingUpPanel allowDragging={false} ref={c => this._panel = c} allowMomentum={false}>
                     <SearchTripComponent onSearchTrips={this._searchTrips} onCloseComponent={this._slideDown}></SearchTripComponent>
                 </SlidingUpPanel>
             </Container>
