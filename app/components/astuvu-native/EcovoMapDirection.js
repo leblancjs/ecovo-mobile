@@ -13,10 +13,10 @@ class EcovoMapDirection extends Component {
     }
 
     render() {
-        const { origin, destination, steps } = this.props;
+        const { source, destination, steps } = this.props;
         return (
             <MapViewDirections
-                origin={origin}
+                origin={source}
                 waypoints={steps}
                 destination={destination}
                 apikey={googleMapsApiKey}
@@ -26,7 +26,7 @@ class EcovoMapDirection extends Component {
 }
 
 EcovoMapDirection.propTypes = {
-    origin: PropTypes.object,
+    source: PropTypes.object,
     destination: PropTypes.object,
     steps: PropTypes.array
 }
