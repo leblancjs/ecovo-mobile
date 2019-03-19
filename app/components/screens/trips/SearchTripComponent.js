@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, Slider, ScrollView } from 'react-native';
-import { Container, Text, Icon, Button, Form, Item } from 'native-base';
+import { Container, Text, Icon, Button, Form, Item, Radio } from 'native-base';
 import PropTypes from 'prop-types';
 import DatePicker from 'react-native-datepicker';
 import GooglePlacesInput from '../../astuvu-native/GooglePlacesAutocomplete';
@@ -22,7 +22,9 @@ class SearchTripComponent extends Component {
                 detailsLuggages: 0,
 
             },
-            minDate: new Date()
+            minDate: new Date(),
+            isLeaveAt: true,
+            isArriveBy: false
         }
     }
 
@@ -95,6 +97,12 @@ class SearchTripComponent extends Component {
     }
 
     _searchTrips = () => {
+        if (this.state.isArriveBy) {
+            this.state.searchParam.leaveAt = null
+        } else {
+            this.state.searchParam.arriveBy = null
+        }
+
         if (this.props.onSearchTrips) {
             this.props.onSearchTrips(this.state.searchParam);
         }
@@ -142,41 +150,68 @@ class SearchTripComponent extends Component {
                     </Form>
                 </View>
                 <ScrollView >
+                    <View style={styles.timeRadioButton}>
+                        <Item style={styles.radioButtonItem}>
+                            <Radio
+                                color={"#2BB267"}
+                                selectedColor={"#2BB267"}
+                                selected={this.state.isLeaveAt}
+                                onPress={() => this.setState({isLeaveAt: true, isArriveBy: false})}
+                            />
+                            <Text style={styles.radioButtonText}>Leave At</Text>
+                        </Item>
+                        <Item style={styles.radioButtonItem}>
+                            <Radio
+                                color={"#2BB267"}
+                                selectedColor={"#2BB267"}
+                                selected={this.state.isArriveBy}
+                                onPress={() => this.setState({isLeaveAt: false, isArriveBy: true})}
+                            />
+                            <Text style={styles.radioButtonText}>Arrive By</Text>
+                        </Item>
+                    </View>
+                    
                     <View style={{height: 700}}>
-                        <DatePicker
-                            style={{ width: '100%', padding: 20 }}
-                            mode="datetime"
-                            placeholder="select date"
-                            date={this.state.searchParam.leaveAt}
-                            format="MMMM Do YYYY, h:mm:ss a"
-                            minDate={this.state.minDate}
-                            confirmBtnText="Confirm"
-                            cancelBtnText="Cancel"
-                            showIcon={false}
-                            is24Hour={true}
-                            placeholder="Departure Time"
-                            onDateChange={this._updateDepartureDate}
-                            customStyles={{
-                                dateInput: styles.dateInput
-                            }}
-                        />
-                        <DatePicker
-                            style={{ width: '100%', padding: 20 }}
-                            mode="datetime"
-                            placeholder="select date"
-                            date={this.state.searchParam.arriveBy}
-                            format="MMMM Do YYYY, h:mm:ss a"
-                            minDate={this.state.minDate}
-                            confirmBtnText="Confirm"
-                            cancelBtnText="Cancel"
-                            showIcon={false}
-                            is24Hour={true}
-                            placeholder="Arrival Time"
-                            onDateChange={this._updateArrivalDate}
-                            customStyles={{
-                                dateInput: styles.dateInput
-                            }}
-                        />
+                        <Item>
+                            { this.state.isLeaveAt && 
+                                <DatePicker
+                                    style={{ width: '100%', padding: 20 }}
+                                    mode="datetime"
+                                    placeholder="select date"
+                                    date={this.state.searchParam.leaveAt}
+                                    format="MMMM Do YYYY, h:mm:ss a"
+                                    minDate={this.state.minDate}
+                                    confirmBtnText="Confirm"
+                                    cancelBtnText="Cancel"
+                                    showIcon={false}
+                                    is24Hour={true}
+                                    placeholder="Leave At"
+                                    onDateChange={this._updateDepartureDate}
+                                    customStyles={{
+                                        dateInput: styles.dateInput
+                                    }}
+                                />
+                            }
+                            { this.state.isArriveBy && 
+                                <DatePicker
+                                    style={{ width: '100%', padding: 20 }}
+                                    mode="datetime"
+                                    placeholder="select date"
+                                    date={this.state.searchParam.arriveBy}
+                                    format="MMMM Do YYYY, h:mm:ss a"
+                                    minDate={this.state.minDate}
+                                    confirmBtnText="Confirm"
+                                    cancelBtnText="Cancel"
+                                    showIcon={false}
+                                    is24Hour={true}
+                                    placeholder="Arrive By"
+                                    onDateChange={this._updateArrivalDate}
+                                    customStyles={{
+                                        dateInput: styles.dateInput
+                                    }}
+                                />
+                            }
+                        </Item>
                         <View style={styles.containerFilter}>
                             <Text style={styles.filterDescription}>Pickup range ({this.state.searchParam.radiusThresh} Km)</Text>
                             <Slider
@@ -324,6 +359,20 @@ const styles = StyleSheet.create({
         padding: 10,
         marginBottom: 20,
     },
+    timeRadioButton: {
+        flexDirection: 'row',
+        margin: 20,
+        alignSelf: 'flex-start'
+    },
+    radioButtonItem: {
+        flex: 0.5,
+        alignContent: 'flex-start',
+        borderBottomWidth: 0
+    },
+    radioButtonText: {
+        textAlign: 'left',
+        marginLeft: 20
+    }
 });
 SearchTripComponent.propTypes = {
     onCloseComponent: PropTypes.func.isRequired,
