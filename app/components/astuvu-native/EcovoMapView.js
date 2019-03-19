@@ -24,9 +24,9 @@ class EcovoMapView extends React.Component {
 
         let latitude = 46.189945;
         let longitude = -72.431703;
-        if (props.source && props.destination) {
-            latitude = (props.source.latitude - props.destination.latitude) / 2 + props.source.latitude;
-            longitude = (props.source.longitude - props.destination.longitude) / 2 + props.source.longitude;
+        if (props.origin && props.destination) {
+            latitude = (props.origin.latitude - props.destination.latitude) / 2 + props.origin.latitude;
+            longitude = (props.origin.longitude - props.destination.longitude) / 2 + props.origin.longitude;
         }
 
         this.state = {
@@ -42,7 +42,6 @@ class EcovoMapView extends React.Component {
     }
 
     componentDidMount() {
-        console.log('Component did mount');
         //this._getCurrentPosition();
     }
 
@@ -94,7 +93,7 @@ class EcovoMapView extends React.Component {
 
     render() {
 
-        const { children, renderMarker, markers, origin, destination, stopPoints } = this.props;
+        const { children, renderMarker, markers, steps, origin, destination } = this.props;
 
         return (
             <MapView
@@ -112,8 +111,8 @@ class EcovoMapView extends React.Component {
 
                 {children && children || null}
 
-                {origin && destination && stopPoints &&
-                    <EcovoMapDirection origin={origin} destination={destination} stopPoints={stopPoints} />
+                {origin && destination && steps &&
+                    <EcovoMapDirection steps={steps} origin={origin} destination={destination}/>
                 }
 
                 {markers &&
@@ -131,7 +130,7 @@ EcovoMapView.propTypes = {
     markers: PropTypes.array,
     origin: PropTypes.object,
     destination: PropTypes.object,
-    stopPoints: PropTypes.array
+    steps: PropTypes.array
 }
 
 export default EcovoMapView;

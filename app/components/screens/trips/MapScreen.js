@@ -151,7 +151,7 @@ const mapStateToProps = state => ({
 });
 const mapDispatchToProps = dispatch => ({
     goToProfile: () => dispatch(NavigationActions.navigate({ routeName: ScreenNames.Profile.HOME })),
-    goToResults: () => dispatch(StackActions.push({ routeName: ScreenNames.Trips.RESULTS })),
+    goToResults: () => dispatch(StackActions.push({ routeName: ScreenNames.Trips.DETAILS })),
 
 })
 
