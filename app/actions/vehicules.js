@@ -30,7 +30,8 @@ export const getVehiculeById = (accessToken, userId, vehiculeId) => {
             {
                 method: 'GET',
                 headers: {
-                    'Authorization': 'Bearer ' + accessToken
+                    'Authorization': 'Bearer ' + accessToken,
+                    'Content-Type': 'application/json'
                 }
             }
         )

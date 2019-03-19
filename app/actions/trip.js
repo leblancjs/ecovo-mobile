@@ -74,7 +74,8 @@ export const getTripById = (accessToken, tripId) => {
             {
                 method: 'GET',
                 headers: {
-                    'Authorization': 'Bearer ' + accessToken
+                    'Authorization': 'Bearer ' + accessToken,
+                    'Content-Type': 'application/json'
                 }
             }
         )

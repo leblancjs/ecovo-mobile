@@ -45,7 +45,7 @@ const styles = StyleSheet.create({
 TripCarDetails.propTypes = {
     carMake: PropTypes.string,
     carModel: PropTypes.string,
-    carYear: PropTypes.string,
+    carYear: PropTypes.number,
     carColor: PropTypes.string
 }
 
