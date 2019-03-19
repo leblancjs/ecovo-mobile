@@ -18,7 +18,7 @@ class TripCardCarousel extends Component {
         item.departure = item.departure ? item.departure : new Date();
         item.arrival = item.arrival ? item.arrival : new Date();
         item.stops = item.stops ? item.stops.count() : 0;
-        item.car = item.car != null ? item.car : { make: "none", year: 1900 };
+        item.car = item.car != null ? item.car : { make: "none", year: 1900, model: "none" };
         return (
             <View style={styles.slideDropShadow}>
                 <View style={styles.slide}>

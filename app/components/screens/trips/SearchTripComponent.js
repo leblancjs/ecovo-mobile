@@ -198,14 +198,14 @@ class SearchTripComponent extends Component {
                         </View>
                         <View style={styles.containerFilter}>
                             <Dropdown
-                                label='Number of passengers'
+                                label='Luggages'
                                 data={luggages}
                                 value={this.state.searchParam.detailsLuggages}
                             />
                         </View>
                         <View style={styles.containerFilter}>
                             <Dropdown
-                                label='Number of passengers'
+                                label='Animals'
                                 data={animals}
                                 value={this.state.searchParam.detailsAnimals}
                             />
@@ -324,11 +324,6 @@ const styles = StyleSheet.create({
         padding: 10,
         marginBottom: 20,
     },
-
-    filler: {
-        //height: 50,
-
-    }
 });
 SearchTripComponent.propTypes = {
     onCloseComponent: PropTypes.func.isRequired,

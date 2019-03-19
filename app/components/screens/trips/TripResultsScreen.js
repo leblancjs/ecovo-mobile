@@ -98,10 +98,6 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-end',
         paddingBottom: 0,
     },
-    carousel: {
-
-
-    },
 })
 
 

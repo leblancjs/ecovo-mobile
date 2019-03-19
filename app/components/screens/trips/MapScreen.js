@@ -26,6 +26,9 @@ class MapScreen extends Component {
     _goToMyProfile = () => {
         this.props.goToProfile();
     }
+    _goToCreateTrip = () => {
+        this.props.goToCreateTrip();
+    }
     _searchTrips = (params) => {
         //this.props.search.setSearchParams(params);
         this.props.goToResults(params);
@@ -40,7 +43,7 @@ class MapScreen extends Component {
                     <TouchableOpacity style={styles.touchableIcon} onPress={this._goToMyProfile}>
                         <Image style={styles.profile} source={{ uri: this.state.user.photo }} />
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.touchableIcon} onPress={this._goToMyProfile}>
+                    <TouchableOpacity style={styles.touchableIcon} onPress={this._goToCreateTrip}>
                         <Container style={styles.iconTripsWrapper} >
                             <Icon style={styles.iconTrips} type="FontAwesome5" name="map-marked"></Icon>
                         </Container>
@@ -152,6 +155,7 @@ const mapStateToProps = state => ({
 });
 const mapDispatchToProps = dispatch => ({
     goToProfile: () => dispatch(NavigationActions.navigate({ routeName: ScreenNames.Profile.HOME })),
+    goToCreateTrip: () => dispatch(NavigationActions.navigate({ routeName: ScreenNames.Trips.ADD })),
     goToResults: (params) => dispatch(StackActions.push({ routeName: ScreenNames.Trips.RESULTS, params: { searchFilters: params } })),
 
 })
