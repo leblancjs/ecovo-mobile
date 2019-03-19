@@ -25,11 +25,11 @@ class TripDetails extends Component {
             marker = marker.concat(trip.stops)
             marker.push(trip.destination)
 
-            return <EcovoMapView markers={marker} origin={trip.source} destination={trip.destination} steps={marker} />
+            return <EcovoMapView markers={marker} source={trip.source} destination={trip.destination} steps={marker} />
         }
     }
 
-    renderStropDetail() {
+    renderStopDetail() {
         const { trip } = this.props;
         if (trip == undefined) {
             return <ActivityIndicator size="large" color="#2bb267" />
@@ -55,7 +55,7 @@ class TripDetails extends Component {
                 <View style={styles.bottom}>
                     <Card style={styles.cardStyle}>
                         <TripCarDetails carMake={vehicule.make} carModel={vehicule.model} carYear={vehicule.year} carColor={vehicule.color} />
-                        {this.renderStropDetail()}
+                        {this.renderStopDetail()}
                     </Card>
                 </View>
             </Container>
