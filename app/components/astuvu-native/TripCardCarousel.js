@@ -13,17 +13,17 @@ class TripCardCarousel extends Component {
     }
 
     _renderItem({ item, index }) {
-        item.time = item.time ? item.time : "5h30";
+        item.time = item.leaveAt && item.arriveBy ? Date.parse(item.arriveBy) - Date.parse(item.leaveAt): 0;
         item.price = item.price ? item.price : "";
-        item.time = item.time ? item.time : "5h30";
-        item.time = item.time ? item.time : "5h30";
-        item.time = item.time ? item.time : "5h30";
-
+        item.departure = item.departure ? item.departure : new Date();
+        item.arrival = item.arrival ? item.arrival : new Date();
+        item.stops = item.stops ? item.stops.count() : 0;
+        item.car = item.car != null ? item.car : { make: "none", year: 1900 };
         return (
             <View style={styles.slideDropShadow}>
                 <View style={styles.slide}>
                     <View style={styles.inline}>
-                        <Text style={styles.time}>{item.time}</Text>
+                        <Text style={styles.time}>{Math.floor(moment.duration(item.time).asHours()) + moment.utc(moment.duration(item.time)).format(":mm:ss")}</Text>
                         <View style={styles.priceWrapper}>
                             <Text style={styles.price}>{item.price}$</Text>
                         </View>
@@ -36,7 +36,7 @@ class TripCardCarousel extends Component {
                             <Text style={styles.carMake}>{item.car.make && item.car.make || ""} {item.car.model && item.car.model || ""}</Text>
                             <Text style={styles.carYear}>{item.car.year && item.car.year || ""}</Text>
                         </View>
-                        <Button style={styles.button} onTap={}><Text style={styles.buttonText}>MORE</Text></Button>
+                        <Button style={styles.button} ><Text style={styles.buttonText}>MORE</Text></Button>
                     </View>
 
                 </View>
