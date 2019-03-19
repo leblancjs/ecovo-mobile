@@ -26,8 +26,12 @@ class MapScreen extends Component {
     _goToMyProfile = () => {
         this.props.goToProfile();
     }
+    _goToCreateTrip = () => {
+        this.props.goToCreateTrip();
+    }
     _searchTrips = (params) => {
-        this.props.goToResults();
+        //this.props.search.setSearchParams(params);
+        this.props.goToResults(params);
     }
 
     render() {
@@ -39,7 +43,7 @@ class MapScreen extends Component {
                     <TouchableOpacity style={styles.touchableIcon} onPress={this._goToMyProfile}>
                         <Image style={styles.profile} source={{ uri: this.state.user.photo }} />
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.touchableIcon} onPress={this._goToMyProfile}>
+                    <TouchableOpacity style={styles.touchableIcon} onPress={this._goToCreateTrip}>
                         <Container style={styles.iconTripsWrapper} >
                             <Icon style={styles.iconTrips} type="FontAwesome5" name="map-marked"></Icon>
                         </Container>
@@ -55,7 +59,7 @@ class MapScreen extends Component {
                     </TouchableOpacity>
 
                 </View>
-                <SlidingUpPanel allowDragging={false} ref={c => this._panel = c}>
+                <SlidingUpPanel allowDragging={false} ref={c => this._panel = c} allowMomentum={false}>
                     <SearchTripComponent onSearchTrips={this._searchTrips} onCloseComponent={this._slideDown}></SearchTripComponent>
                 </SlidingUpPanel>
             </Container>
@@ -151,7 +155,8 @@ const mapStateToProps = state => ({
 });
 const mapDispatchToProps = dispatch => ({
     goToProfile: () => dispatch(NavigationActions.navigate({ routeName: ScreenNames.Profile.HOME })),
-    goToResults: () => dispatch(StackActions.push({ routeName: ScreenNames.Trips.RESULTS })),
+    goToCreateTrip: () => dispatch(NavigationActions.navigate({ routeName: ScreenNames.Trips.ADD })),
+    goToResults: (params) => dispatch(StackActions.push({ routeName: ScreenNames.Trips.RESULTS, params: { searchFilters: params } })),
 
 })
 

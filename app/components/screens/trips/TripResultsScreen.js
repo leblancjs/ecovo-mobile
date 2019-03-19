@@ -1,8 +1,10 @@
 import React, { Component } from 'react'
-import { StyleSheet, View, ActivityIndicator } from 'react-native'
-import { connect } from 'react-redux'
-import { withStatusBar } from '../../hoc'
-import { Text } from 'native-base'
+import { StyleSheet, View } from 'react-native';
+import { connect } from 'react-redux';
+import { withStatusBar } from '../../hoc';
+import TripCardCarousel from '../../astuvu-native/TripCardCarousel';
+import { Container } from 'native-base';
+import EcovoMapView from '../../astuvu-native/EcovoMapView';
 import { NavigationActions } from 'react-navigation'
 import PubSubService from '../../../service/pubsub'
 import {
@@ -17,14 +19,7 @@ class TripResultsScreen extends Component {
         super(props)
 
         this.state = {
-            searchParam: {
-                departureDate: null,
-                arrivalDate: null,
-                from: '',
-                to: '',
-                pickupRadius: 50,
-                driverRating: 0,
-            },
+            searchParam: props.navigation.getParam("searchFilters", {}),
             minDate: new Date()
         }
     }
@@ -39,19 +34,19 @@ class TripResultsScreen extends Component {
 
     render() {
         return (
-            <View style={styles.container}>
-                <Text>Loading Results</Text>
+            <Container style={styles.container}>
+                <EcovoMapView></EcovoMapView>
 
-                <ActivityIndicator size="large" color="#2bb267" />
-
-                <Text>{JSON.stringify(this.props.search)}</Text>
-            </View>
+                <View style={styles.bottom}>
+                    <TripCardCarousel style={styles.carousel} items={this.props.search.results}></TripCardCarousel>
+                </View>
+            </Container>
 
         )
     }
 
     _subscribe = () => {
-        this.props.startSearch(this.props.accessToken, this.props.search.filters)
+        this.props.startSearch(this.props.accessToken, this.state.searchParam)
             .then((search) => {
                 PubSubService.subscribe(search.id, (msg) => {
                     let payload = msg.data ? JSON.parse(msg.data) : {}
@@ -94,8 +89,15 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         justifyContent: 'center',
-        alignItems: 'center',
-    }
+    },
+    bottom: {
+        flex: 1,
+        position: 'absolute',
+        width: '100%',
+        bottom: 0,
+        justifyContent: 'flex-end',
+        paddingBottom: 0,
+    },
 })
 
 
