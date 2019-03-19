@@ -1,48 +1,11 @@
 import React, { Component } from 'react'
-import { StyleSheet, View } from 'react-native'
-import { connect } from 'react-redux'
+import PropTypes from 'prop-types'
+import { StyleSheet, View, ActivityIndicator } from 'react-native'
 import { Container, Card } from 'native-base'
+import moment from 'moment'
 import EcovoMapView from '../../astuvu-native/EcovoMapView'
 import TripCarDetails from './TripCarDetails'
 import TripStopDetails from './TripStopDetails'
-
-var markers = [
-    {
-        latitude: 45.5016889,
-        longitude: -73.567256,
-        title: 'Origin',
-        subtitle: 'Montreal',
-        hour: "14h00",
-        duration: "1h30"
-    },
-    {
-        latitude: 45.404476,
-        longitude: -71.888351,
-        title: 'Stop 1',
-        subtitle: 'Sherbrook',
-        hour: "15h30",
-        duration: "3h00"
-    },
-    {
-        latitude: 46.3938,
-        longitude: -72.6534,
-        title: 'Stop 2',
-        subtitle: 'Trois-Rivière',
-        hour: "18h30",
-        duration: "1h00"
-    },
-    {
-        latitude: 46.8138,
-        longitude: -71.2079,
-        title: 'Destination',
-        subtitle: 'Quebec',
-        hour: "19h30"
-    },
-];
-
-const origin = { latitude: 45.5016889, longitude: -73.567256 };
-const destination = { latitude: 46.8138, longitude: -71.2079 };
-const stopPoint = [{ latitude: 45.404476, longitude: -71.888351 }, { latitude: 46.3938, longitude: -72.6534 }]
 
 class TripDetails extends Component {
     static navigationOptions = {
@@ -52,14 +15,47 @@ class TripDetails extends Component {
         super(props)
     }
 
+    renderLoadingMap() {
+        const { trip } = this.props;
+        if (trip == undefined) {
+            return <ActivityIndicator size="large" color="#2bb267" />
+        } else {
+            let marker = [];
+            marker.push(trip.source)
+            marker = marker.concat(trip.stops)
+            marker.push(trip.destination)
+
+            return <EcovoMapView markers={marker} source={trip.source} destination={trip.destination} steps={marker} />
+        }
+    }
+
+    renderStopDetail() {
+        const { trip } = this.props;
+        if (trip == undefined) {
+            return <ActivityIndicator size="large" color="#2bb267" />
+        } else {
+            let marker = [];
+            trip.source.title = 'Origin'
+            trip.source.hour = moment(trip.leaveAt).format('LT')
+            marker.push(trip.source)
+            marker = marker.concat(trip.stops)
+            trip.destination.title = 'Destination'
+            trip.destination.hour = moment(trip.arriveBy).format('LT')
+            marker.push(trip.destination)
+
+            return <TripStopDetails stops={marker} />
+        }
+    }
+
     render() {
+        const { vehicule } = this.props;
         return (
             <Container style={styles.container}>
-                <EcovoMapView markers={markers} origin={origin} destination={destination} stopPoints={stopPoint} />
+                {this.renderLoadingMap()}
                 <View style={styles.bottom}>
                     <Card style={styles.cardStyle}>
-                        <TripCarDetails carMake="Toyota" carModel="Camry" carYear="2016" carColor="Green" />
-                        <TripStopDetails stops={markers} />
+                        <TripCarDetails carMake={vehicule.make} carModel={vehicule.model} carYear={vehicule.year} carColor={vehicule.color} />
+                        {this.renderStopDetail()}
                     </Card>
                 </View>
             </Container>
@@ -87,9 +83,9 @@ const styles = StyleSheet.create({
     }
 })
 
-const mapStateToProps = state => ({
-});
-const mapDispatchToProps = dispatch => ({
-})
+TripDetails.propTypes = {
+    trip: PropTypes.object,
+    vehicule: PropTypes.object
+}
 
-export default connect(mapStateToProps, mapDispatchToProps)(TripDetails);
+export default TripDetails;

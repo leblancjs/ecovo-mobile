@@ -156,8 +156,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
     goToProfile: () => dispatch(NavigationActions.navigate({ routeName: ScreenNames.Profile.HOME })),
     goToCreateTrip: () => dispatch(NavigationActions.navigate({ routeName: ScreenNames.Trips.ADD })),
-    goToResults: (params) => dispatch(StackActions.push({ routeName: ScreenNames.Trips.RESULTS, params: { searchFilters: params } })),
-
+    goToResults: (params) => dispatch(StackActions.push({ routeName: ScreenNames.Trips.RESULTS, params: { searchFilters: params } }))
 })
 
 export default withStatusBar(connect(mapStateToProps, mapDispatchToProps)(MapScreen));
