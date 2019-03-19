@@ -23,12 +23,8 @@ class AddTripScreen extends Component {
                 source: undefined,
                 destination: undefined,
                 leaveAt: '',
-                driver: {
-                    id: ''
-                },
-                vehicle: {
-                    id: ''
-                },
+                driverId: '',
+                vehicleId: '',
                 seats: 1,
                 stops: [],
                 details: {
@@ -40,12 +36,13 @@ class AddTripScreen extends Component {
             seats: [],
             selectedVehicule: undefined,
             stopsItem: [],
-            minDate: new Date()
+            minDate: new Date(),
+            leaveAtError: null
         }
     }
 
     componentDidMount() {
-        if(this.state.trip.driver.id == '') {
+        if(this.state.trip.driverId == '') {
             this._updateDriver()
         }
 
@@ -56,6 +53,24 @@ class AddTripScreen extends Component {
 
     _closeAddTripScreen = () => {
         this.props.closeAddTripScreen()
+    }
+
+    _updateLeaveAt = (selectedDate) => {
+        var currentDate = new Date()
+        var newDate = new Date(selectedDate)
+
+        if (currentDate > newDate) {
+            this.setState({leaveAtError: "Selected date must be in the future."});
+        } else {
+            this.setState({
+                ...this.state,
+                leaveAtError: null,
+                trip: {
+                    ...this.state.trip,
+                    leaveAt: selectedDate
+                }
+            })
+        }
     }
 
     _onFieldChange = (field, value) => {
@@ -101,10 +116,7 @@ class AddTripScreen extends Component {
             ...this.state,
             trip: {
                 ...this.state.trip,
-                vehicle: {
-                    ...this.state.trip.vehicle,
-                    id : selectedVehicule.id
-                } 
+                vehicleId: selectedVehicule.id
             },
             seats: seats
         })
@@ -140,10 +152,7 @@ class AddTripScreen extends Component {
             ...this.state,
             trip: {
                 ...this.state.trip,
-                driver: {
-                    ...this.state.trip.driver,
-                    id : this.props.auth.user.id
-                } 
+                driverId: this.props.auth.user.id
             }
         })
     }
@@ -196,8 +205,8 @@ class AddTripScreen extends Component {
             this.state.trip.source != undefined &&
             this.state.trip.destination != undefined &&
             this.state.trip.leaveAt != '' &&
-            this.state.trip.vehicle.id != '' &&
-            this.state.trip.driver.id != '' &&
+            this.state.trip.vehicleId != '' &&
+            this.state.trip.driverId != '' &&
             this.state.trip.seats > 0
 
         let vehicules = (this.state.vehicules === undefined || this.state.vehicules.length == 0) ?
@@ -254,12 +263,17 @@ class AddTripScreen extends Component {
                         cancelBtnText="Cancel"
                         is24Hour={true}
                         placeholder="Leave At"
-                        onDateChange={value => this._onFieldChange('leaveAt', value)}
+                        onDateChange={value => this._updateLeaveAt(value)}
                         customStyles={{
                             dateInput: styles.dateInput
                         }}
                     />
                 </Item>
+                {!!this.state.leaveAtError && (
+                    <Item style={styles.errorMsgItem}>
+                        <Text style={styles.errorMsg}>{this.state.leaveAtError}</Text>
+                    </Item>
+                )}
                 <Item style={styles.pickerItem} picker>
                     <View style={styles.pickerContainer}>
                         <Picker style={styles.picker}
@@ -448,6 +462,13 @@ const styles = StyleSheet.create({
     iconSelected: {
         color: "#2BB267",
         borderRadius: 50,
+    },
+    errorMsg: {
+        color: '#FF0000'
+    },
+    errorMsgItem: {
+        marginLeft: 40,
+        borderBottomWidth: 0
     }
 })
 
