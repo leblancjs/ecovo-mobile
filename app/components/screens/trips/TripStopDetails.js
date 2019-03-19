@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { StyleSheet, View, Image } from 'react-native';
-import { Text, CardItem, Body, Icon, H1, H2 } from 'native-base';
+import { Text, CardItem, Body, Icon, H1 } from 'native-base';
 import { ScrollView } from 'react-native-gesture-handler';
 
 class TripStopDetails extends Component {
@@ -29,14 +29,15 @@ class TripStopDetails extends Component {
                             </View>
                             <View style={styles.viewRightStyle}>
                                 {stops.map((s, i) => {
+                                    let title = s.title == null ? 'Stop ' + i : s.title
                                     return (
                                         <View key={i}>
-                                            <View>
+                                            <View style={styles.viewMarker}>
                                                 <View style={styles.textSameLine}>
-                                                    <H1>{s.title}</H1>
-                                                    <Text style={styles.txtHourStyle}>- {s.hour}</Text>
+                                                    <H1>{title}</H1>
+                                                    {s.hour && <Text style={styles.txtHourStyle}>- {s.hour}</Text>}
                                                 </View>
-                                                <Text>{s.subtitle}</Text>
+                                                <Text>{s.name}</Text>
                                             </View>
 
                                             {s.duration &&
@@ -86,6 +87,9 @@ const styles = StyleSheet.create({
     txtHourStyle: {
         paddingTop: 7,
         paddingLeft: 3
+    },
+    viewMarker: {
+        paddingVertical:10
     }
 })
 

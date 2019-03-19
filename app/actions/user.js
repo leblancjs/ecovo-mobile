@@ -126,7 +126,8 @@ export const getUserById = (accessToken, userId) => {
             {
                 method: 'GET',
                 headers: {
-                    'Authorization': 'Bearer ' + accessToken
+                    'Authorization': 'Bearer ' + accessToken,
+                    'Content-Type': 'application/json'
                 }
             }
         )

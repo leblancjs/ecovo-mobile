@@ -6,7 +6,6 @@ import {
 import {
     CREATE_USER_REQUEST, CREATE_USER_SUCCESS, CREATE_USER_ERROR,
     UPDATE_USER_REQUEST, UPDATE_USER_SUCCESS, UPDATE_USER_ERROR,
-    GET_USER_REQUEST, GET_USER_SUCCESS, GET_USER_ERROR,
     GET_CURRENT_USER_INFO_REQUEST, GET_CURRENT_USER_INFO_SUCCESS, GET_CURRENT_USER_INFO_ERROR
 } from '../actions/user'
 
@@ -110,23 +109,6 @@ const auth = (state = initialState, action) => {
             return {
                 ...state,
                 isSubmitting: false,
-                error: action.error,
-            }
-        case GET_USER_REQUEST:
-            return {
-                ...state,
-                isFetching: true
-            }
-        case GET_USER_SUCCESS:
-            return {
-                ...state,
-                user: {
-                    ...action.user
-                }
-            }
-        case GET_USER_ERROR:
-            return {
-                ...state,
                 error: action.error,
             }
         case GET_CURRENT_USER_INFO_REQUEST:
