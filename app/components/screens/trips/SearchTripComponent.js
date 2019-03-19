@@ -5,6 +5,8 @@ import PropTypes from 'prop-types';
 import DatePicker from 'react-native-datepicker';
 import GooglePlacesInput from '../../astuvu-native/GooglePlacesAutocomplete';
 import { Dropdown } from 'react-native-material-dropdown';
+import Foundation from 'react-native-vector-icons/Foundation'
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
 
 class SearchTripComponent extends Component {
     constructor(props) {
@@ -92,6 +94,26 @@ class SearchTripComponent extends Component {
             searchParam: {
                 ...this.state.searchParam,
                 driverRating: value
+            }
+        })
+    }
+
+    _updateAnimals = (value) => {
+        this.setState({
+            ...this.state,
+            searchParam: {
+                ...this.state.searchParam,
+                detailsAnimals: value
+            }
+        })
+    }
+
+    _updateLuggages = (value) => {
+        this.setState({
+            ...this.state,
+            searchParam: {
+                ...this.state.searchParam,
+                detailsLuggages: value
             }
         })
     }
@@ -231,21 +253,27 @@ class SearchTripComponent extends Component {
                                 value={this.state.searchParam.seats}
                             />
                         </View>
-                        <View style={styles.containerFilter}>
-                            <Dropdown
-                                label='Luggages'
-                                data={luggages}
-                                value={this.state.searchParam.detailsLuggages}
-                            />
-                        </View>
-                        <View style={styles.containerFilter}>
-                            <Dropdown
-                                label='Animals'
-                                data={animals}
-                                value={this.state.searchParam.detailsAnimals}
-                            />
-                        </View>
+                        <Item style={styles.selectItem}>
+                            <Button transparent onPress={() => this._updateAnimals(0)}>
+                                <Foundation style={[styles.bigIcon, this.state.searchParam.detailsAnimals == 0 ? styles.iconSelected : '']} name='no-dogs' solid />
+                            </Button>
+                            <Button transparent onPress={() => this._updateAnimals(1)}>
+                                <Foundation style={[styles.mediumIcon, this.state.searchParam.detailsAnimals == 1 ? styles.iconSelected : '']} name='guide-dog' solid />
+                            </Button>
+                        </Item>
+                        <Item style={styles.selectItem}>
+                            <Button transparent onPress={() => this._updateLuggages(0)}>
+                                <FontAwesome5 style={[styles.smallIcon, this.state.searchParam.detailsLuggages == 0 ? styles.iconSelected : '']} name='suitcase' solid />
+                            </Button>
+                            <Button transparent onPress={() => this._updateLuggages(1)}>
+                                <FontAwesome5 style={[styles.mediumIcon, this.state.searchParam.detailsLuggages == 1 ? styles.iconSelected : '']} name='suitcase' solid />
+                            </Button>
+                            <Button transparent onPress={() => this._updateLuggages(2)}>
+                                <FontAwesome5 style={[styles.bigIcon, this.state.searchParam.detailsLuggages == 2 ? styles.iconSelected : '']} name='suitcase' solid />
+                            </Button>
+                        </Item>
                     </View>
+        
 
                 </ScrollView>
 
@@ -372,7 +400,28 @@ const styles = StyleSheet.create({
     radioButtonText: {
         textAlign: 'left',
         marginLeft: 20
-    }
+    },
+    smallIcon: {
+        fontSize: 20,
+        margin: 30
+    },
+    mediumIcon: {
+        fontSize: 30,
+        margin: 30
+    },
+    bigIcon: {
+        fontSize: 50,
+        margin: 30
+    },
+    selectItem: {
+        alignSelf: 'center',
+        marginTop: 30,
+        borderBottomWidth: 0
+    },
+    iconSelected: {
+        color: "#2BB267",
+        borderRadius: 50,
+    },
 });
 SearchTripComponent.propTypes = {
     onCloseComponent: PropTypes.func.isRequired,
