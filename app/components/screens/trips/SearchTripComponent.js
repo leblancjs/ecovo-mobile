@@ -9,19 +9,23 @@ import Foundation from 'react-native-vector-icons/Foundation'
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
 
 class SearchTripComponent extends Component {
+
     constructor(props) {
         super(props);
+
         this.state = {
             searchParam: {
-                leaveAt: null,
-                arriveBy: null,
-                source: '',
-                destination: '',
-                radiusThresh: 5,
-                driverRating: 0,
+                leaveAt: "0001-01-01T00:00:00Z",
+                arriveBy: "0001-01-01T00:00:00Z",
+                source: null,
+                destination: null,
+                radiusThresh: 5000,
                 seats: 1,
-                detailsAnimals: 0,
-                detailsLuggages: 0,
+                details: {
+                    animals: 1,
+                    luggages: 1,
+                }
+
 
             },
             minDate: new Date(),
@@ -29,7 +33,6 @@ class SearchTripComponent extends Component {
             isArriveBy: false
         }
     }
-
     _onClosePressed = () => {
         if (this.props.onCloseComponent) {
             this.props.onCloseComponent();
@@ -61,8 +64,12 @@ class SearchTripComponent extends Component {
             ...this.state,
             searchParam: {
                 ...this.state.searchParam,
-                source: details.geometry.location,
-                sourceDescription: from.description,
+                source: {
+                    ...this.state.searchParam.source,
+                    latitude: details.geometry.location.lat,
+                    longitude: details.geometry.location.lng,
+                    name: from.description
+                }
             }
         })
     }
@@ -72,8 +79,12 @@ class SearchTripComponent extends Component {
             ...this.state,
             searchParam: {
                 ...this.state.searchParam,
-                destination: details.geometry.location,
-                destinationDescription: to.description,
+                destination: {
+                    ...this.state.searchParam.destination,
+                    latitude: details.geometry.location.lat,
+                    longitude: details.geometry.location.lng,
+                    name: to.description
+                }
             }
         })
     }
@@ -88,12 +99,26 @@ class SearchTripComponent extends Component {
         })
     }
 
-    _updateMinimumRating = (value) => {
+    _updatePassenger = (value) => {
         this.setState({
             ...this.state,
             searchParam: {
                 ...this.state.searchParam,
-                driverRating: value
+                seats: value,                
+            }
+        })
+    }
+    
+
+    _updateLuggages = (value) => {
+        this.setState({
+            ...this.state,
+            searchParam: {
+                ...this.state.searchParam,
+                details: {
+                    ...this.state.searchParam.details,
+                    luggages: value
+                }
             }
         })
     }
@@ -103,26 +128,19 @@ class SearchTripComponent extends Component {
             ...this.state,
             searchParam: {
                 ...this.state.searchParam,
-                detailsAnimals: value
-            }
-        })
-    }
-
-    _updateLuggages = (value) => {
-        this.setState({
-            ...this.state,
-            searchParam: {
-                ...this.state.searchParam,
-                detailsLuggages: value
+                details: {
+                    ...this.state.searchParam.details,
+                    animals: value
+                }
             }
         })
     }
 
     _searchTrips = () => {
         if (this.state.isArriveBy) {
-            this.state.searchParam.leaveAt = null
+            this.state.searchParam.leaveAt = "0001-01-01T00:00:00Z"
         } else {
-            this.state.searchParam.arriveBy = null
+            this.state.searchParam.arriveBy = "0001-01-01T00:00:00Z"
         }
 
         if (this.props.onSearchTrips) {
@@ -201,7 +219,7 @@ class SearchTripComponent extends Component {
                                     mode="datetime"
                                     placeholder="select date"
                                     date={this.state.searchParam.leaveAt}
-                                    format="MMMM Do YYYY, h:mm:ss a"
+                                    format="YYYY-MM-DDThh:mm:ss.sZ"
                                     minDate={this.state.minDate}
                                     confirmBtnText="Confirm"
                                     cancelBtnText="Cancel"
@@ -220,7 +238,7 @@ class SearchTripComponent extends Component {
                                     mode="datetime"
                                     placeholder="select date"
                                     date={this.state.searchParam.arriveBy}
-                                    format="MMMM Do YYYY, h:mm:ss a"
+                                    format="YYYY-MM-DDThh:mm:ss.sZ"
                                     minDate={this.state.minDate}
                                     confirmBtnText="Confirm"
                                     cancelBtnText="Cancel"
@@ -235,15 +253,15 @@ class SearchTripComponent extends Component {
                             }
                         </Item>
                         <View style={styles.containerFilter}>
-                            <Text style={styles.filterDescription}>Pickup range ({this.state.searchParam.radiusThresh} Km)</Text>
+                            <Text style={styles.filterDescription}>Pickup range ({this.state.searchParam.radiusThresh} m)</Text>
                             <Slider
                                 style={{ width: '80%', alignSelf: 'center' }}
                                 value={this.state.searchParam.radiusThresh}
                                 onValueChange={value => this._updateRange(value)}
-                                step={1}
+                                step={10}
                                 minimumValue={0}
                                 minimumTrackTintColor={'#2BB267'}
-                                maximumValue={50} />
+                                maximumValue={50000} />
                         </View>
 
                         <View style={styles.containerFilter}>
@@ -251,6 +269,7 @@ class SearchTripComponent extends Component {
                                 label='Number of passengers'
                                 data={numberOfPassenger}
                                 value={this.state.searchParam.seats}
+                                onChangeText={this._updatePassenger}
                             />
                         </View>
                         <Item style={styles.selectItem}>

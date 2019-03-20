@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, ActivityIndicator, Text } from 'react-native';
 import { connect } from 'react-redux';
 import { withStatusBar } from '../../hoc';
 import TripCardCarousel from '../../astuvu-native/TripCardCarousel';
@@ -20,7 +20,8 @@ class TripResultsScreen extends Component {
 
         this.state = {
             searchParam: props.navigation.getParam("searchFilters", {}),
-            minDate: new Date()
+            minDate: new Date(),
+            selectedTrip : 0,
         }
     }
 
@@ -32,13 +33,32 @@ class TripResultsScreen extends Component {
         this._unsubscribe()
     }
 
+    _onItemChange = (index) => { 
+        this.setState({ ...this.state, selectedTrip : index });
+    }
+
+    renderLoadingMap() {
+        const { trips } = this.props.search.results;
+        if (trips == undefined || trips.length == 0) {
+            return <View><ActivityIndicator size="large" color="#2bb267" /><Text style={styles.centerText}>Searching...</Text></View> 
+        } else {
+            var trip = trips[this.state.selectedTrip];
+            let marker = [];
+            marker.push(trip.source)
+            marker = marker.concat(trip.stops)
+            marker.push(trip.destination)
+
+            return <EcovoMapView markers={marker} source={trip.source} destination={trip.destination} steps={marker} />
+        }
+    }
+
     render() {
         return (
             <Container style={styles.container}>
-                <EcovoMapView></EcovoMapView>
+                {this.renderLoadingMap()}
 
                 <View style={styles.bottom}>
-                    <TripCardCarousel style={styles.carousel} items={this.props.search.results}></TripCardCarousel>
+                    <TripCardCarousel onItemChange={this._onItemChange} style={styles.carousel} items={this.props.search.results}></TripCardCarousel>
                 </View>
             </Container>
 
@@ -97,6 +117,9 @@ const styles = StyleSheet.create({
         bottom: 0,
         justifyContent: 'flex-end',
         paddingBottom: 0,
+    },
+    centerText: {
+        justifyContent: 'center',
     },
 })
 

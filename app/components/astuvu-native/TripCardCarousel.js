@@ -12,13 +12,19 @@ class TripCardCarousel extends Component {
         super(props)
     }
 
+    _onItemChange(index) {
+        if (this.props.onItemChange) { 
+            this.props.onItemChange(index);
+        }
+    }
+
     _renderItem({ item, index }) {
-        item.time = item.leaveAt && item.arriveBy ? Date.parse(item.arriveBy) - Date.parse(item.leaveAt): 0;
+        item.time = item.leaveAt && item.arriveBy ? Date.parse(item.arriveBy) - Date.parse(item.leaveAt) : 0;
         item.price = item.price ? item.price : "";
         item.departure = item.departure ? item.departure : new Date();
         item.arrival = item.arrival ? item.arrival : new Date();
-        item.stops = item.stops ? item.stops.count() : 0;
-        item.car = item.car != null ? item.car : { make: "none", year: 1900, model: "none" };
+        item.stops = item.stops ? item.stops.length : 0;
+        item.car = item.car != null ? item.car : { make: "Toyota", year: 1999, model: "Tercel" };
         return (
             <View style={styles.slideDropShadow}>
                 <View style={styles.slide}>
@@ -34,7 +40,7 @@ class TripCardCarousel extends Component {
                     <View style={styles.inline}>
                         <View style={styles.inline}>
                             <Text style={styles.carMake}>{item.car.make && item.car.make || ""} {item.car.model && item.car.model || ""}</Text>
-                            <Text style={styles.carYear}>{item.car.year && item.car.year || ""}</Text>
+                            <Text style={styles.carYear}> {item.car.year && item.car.year || ""}</Text>
                         </View>
                         <Button style={styles.button} ><Text style={styles.buttonText}>MORE</Text></Button>
                     </View>
@@ -59,6 +65,7 @@ class TripCardCarousel extends Component {
                 containerCustomStyle={styles.slider}
                 contentContainerCustomStyle={styles.sliderContentContainer}
                 loopClonesPerSide={2}
+                onSnapToItem={(index) => this._onItemChange(index)}
             />
         )
     }
@@ -129,5 +136,7 @@ const styles = StyleSheet.create({
 
 TripCardCarousel.propTypes = {
     items: PropTypes.array.isRequired,
+    onItemChange: PropTypes.func.isRequired,
+
 }
 export default TripCardCarousel;
