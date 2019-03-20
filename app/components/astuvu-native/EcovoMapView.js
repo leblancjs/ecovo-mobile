@@ -8,13 +8,6 @@ import EcovoMarkersMap from './EcovoMarkersMap'
 const LATITUDE_DELTA = 0.01;
 const LONGITUDE_DELTA = 0.01;
 
-const initialRegion = {
-    latitude: 46.189945,
-    longitude: -72.431703,
-    latitudeDelta: 5.0,
-    longitudeDelta: 5.0,
-}
-
 class EcovoMapView extends React.Component {
 
     map = null;
@@ -24,20 +17,29 @@ class EcovoMapView extends React.Component {
 
         let latitude = 46.189945;
         let longitude = -72.431703;
+        let latitudeDelta = 5.0
+        let longitudeDelta = 5.0
+
         if (props.source && props.destination) {
-            latitude = (props.source.latitude - props.destination.latitude) / 2 + props.source.latitude;
-            longitude = (props.source.longitude - props.destination.longitude) / 2 + props.source.longitude;
+            latitude = (props.source.latitude + props.destination.latitude) / 2
+            longitude = (props.source.longitude + props.destination.longitude) / 2
+            minLat = Math.min(props.source.latitude, props.destination.latitude)
+            maxLat = Math.max(props.source.latitude, props.destination.latitude)
+            minLong = Math.min(props.source.longitude, props.destination.longitude)
+            maxLong = Math.max(props.source.longitude, props.destination.longitude)
+
+            latitudeDelta = maxLat - minLat + 1
+            longitudeDelta = maxLong - minLong + 1
         }
 
         this.state = {
             region: {
                 latitude: latitude,
                 longitude: longitude,
-                latitudeDelta: 5.0,
-                longitudeDelta: 5.0,
+                latitudeDelta: latitudeDelta,
+                longitudeDelta: longitudeDelta,
             },
-            ready: true,
-            filteredMarkers: []
+            ready: true
         }
     }
 
@@ -95,12 +97,13 @@ class EcovoMapView extends React.Component {
     render() {
 
         const { children, renderMarker, markers, steps, source, destination } = this.props;
+        const { region } = this.state
 
         return (
             <MapView
                 showsUserLocation
                 ref={map => { this.map = map }}
-                initialRegion={initialRegion}
+                initialRegion={region}
                 renderMarker={renderMarker}
                 onMapReady={this._onMapReady}
                 showsMyLocationButton={false}
