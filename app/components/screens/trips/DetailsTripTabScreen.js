@@ -70,7 +70,7 @@ class DetailsTripTabScreen extends Component {
                         activeTextStyle={{ color: '#fff' }}>
                         <TripDetails {...this.props} trip={this.state.trip} vehicule={this.state.vehicule}/>
                     </Tab>
-                    <Tab heading="DRIVERS"
+                    <Tab heading="DRIVER"
                         tabStyle={{ backgroundColor: '#2bb267' }}
                         textStyle={{ color: '#fff' }}
                         activeTabStyle={{ backgroundColor: '#2bb267' }}

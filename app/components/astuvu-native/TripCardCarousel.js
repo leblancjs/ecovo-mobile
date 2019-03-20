@@ -19,12 +19,15 @@ class TripCardCarousel extends Component {
     }
 
     _renderItem({ item, index }) {
-        item.time = item.leaveAt && item.arriveBy ? Date.parse(item.arriveBy) - Date.parse(item.leaveAt) : 0;
-        item.price = item.price ? item.price : "";
-        item.departure = item.departure ? item.departure : new Date();
-        item.arrival = item.arrival ? item.arrival : new Date();
-        item.stops = item.stops ? item.stops.length : 0;
-        item.car = item.car != null ? item.car : { make: "Toyota", year: 1999, model: "Tercel" };
+        item = {
+            time: item.leaveAt && item.arriveBy ? Date.parse(item.arriveBy) - Date.parse(item.leaveAt) : 0,
+            price: item.price ? item.price : "",
+            departure: item.departure ? item.departure : new Date(),
+            arrival: item.arrival ? item.arrival : new Date(),
+            stops: item.stops ? item.stops.length : 0,
+            car: item.car != null ? item.car : { make: "Toyota", year: 1999, model: "Tercel" }
+        };
+
         return (
             <View style={styles.slideDropShadow}>
                 <View style={styles.slide}>

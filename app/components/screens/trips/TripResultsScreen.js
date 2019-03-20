@@ -1,10 +1,10 @@
 import React, { Component } from 'react'
-import { StyleSheet, View, ActivityIndicator, Text } from 'react-native';
-import { connect } from 'react-redux';
-import { withStatusBar } from '../../hoc';
-import TripCardCarousel from '../../astuvu-native/TripCardCarousel';
-import { Container } from 'native-base';
-import EcovoMapView from '../../astuvu-native/EcovoMapView';
+import { StyleSheet, View, ActivityIndicator, Text } from 'react-native'
+import { connect } from 'react-redux'
+import { withStatusBar } from '../../hoc'
+import TripCardCarousel from '../../astuvu-native/TripCardCarousel'
+import { Container } from 'native-base'
+import EcovoMapView from '../../astuvu-native/EcovoMapView'
 import { NavigationActions } from 'react-navigation'
 import PubSubService from '../../../service/pubsub'
 import {
@@ -34,16 +34,16 @@ class TripResultsScreen extends Component {
     }
 
     _onItemChange = (index) => { 
-        this.setState({ ...this.state, selectedTrip : index });
+        this.setState({ ...this.state, selectedTrip : index })
     }
 
     renderLoadingMap() {
-        const { trips } = this.props.search.results;
+        const trips = this.props.search.results
         if (trips == undefined || trips.length == 0) {
             return <View><ActivityIndicator size="large" color="#2bb267" /><Text style={styles.centerText}>Searching...</Text></View> 
         } else {
-            var trip = trips[this.state.selectedTrip];
-            let marker = [];
+            var trip = trips[this.state.selectedTrip]
+            let marker = []
             marker.push(trip.source)
             marker = marker.concat(trip.stops)
             marker.push(trip.destination)
