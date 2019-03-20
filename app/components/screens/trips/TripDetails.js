@@ -35,11 +35,11 @@ class TripDetails extends Component {
             return <ActivityIndicator size="large" color="#2bb267" />
         } else {
             let marker = [];
-            trip.source.title = 'Origin'
+            trip.source.name = 'Origin'
             trip.source.hour = moment(trip.leaveAt).format('LT')
             marker.push(trip.source)
             marker = marker.concat(trip.stops)
-            trip.destination.title = 'Destination'
+            trip.destination.name = 'Destination'
             trip.destination.hour = moment(trip.arriveBy).format('LT')
             marker.push(trip.destination)
 

@@ -2,23 +2,29 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { Button } from 'native-base'
 import { StyleSheet, Text, View, Dimensions } from 'react-native'
-import Carousel from 'react-native-snap-carousel';
-import moment from "moment";
+import Carousel from 'react-native-snap-carousel'
+import moment from "moment"
 
-const { width: viewportWidth, height: viewportHeight } = Dimensions.get('window');
+const { width: viewportWidth, height: viewportHeight } = Dimensions.get('window')
 
 class TripCardCarousel extends Component {
     constructor(props) {
         super(props)
     }
 
-    _onItemChange(index) {
+    _onItemChange = (index) => {
         if (this.props.onItemChange) { 
-            this.props.onItemChange(index);
+            this.props.onItemChange(index)
         }
     }
 
-    _renderItem({ item, index }) {
+    _onItemMorePressed = (index) => {
+        if (this.props.onItemMorePressed) {
+            this.props.onItemMorePressed(index)
+        }
+    }
+
+    _renderItem = ({ item, index }) => {
         item = {
             time: item.leaveAt && item.arriveBy ? Date.parse(item.arriveBy) - Date.parse(item.leaveAt) : 0,
             price: item.price ? item.price : "",
@@ -26,7 +32,7 @@ class TripCardCarousel extends Component {
             arrival: item.arrival ? item.arrival : new Date(),
             stops: item.stops ? item.stops.length : 0,
             car: item.car != null ? item.car : { make: "Toyota", year: 1999, model: "Tercel" }
-        };
+        }
 
         return (
             <View style={styles.slideDropShadow}>
@@ -45,12 +51,16 @@ class TripCardCarousel extends Component {
                             <Text style={styles.carMake}>{item.car.make && item.car.make || ""} {item.car.model && item.car.model || ""}</Text>
                             <Text style={styles.carYear}> {item.car.year && item.car.year || ""}</Text>
                         </View>
-                        <Button style={styles.button} ><Text style={styles.buttonText}>MORE</Text></Button>
+                        <Button style={styles.button} onPress={() => this._onItemMorePressed(index)}><Text style={styles.buttonText}>MORE</Text></Button>
                     </View>
 
                 </View>
             </View>
-        );
+        )
+    }
+
+    _goToTripDetails = (index) => {
+
     }
 
     render() {
@@ -140,6 +150,7 @@ const styles = StyleSheet.create({
 TripCardCarousel.propTypes = {
     items: PropTypes.array.isRequired,
     onItemChange: PropTypes.func.isRequired,
-
+    onItemMorePressed: PropTypes.func.isRequired
 }
-export default TripCardCarousel;
+
+export default TripCardCarousel

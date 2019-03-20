@@ -5,7 +5,8 @@ import { withStatusBar } from '../../hoc'
 import TripCardCarousel from '../../astuvu-native/TripCardCarousel'
 import { Container } from 'native-base'
 import EcovoMapView from '../../astuvu-native/EcovoMapView'
-import { NavigationActions } from 'react-navigation'
+import { NavigationActions, StackActions } from 'react-navigation'
+import { createTripSuccess } from '../../../actions/trip'
 import PubSubService from '../../../service/pubsub'
 import {
     startSearch, stopSearch,
@@ -37,6 +38,11 @@ class TripResultsScreen extends Component {
         this.setState({ ...this.state, selectedTrip : index })
     }
 
+    _onItemMorePressed = (index) => {
+        this.props.setTrip(this.props.search.results[index])
+        this.props.goToDetails()
+    }
+
     renderLoadingMap() {
         const trips = this.props.search.results
         if (trips == undefined || trips.length == 0) {
@@ -58,7 +64,7 @@ class TripResultsScreen extends Component {
                 {this.renderLoadingMap()}
 
                 <View style={styles.bottom}>
-                    <TripCardCarousel onItemChange={this._onItemChange} style={styles.carousel} items={this.props.search.results}></TripCardCarousel>
+                    <TripCardCarousel onItemChange={this._onItemChange} onItemMorePressed={this._onItemMorePressed} style={styles.carousel} items={this.props.search.results}></TripCardCarousel>
                 </View>
             </Container>
 
@@ -134,7 +140,9 @@ const mapDispatchToProps = dispatch => ({
     addSearchResult: (trip) => dispatch(addSearchResult(trip)),
     removeSearchResult: (tripId) => dispatch(removeSearchResult(tripId)),
     clearSearchResults: () => dispatch(clearSearchResults()),
-    goToError: () => dispatch(NavigationActions.navigate({ routeName: ScreenNames.Errors.HOME }))
+    goToError: () => dispatch(NavigationActions.navigate({ routeName: ScreenNames.Errors.HOME })),
+    goToDetails: () => dispatch(StackActions.push({ routeName: ScreenNames.Trips.DETAILS })),
+    setTrip: (trip) => dispatch(createTripSuccess(trip))
 })
 
 export default withStatusBar(connect(mapStateToProps, mapDispatchToProps)(TripResultsScreen))

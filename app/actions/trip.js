@@ -7,7 +7,7 @@ const createTripRequest = () => ({
 })
 
 export const CREATE_TRIP_SUCCESS = 'CREATE_TRIP_SUCCESS'
-const createTripSuccess = (trip) => ({
+export const createTripSuccess = (trip) => ({
     type: CREATE_TRIP_SUCCESS,
     trip: {
         ...trip

@@ -20,7 +20,9 @@ class DetailsTripTabScreen extends Component {
             trip: props.trip,
             vehicule: {}
         };
-        this._getTripById();
+
+        // Commented for demo
+        // this._getTripById();
     }
 
     componentWillMount() {
@@ -85,13 +87,14 @@ class DetailsTripTabScreen extends Component {
 
 const mapStateToProps = state => ({
     auth: state.auth,
-    user: state.user
+    user: state.auth.user,
+    trip: state.trip.trip
 });
 
 const mapDispatchToProps = dispatch => ({
     getTripById: (accessToken, tripId) => dispatch(getTripById(accessToken, tripId)),
     getUserById: (accessToken, userId) => dispatch(getUserById(accessToken, userId)),
-    getVehiculeById: (accessToken, userId, vehiculeId) => dispatch(getVehiculeById(accessToken, userId, vehiculeId)),
+    getVehiculeById: (accessToken, userId, vehiculeId) => dispatch(getVehiculeById(accessToken, userId, vehiculeId))
 });
 
 export default withStatusBar(connect(mapStateToProps, mapDispatchToProps)(DetailsTripTabScreen));
