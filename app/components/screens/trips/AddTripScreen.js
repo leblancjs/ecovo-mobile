@@ -96,12 +96,18 @@ class AddTripScreen extends Component {
         })
     }
 
-    _addStop = (stop) => {
+    _addStop = (stop, details) => {
+        newStop = {
+            latitude: details.geometry.location.lat,
+            longitude: details.geometry.location.lng,
+            name: stop.description
+        } 
+
         this.setState({
             ...this.state,
             trip: {
                 ...this.state.trip,
-                stops: [...this.state.trip.stops, stop]
+                stops: this.state.trip.stops.concat(newStop)
             }
         })
     }
@@ -132,7 +138,7 @@ class AddTripScreen extends Component {
         let stopsItem = this.state.stopsItem
         stopsItem.push(
                 <Item key={key} style={styles.item}>
-                    <GooglePlacesInput style={styles.stopsInput} placeholder='Pass by' onSearchResult={stop => this._addStop(stop)} />
+                    <GooglePlacesInput style={styles.stopsInput} placeholder='Pass by' onSearchResult={this._addStop} />
                     <Icon style={styles.removeStopBtnIcon} type="MaterialIcons" name="close" onPress={this._removeSearchInput} />
                 </Item>)
         this.setState({stopsItem})
@@ -167,6 +173,36 @@ class AddTripScreen extends Component {
             }
         }).catch(error => {
             console.log(error)
+        })
+    }
+
+    _updateFrom = (from, details) => {
+        this.setState({
+            ...this.state,
+            trip: {
+                ...this.state.trip,
+                source: {
+                    ...this.state.trip.source,
+                    latitude: details.geometry.location.lat,
+                    longitude: details.geometry.location.lng,
+                    name: from.description
+                }
+            }
+        })
+    }
+
+    _updateTo= (to, details) => {
+        this.setState({
+            ...this.state,
+            trip: {
+                ...this.state.trip,
+                destination: {
+                    ...this.state.trip.destination,
+                    latitude: details.geometry.location.lat,
+                    longitude: details.geometry.location.lng,
+                    name: to.description
+                }
+            }
         })
     }
 
@@ -233,7 +269,7 @@ class AddTripScreen extends Component {
                     </Item>
                     <Form style={styles.form}>
                         <Item style={styles.item}>
-                            <GooglePlacesInput placeholder='From (Pick Up Point)' onSearchResult={value => this._onFieldChange('source', value)} />
+                            <GooglePlacesInput placeholder='From (Pick Up Point)' onSearchResult={this._updateFrom}/>
                         </Item>
                         {this.state.stopsItem.map((value, index) => {
                             return value
@@ -247,7 +283,7 @@ class AddTripScreen extends Component {
                             </Right>
                         </Item>
                         <Item style={styles.item}>
-                            <GooglePlacesInput placeholder='To (Drop Off Point)' onSearchResult={value => this._onFieldChange('destination', value)} />
+                            <GooglePlacesInput placeholder='To (Drop Off Point)' onSearchResult={this._updateTo} />
                         </Item>
                     </Form>
                 </View>
