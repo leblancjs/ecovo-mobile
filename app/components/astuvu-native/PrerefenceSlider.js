@@ -71,7 +71,6 @@ const styles = StyleSheet.create({
         marginBottom: 8
     },
     sliderContainer: {
-        flex: 1,
         flexDirection: 'row',
         alignItems: 'center'
     },

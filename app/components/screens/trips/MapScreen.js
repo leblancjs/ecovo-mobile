@@ -51,7 +51,7 @@ class MapScreen extends Component {
                 </View>
                 <View style={styles.bottom}>
                     <Text style={styles.footerHeaderText}>
-                        Search a trip
+                        Find a Trip
                     </Text>
                     <TouchableOpacity style={styles.itemRow} onPress={() => this._panel.show()}>
                         <Icon active name='search' style={styles.searchIcon} />

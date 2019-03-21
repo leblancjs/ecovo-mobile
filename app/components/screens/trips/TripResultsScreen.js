@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
-import { StyleSheet, View, ActivityIndicator, Text } from 'react-native'
+import { StyleSheet, View, ActivityIndicator } from 'react-native'
+import { Container, Content, Header, Left, Right, Body, Title, Button, Text, Icon } from 'native-base'
 import { connect } from 'react-redux'
-import { withStatusBar } from '../../hoc'
+import { astuvu } from '../../hoc'
 import TripCardCarousel from '../../astuvu-native/TripCardCarousel'
-import { Container } from 'native-base'
 import EcovoMapView from '../../astuvu-native/EcovoMapView'
 import { NavigationActions, StackActions } from 'react-navigation'
 import { createTripSuccess } from '../../../actions/trip'
@@ -43,10 +43,14 @@ class TripResultsScreen extends Component {
         this.props.goToDetails()
     }
 
+    _back = () => {
+        this.props.back()
+    }
+
     renderLoadingMap() {
         const trips = this.props.search.results
         if (trips == undefined || trips.length == 0) {
-            return <View><ActivityIndicator size="large" color="#2bb267" /><Text style={styles.centerText}>Searching...</Text></View> 
+            return <View><ActivityIndicator size="large" color="#2bb267" /></View> 
         } else {
             var trip = trips[this.state.selectedTrip]
             let marker = []
@@ -60,12 +64,29 @@ class TripResultsScreen extends Component {
 
     render() {
         return (
-            <Container style={styles.container}>
-                {this.renderLoadingMap()}
+            <Container>
+                <Header noShadow>
+                    <Left>
+                        <Button transparent onPress={this._back}>
+                            <Icon name="arrow-back"/>
+                            <Text>Back</Text>
+                        </Button>
+                    </Left>
+                    <Body>
+                        <Title>Results</Title>
+                    </Body>
+                    <Right/>
+                </Header>
+                <Content
+                    scrollEnabled={false}
+                    contentContainerStyle={styles.container}
+                >
+                    {this.renderLoadingMap()}
 
-                <View style={styles.bottom}>
-                    <TripCardCarousel onItemChange={this._onItemChange} onItemMorePressed={this._onItemMorePressed} style={styles.carousel} items={this.props.search.results}></TripCardCarousel>
-                </View>
+                    <View style={styles.bottom}>
+                        <TripCardCarousel onItemChange={this._onItemChange} onItemMorePressed={this._onItemMorePressed} style={styles.carousel} items={this.props.search.results}></TripCardCarousel>
+                    </View>
+                </Content>
             </Container>
 
         )
@@ -142,7 +163,8 @@ const mapDispatchToProps = dispatch => ({
     clearSearchResults: () => dispatch(clearSearchResults()),
     goToError: () => dispatch(NavigationActions.navigate({ routeName: ScreenNames.Errors.HOME })),
     goToDetails: () => dispatch(StackActions.push({ routeName: ScreenNames.Trips.DETAILS })),
-    setTrip: (trip) => dispatch(createTripSuccess(trip))
+    setTrip: (trip) => dispatch(createTripSuccess(trip)),
+    back: () => dispatch(StackActions.pop())
 })
 
-export default withStatusBar(connect(mapStateToProps, mapDispatchToProps)(TripResultsScreen))
+export default astuvu(connect(mapStateToProps, mapDispatchToProps)(TripResultsScreen))

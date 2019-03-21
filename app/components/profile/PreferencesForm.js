@@ -73,7 +73,7 @@ const styles = StyleSheet.create({
 
 PreferencesForm.propTypes = {
     preferences: PropTypes.object,
-    onFieldChange: PropTypes.func,
+    onFieldChange: PropTypes.func
 }
 
 export default PreferencesForm

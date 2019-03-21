@@ -1,8 +1,9 @@
 import React, { Component } from 'react'
 import { StyleSheet, SafeAreaView, View, StatusBar } from 'react-native'
 import hoistNonReactStatic from 'hoist-non-react-statics'
+import astuvu from './astuvu'
 
-export function withSafeView(WrappedComponent) {
+function withSafeView(WrappedComponent) {
     class EnhancedComponent extends Component {
         constructor(props) {
             super(props)
@@ -24,7 +25,7 @@ export function withSafeView(WrappedComponent) {
     return EnhancedComponent
 }
 
-export function withStatusBar(WrappedComponent) {
+function withStatusBar(WrappedComponent) {
     class EnhancedComponent extends Component {
         constructor(props) {
             super(props)
@@ -63,3 +64,9 @@ const styles = StyleSheet.create({
         backgroundColor: '#2bb267'
     }
 })
+
+export {
+    withSafeView,
+    withStatusBar,
+    astuvu
+}

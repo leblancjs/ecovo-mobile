@@ -1,59 +1,97 @@
 import React, { Component } from 'react'
-import { Container, Tab, Tabs } from 'native-base'
-import { StyleSheet, Button as ReactButton } from 'react-native'
-import { connect } from 'react-redux';
-import { NavigationActions } from 'react-navigation';
+import { StyleSheet } from 'react-native'
+import { Container, Header, Content, Tabs, Tab, Left, Body, Right, Button, Title, Icon, Text } from 'native-base'
+import { connect } from 'react-redux'
+import { NavigationActions, StackActions } from 'react-navigation'
+import { logout } from '../../../actions/auth'
 import MyProfileScreen from './MyProfileScreen'
 import VehiculeScreen from '../vehicules/VehiculeScreen'
-import { withStatusBar } from '../../hoc';
+import { astuvu } from '../../hoc'
 import { ScreenNames } from '../'
 
 class ProfileTabScreen extends Component {
-    static navigationOptions = ({ navigation }) => {
-        return {
-            headerLeft: (
-                <ReactButton
-                    title='X'
-                    onPress={navigation.getParam('back')}
-                    color='#fff'
-                />
-            )
+    constructor(props) {
+        super(props)
+
+        this.state = {
+            user: {
+                ...this.props.user
+            }
         }
     }
 
-    componentWillMount() {
-        this.props.navigation.setParams({ back: this.props.goMapScreen })
+    _logout = () => {
+        this.props.logout()
+            .then(() => this.props.goToWelcome())
+            .catch(error => {
+                console.log(error)
+                this.props.goToError()
+            })
+    }
+
+    _goToUpdateProfileScreen = () => {
+        this.props.goToUpdateProfileScreen()
     }
 
     render() {
         return (
             <Container>
-                <Tabs tabBarUnderlineStyle={{ backgroundColor: '#fff', height: 2 }}>
-                    <Tab heading="MY PROFILE"
-                        tabStyle={{ backgroundColor: '#2bb267' }}
-                        textStyle={{ color: '#fff' }}
-                        activeTabStyle={{ backgroundColor: '#2bb267' }}
-                        activeTextStyle={{ color: '#fff' }}>
-                        <MyProfileScreen {...this.props} />
-                    </Tab>
-                    <Tab heading="MY CARS"
-                        tabStyle={{ backgroundColor: '#2bb267' }}
-                        textStyle={{ color: '#fff' }}
-                        activeTabStyle={{ backgroundColor: '#2bb267' }}
-                        activeTextStyle={{ color: '#fff' }}>
-                        <VehiculeScreen {...this.props} />
-                    </Tab>
-                </Tabs>
+                <Header noShadow>
+                    <Left>
+                        <Button transparent onPress={this.props.goMapScreen}>
+                            <Icon name="close"/>
+                        </Button>
+                    </Left>
+                    <Body>
+                        <Title>Profile</Title>
+                    </Body>
+                    <Right>
+                        <Button transparent onPress={this._logout}>
+                            <Text>Logout</Text>
+                        </Button>
+                    </Right>
+                </Header>
+                <Content
+                    contentContainerStyle={styles.container}
+                    scrollEnabled={false}
+                >
+                    <Tabs tabBarUnderlineStyle={{ backgroundColor: '#fff', height: 2 }}>
+                        <Tab heading="PERSONAL INFO"
+                            tabStyle={{ backgroundColor: '#2bb267' }}
+                            textStyle={{ color: '#fff' }}
+                            activeTabStyle={{ backgroundColor: '#2bb267' }}
+                            activeTextStyle={{ color: '#fff' }}>
+                            <MyProfileScreen user={this.props.user} onFabTapped={this._goToUpdateProfileScreen}/>
+                        </Tab>
+                        <Tab heading="CARS"
+                            tabStyle={{ backgroundColor: '#2bb267' }}
+                            textStyle={{ color: '#fff' }}
+                            activeTabStyle={{ backgroundColor: '#2bb267' }}
+                            activeTextStyle={{ color: '#fff' }}>
+                            <VehiculeScreen/>
+                        </Tab>
+                    </Tabs>
+                </Content>
             </Container>
-        );
+        )
     }
 }
 
+const styles = StyleSheet.create({
+    container: {
+        flex: 1
+    }
+})
+
 const mapStateToProps = state => ({
-});
+    user: state.auth.user
+})
 
 const mapDispatchToProps = dispatch => ({
-    goMapScreen: () => dispatch(NavigationActions.navigate({ routeName: ScreenNames.Trips.HOME }))
-});
+    logout: () => dispatch(logout()),
+    goToWelcome: () => dispatch(NavigationActions.navigate({ routeName: ScreenNames.SignIn.HOME })),
+    goMapScreen: () => dispatch(NavigationActions.navigate({ routeName: ScreenNames.Trips.HOME })),
+    goToUpdateProfileScreen: () => dispatch(StackActions.push({ routeName: ScreenNames.Profile.UPDATE }))
+})
 
-export default withStatusBar(connect(mapStateToProps, mapDispatchToProps)(ProfileTabScreen));
+export default astuvu(connect(mapStateToProps, mapDispatchToProps)(ProfileTabScreen))

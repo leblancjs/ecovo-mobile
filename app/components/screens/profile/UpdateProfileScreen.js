@@ -1,19 +1,22 @@
-import React, { Component } from 'react';
-import { StyleSheet, Text, Image, View, } from 'react-native';
-import { Container, Button, Content, Textarea, Item, Form } from 'native-base';
-import { NavigationActions } from 'react-navigation';
-import { connect } from 'react-redux';
-import { updateUser } from '../../../actions/user';
-import PhotoUpload from 'react-native-photo-upload';
-import PersonalInfoForm from '../../profile/PersonalInfoForm';
-import PreferencesForm from '../../profile/PreferencesForm';
+import React, { Component } from 'react'
+import { StyleSheet, View, ScrollView } from 'react-native'
+import { Container, Header, Content, Left, Right, Body, Title, Text, Button, Textarea, Item, Form, Icon, Thumbnail } from 'native-base'
+import { NavigationActions, StackActions } from 'react-navigation'
+import { connect } from 'react-redux'
+import { astuvu } from '../../hoc'
+import { updateUser } from '../../../actions/user'
+import PhotoUpload from 'react-native-photo-upload'
+import PersonalInfoForm from '../../profile/PersonalInfoForm'
+import PreferencesForm from '../../profile/PreferencesForm'
 import { ScreenNames } from '../'
 
 class UpdateProfileScreen extends Component {
     constructor(props) {
-        super(props);
-        this.state = { user: { ...props.auth.user } };
+        super(props)
+
+        this.state = { user: { ...props.auth.user } }
     }
+
     _setPhoto = (photo) => {
         this.setState({
             ...this.state,
@@ -21,13 +24,12 @@ class UpdateProfileScreen extends Component {
                 ...this.state.user,
                 photo,
             }
-        }
-        );
+        })
     }
 
     _updateUser = () => {
         this.props.updateUser(this.props.auth.credentials.accessToken, this.state.user)
-            .then(() => this.props.goToProfile())
+            .then(() => this.props.goToProfile(this.state.user))
             .catch(error => {
                 console.log(error)
                 this.props.goToError()
@@ -55,66 +57,77 @@ class UpdateProfileScreen extends Component {
                     [field]: value
                 }
             })
-         }
-
+        }
     }
 
     render() {
-        let picStyle;
+        let disableButton =
+            this.state.user.firstName == '' ||
+            this.state.user.lastName == '' ||
+            this.state.user.dateOfBirth == undefined
 
-        if (this.state.user.photo == '') {
-            picStyle = styles.defaultImagePicker;
-        } else {
-            picStyle = styles.imagePicker;
-        }
         return (
-            <Container style={styles.container}>
-                <Text style={styles.title}>Edit your profile</Text>
-                <Content>
-                    <PhotoUpload
-                        onPhotoSelect={photo => {
-                            if (photo) {
-                                this._setPhoto(photo)
-                            }
-                        }}
-                    >
-                        {this.state.user.photo == '' &&
-                            <Image
-                                style={picStyle}
-                                resizeMode='cover'
-                                source={require('../../../../assets/profile_pic.png')}
-                            />
-                        }
-
-                        {this.state.user.photo != '' &&
-                            <Image
-                                style={picStyle}
-                                resizeMode='cover'
-                                source={{ uri: this.props.auth.user.photo }}                            />
-                        }
-                    </PhotoUpload>
-                    <PersonalInfoForm user={this.props.auth.user} onFieldChange={this._onFieldChange} />
-                    <PreferencesForm preferences={this.props.auth.user.preferences} onFieldChange={(field, value) => this._onFieldChange(field, value, true)} />
-                    <Form style={styles.form}>
-                        <Item style={styles.item}>
-                            <Textarea style={styles.textArea} rowSpan={5} bordered placeholder="Description" onChangeText={value => this._onFieldChange('description', value)} />
-                        </Item>
-                    </Form>
-
-                </Content>
-                <View style={styles.updateBtnWrapper}>
-                    {this.state.user.firstName != ''
-                        && this.state.user.lastName != ''
-                        && this.state.user.dateOfBirth != undefined
-                        &&
-                        <Button transparent
-                            onPress={this._updateUser} style={styles.updatebutton}>
+            <Container>
+                <Header noShadow>
+                    <Left>
+                        <Button transparent onPress={this.props.goToProfile}>
+                            <Icon name="close"/>
+                        </Button>
+                    </Left>
+                    <Body>
+                        <Title>Edit Profile</Title>
+                    </Body>
+                    <Right/>
+                </Header>
+                <Content
+                    scrollEnabled={false}
+                    contentContainerStyle={styles.container}
+                >
+                    <ScrollView style={styles.formContainer}>
+                        <View style={styles.photoContainer}>
+                            <PhotoUpload
+                                onPhotoSelect={photo => {
+                                    if (photo) {
+                                        this._setPhoto(photo)
+                                    }
+                                }}
+                            >
+                                {this.state.user.photo === '' ?
+                                    <Thumbnail large
+                                        style={styles.imagePicker}
+                                        source={require('../../../../assets/profile_pic.png')}
+                                    /> :
+                                    <Thumbnail large
+                                        style={styles.imagePicker}
+                                        source={{ uri: this.state.user.photo }}
+                                    />
+                                }
+                            </PhotoUpload>
+                        </View>
+                        <PersonalInfoForm user={this.props.auth.user} onFieldChange={this._onFieldChange} />
+                        <PreferencesForm preferences={this.props.auth.user.preferences} onFieldChange={(field, value) => this._onFieldChange(field, value, true)} />
+                        <Form style={styles.form}>
+                            <Item style={styles.item}>
+                                <Textarea bordered style={styles.textArea}
+                                    rowSpan={5}
+                                    placeholder="Description"
+                                    onChangeText={value => this._onFieldChange('description', value)}
+                                    value={this.state.user.description}
+                                />
+                            </Item>
+                        </Form>
+                    </ScrollView>
+                    <View style={styles.buttonContainer}>
+                        <Button block
+                            disabled={disableButton || this.props.auth.isSubmitting}
+                            onPress={this._updateUser}
+                        >
                             <Text style={styles.textWhite}>Update</Text>
                         </Button>
-                    }
-                </View>
+                    </View>
+                </Content>
             </Container>
-        );
+        )
     }
 }
 const inputStyle = {
@@ -130,89 +143,26 @@ const inputStyle = {
 }
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
-        justifyContent: 'center',
+        flex: 1
     },
-    title: {
-        fontSize: 30,
-        textAlign: 'left',
-        margin: 20,
+    formContainer: {
+        flex: 1
     },
-    text: {
-        fontSize: 15,
-        opacity: 1
+    photoContainer: {
+        height: 80,
+        margin: 16
+    },
+    imagePicker: {
+        marginTop: 20,
+        paddingVertical: 30
+    },
+    buttonContainer: {
+        padding: 16
     },
     textWhite: {
         fontSize: 20,
         color: '#fff',
         textAlign: 'center',
-    },
-    item: {
-        margin: 15
-    },
-    updatebutton: {
-        justifyContent: 'center',
-        backgroundColor: "#2BB267",
-        alignSelf: 'stretch',
-        textAlign: 'center',
-        padding: 10,
-        marginBottom: 20,
-    },
-    updateBtnWrapper: {
-        backgroundColor: "#2BB267",
-    },
-    profilePicIcon: {
-        width: 70,
-        height: 70,
-        marginRight: 10
-    },
-    addPictureBtn: {
-        margin: 10,
-        height: 70
-    },
-    imagePicker: {
-        width: 100,
-        height: 100,
-        borderRadius: 50,
-        borderWidth: 1,
-        borderColor: "#eee"
-    },
-    defaultImagePicker: {
-        width: 100,
-        height: 100,
-        borderRadius: 50,
-        borderWidth: 1,
-        borderColor: "#eee"
-    },
-    sliderContainer: {
-        alignContent: 'center',
-        marginTop: 40
-    },
-    sliderHeader: {
-        flexDirection: 'row',
-        justifyContent: 'center'
-    },
-    slider: {
-        flexDirection: 'row',
-        width: '100%',
-    },
-    textGreen: {
-        fontSize: 20,
-        color: '#2BB267'
-    },
-    text: {
-        justifyContent: 'center',
-        fontSize: 15
-    },
-    sliderLegend: {
-        flexDirection: 'row',
-        justifyContent: 'center',
-        marginLeft: 70,
-        marginRight: 70
-    },
-    icon: {
-        fontSize: 25,
-        color: '#000000'
     },
     textArea: {
         ...inputStyle,
@@ -227,17 +177,16 @@ const styles = StyleSheet.create({
         paddingBottom: 16,
         paddingRight: 16
     },
-});
+})
 
 const mapStateToProps = state => ({
     auth: state.auth
-});
+})
 
 const mapDispatchToProps = dispatch => ({
     updateUser: (accessToken, user) => dispatch(updateUser(accessToken, user)),
-    goToProfile: () => dispatch(NavigationActions.navigate({ routeName: ScreenNames.Profile.HOME })),
+    goToProfile: () => dispatch(StackActions.pop()),
     goToError: () => dispatch(NavigationActions.navigate({ routeName: ScreenNames.Errors.HOME }))
+})
 
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(UpdateProfileScreen);
+export default astuvu(connect(mapStateToProps, mapDispatchToProps)(UpdateProfileScreen))

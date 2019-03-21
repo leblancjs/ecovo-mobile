@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, Image } from 'react-native';
-import { Text } from 'native-base';
+import { Text, Thumbnail } from 'native-base';
 import PropTypes from 'prop-types';
 
 class ProfileHeaderComponent extends Component {
@@ -12,7 +12,7 @@ class ProfileHeaderComponent extends Component {
     render() {
         const { photo, firstName, lastName } = this.props
         return (
-            <View>
+            <View style={styles.container}>
                 <View style={styles.row}>
                     <Image style={styles.logo} source={{ uri: photo }} />
                 </View>
@@ -27,6 +27,10 @@ class ProfileHeaderComponent extends Component {
 }
 
 const styles = StyleSheet.create({
+    container: {
+        marginBottom: 8
+    },
+
     logo: {
         width: 100,
         height: 100,
@@ -51,7 +55,7 @@ const styles = StyleSheet.create({
     },
 
     nameHolder: {
-        marginTop: 80,
+        marginTop: 64,
         justifyContent: 'center',
         alignItems: 'center',
     }

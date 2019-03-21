@@ -8,7 +8,6 @@ import AddPersonalInfoScreen from './components/screens/signup/AddPersonalInfoSc
 import AddPreferencesScreen from './components/screens/signup/AddPreferencesScreen'
 import MapScreen from './components/screens/trips/MapScreen'
 import GenericErrorScreen from './components/screens/error/GenericErrorScreen'
-import AstuvuNativeDemoScreen from './components/screens/AstuvuNativeDemoScreen'
 import CreateVehiculeScreen from './components/screens/vehicules/CreateVehiculeScreen'
 import UpdateProfileScreen from './components/screens/profile/UpdateProfileScreen';
 import ProfileTabScreen from './components/screens/profile/ProfileTabScreen';
@@ -16,65 +15,39 @@ import TripResultsScreen from './components/screens/trips/TripResultsScreen';
 import AddTripScreen from './components/screens/trips/AddTripScreen';
 import DetailsTripTabScreen from './components/screens/trips/DetailsTripTabScreen'
 
-const defaultNavigationOptions = {
-    headerStyle: {
-        backgroundColor: '#2BB267'
-    },
-    headerTintColor: '#fff'
-}
-
 const SignInNavigator = createStackNavigator({
     [ScreenNames.SignIn.HOME]: {
-        screen: SignInScreen,
-        navigationOptions: {
-            title: 'Sign In'
-        }
+        screen: SignInScreen
     }
 }, {
-    defaultNavigationOptions
+    headerMode: 'none'
 })
 
 const SignUpNavigator = createStackNavigator({
     [ScreenNames.SignUp.PERSONAL_INFO]: {
-        screen: AddPersonalInfoScreen,
-        navigationOptions: {
-            title: 'Create Your Profile'
-        }
+        screen: AddPersonalInfoScreen
     },
     [ScreenNames.SignUp.PREFERENCES]: {
-        screen: AddPreferencesScreen,
-        navigationOptions: {
-            title: 'Create Your Profile'
-        }
+        screen: AddPreferencesScreen
     }
 }, {
-    defaultNavigationOptions,
-    initialRouteName: ScreenNames.SignUp.PERSONAL_INFO
+    initialRouteName: ScreenNames.SignUp.PERSONAL_INFO,
+    headerMode: 'none'
 })
 
 const ProfileNavigator = createStackNavigator({
     [ScreenNames.Profile.HOME]: {
-        screen: ProfileTabScreen,
-        navigationOptions: {
-            title: 'Profile',
-        },
-        initialRouteName: ScreenNames.Trips.MAP
+        screen: ProfileTabScreen
     },
     [ScreenNames.Profile.UPDATE]: {
-        screen: UpdateProfileScreen,
-        navigationOptions: {
-            title: 'Update Profile',
-        }
+        screen: UpdateProfileScreen
     },
     [ScreenNames.Vehicules.CREATE]: {
-        screen: CreateVehiculeScreen,
-        navigationOptions: {
-            title: 'Create a vehicule'
-        }
+        screen: CreateVehiculeScreen
     }
 }, {
-    defaultNavigationOptions,
     initialRouteName: ScreenNames.Profile.HOME,
+    headerMode: 'none'
 })
 
 const TripsNavigator = createStackNavigator({
@@ -83,19 +56,16 @@ const TripsNavigator = createStackNavigator({
     [ScreenNames.Trips.DETAILS]: DetailsTripTabScreen,
     [ScreenNames.Trips.ADD]: AddTripScreen,
 }, {
-    defaultNavigationOptions,
-    initialRouteName: ScreenNames.Trips.MAP
+    initialRouteName: ScreenNames.Trips.MAP,
+    headerMode: 'none'
 })
 
 const ErrorNavigator = createStackNavigator({
     [ScreenNames.Errors.GENERIC]: {
-        screen: GenericErrorScreen,
-        navigationOptions: {
-            title: 'Oops!'
-        }
+        screen: GenericErrorScreen
     }
 }, {
-    defaultNavigationOptions
+    headerMode: 'none'
 })
 
 const AppNavigator = createSwitchNavigator({
@@ -109,10 +79,8 @@ const AppNavigator = createSwitchNavigator({
     [ScreenNames.SignUp.HOME]: SignUpNavigator,
     [ScreenNames.Profile.HOME]: ProfileNavigator,
     [ScreenNames.Trips.HOME]: TripsNavigator,
-    [ScreenNames.Errors.HOME]: ErrorNavigator,
-    astuvu: AstuvuNativeDemoScreen
+    [ScreenNames.Errors.HOME]: ErrorNavigator
 }, {
-    // initialRouteName: 'astuvu'
     initialRouteName: ScreenNames.BOOTSTRAP
 })
 

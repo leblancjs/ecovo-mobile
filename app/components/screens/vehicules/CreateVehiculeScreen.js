@@ -1,12 +1,10 @@
 import React, { Component } from 'react'
-import { StyleSheet, Text, Button as ReactButton, View } from 'react-native'
-import { Icon, Container, Content, Button } from 'native-base'
+import { StyleSheet, View } from 'react-native'
+import { Container, Header, Content, Left, Right, Body, Title, Text, Button, Icon } from 'native-base'
 import { connect } from 'react-redux'
-import { NavigationActions, StackActions } from 'react-navigation'
-import { withStatusBar } from '../../hoc'
-import { logout } from '../../../actions/auth'
+import { StackActions } from 'react-navigation'
+import { astuvu } from '../../hoc'
 import { createVehicule } from '../../../actions/vehicules'
-import { ScreenNames } from '../'
 import VehiculesForm from "../../vehicules/VehiculesForm"
 
 class CreateVehiculeScreen extends Component {
@@ -38,6 +36,10 @@ class CreateVehiculeScreen extends Component {
             .catch(err => console.log(err))
     }
 
+    _back = () => {
+        this.props.goToProfile()
+    }
+
     render() {
         let buttonVisible =
             this.state.make != '' &&
@@ -46,20 +48,35 @@ class CreateVehiculeScreen extends Component {
             this.state.color != ''
 
         return (
-            <Container style={styles.container}>
-                <Text style={styles.title}>Add a vehicule</Text>
-                <Content>
-                    <VehiculesForm vehicule={this.state.vehicule} onFieldChange={this._onFieldChange} />
-                </Content>
-                <View style={styles.saveBtn}>
+            <Container>
+                <Header>
+                    <Left>
+                        <Button transparent onPress={this._back}>
+                            <Icon name="close"/>
+                        </Button>
+                    </Left>
+                    <Body>
+                        <Title>Add Vehicle</Title>
+                    </Body>
+                    <Right/>
+                </Header>
+                <Content
+                    scrollEnabled={false}
+                    contentContainerStyle={styles.container}
+                >
+                    <View style={styles.form}>
+                        <VehiculesForm vehicule={this.state.vehicule} onFieldChange={this._onFieldChange} />
+                    </View>
                     {
                         buttonVisible &&
-                        <Button transparent onPress={this._createVehicule} >
-                            <Text style={styles.textGreen}>Save</Text>
-                            <Icon style={styles.textGreen} name="ios-arrow-forward" />
+                        <Button block
+                            disabled={this.props.vehicules.isSubmitting}
+                            onPress={this._createVehicule}
+                        >
+                            <Text>Add</Text>
                         </Button>
                     }
-                </View>
+                </Content>
             </Container>
         )
     }
@@ -67,39 +84,22 @@ class CreateVehiculeScreen extends Component {
 
 const styles = StyleSheet.create({
     container: {
+        flex: 1,
+        margin: 16
+    },
+    form: {
         flex: 1
-    },
-    title: {
-        fontSize: 30,
-        textAlign: 'left',
-        margin: 20,
-    },
-    item: {
-        margin: 15
-    },
-    text: {
-        fontSize: 15,
-        opacity: 1
-    },
-    saveBtn: {
-        justifyContent: 'flex-end',
-        alignSelf: 'flex-end',
-        marginBottom: 2
-    },
-    textGreen: {
-        fontSize: 20,
-        color: '#2BB267'
-    },
+    }
 })
 
 const mapStateToProps = state => ({
-    auth: state.auth
+    auth: state.auth,
+    vehicules: state.vehicules
 })
 
 const mapDispatchToProps = dispatch => ({
-    logout: () => dispatch(logout()),
     createVehicule: (accessToken, userId, vehiculeData) => dispatch(createVehicule(accessToken, userId, vehiculeData)),
-    goToProfile: () => dispatch(StackActions.pop({ routeName: ScreenNames.Profile.HOME }))
+    goToProfile: () => dispatch(StackActions.pop())
 })
 
-export default withStatusBar(connect(mapStateToProps, mapDispatchToProps)(CreateVehiculeScreen))
+export default astuvu(connect(mapStateToProps, mapDispatchToProps)(CreateVehiculeScreen))

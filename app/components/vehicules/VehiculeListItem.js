@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import { StyleSheet, Text, View, Button, Alert } from 'react-native'
-import { Card, CardItem, Body, H1, H2, H3 } from 'native-base'
+import { StyleSheet, View, Alert } from 'react-native'
+import { Text, Button, Card, CardItem, Body, H1, H2, H3 } from 'native-base'
 import { connect } from 'react-redux'
 import { deleteVehicule } from '../../actions/vehicules'
 
@@ -41,7 +41,9 @@ class VehiculeListItem extends Component {
                         <H3>{vehicule.year}</H3>
                         <Text>{vehicule.color.toUpperCase()}</Text>
                         <View style={styles.deletebtn}>
-                            <Button title='DELETE' color='#2bb267' onPress={() => this._deleteVehicule(vehicule.id)} />
+                            <Button transparent onPress={() => this._deleteVehicule(vehicule.id)}>
+                                <Text>DELETE</Text>
+                            </Button>
                         </View>
                     </Body>
                 </CardItem>

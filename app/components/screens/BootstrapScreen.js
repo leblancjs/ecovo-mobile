@@ -1,14 +1,14 @@
 import React, { Component } from 'react'
-import { StyleSheet, View, ActivityIndicator, StatusBar } from 'react-native'
+import { StyleSheet } from 'react-native'
+import { Container, Header, Content, Spinner } from 'native-base'
 import { connect } from 'react-redux'
-import { withSafeView } from '../hoc'
+import { astuvu } from '../hoc'
 import { bootstrap } from '../../actions/bootstrap'
+import LogoFadeIn from '../astuvu-native/LogoFadeIn';
 
 class BootstrapScreen extends Component {
     constructor(props) {
         super(props)
-
-        StatusBar.setBarStyle('dark-content', true)
     }
 
     componentDidMount() {
@@ -17,9 +17,16 @@ class BootstrapScreen extends Component {
 
     render() {
         return (
-            <View style={styles.container}>
-                <ActivityIndicator size="large" color="#2bb267"/>
-            </View>
+            <Container>
+                <Header transparent noShadow iosBarStyle="dark-content"/>
+                <Content padder contentContainerStyle={styles.container}>
+                    <LogoFadeIn
+                        style={styles.logo}
+                        source={require('../../../assets/logo.png')}
+                    />
+                    <Spinner color="#2bb267"/>
+                </Content>
+            </Container>
         )
     }
 }
@@ -29,6 +36,11 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
+    },
+    logo: {
+        width: 192,
+        height: 221,
+        marginBottom: 16
     }
 })
 
@@ -38,4 +50,4 @@ const mapDispatchToProps = dispatch => ({
     bootstrap: () => dispatch(bootstrap())
 })
 
-export default withSafeView(connect(mapStateToProps, mapDispatchToProps)(BootstrapScreen))
+export default astuvu(connect(mapStateToProps, mapDispatchToProps)(BootstrapScreen))

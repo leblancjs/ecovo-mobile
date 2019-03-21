@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
-import { StyleSheet, View } from 'react-native'
-import { Container, Text, Item, Icon, Button, Form, Picker, Right, Content } from 'native-base'
-import { withStatusBar } from '../../hoc'
+import { StyleSheet, View, ScrollView } from 'react-native'
+import { Container, Header, Left, Right, Body, Title, Text, Item, Icon, Button, Form, Picker, Content } from 'native-base'
+import { astuvu } from '../../hoc'
 import { connect } from 'react-redux'
 import { NavigationActions, StackActions } from 'react-navigation'
 import GooglePlacesInput from '../../astuvu-native/GooglePlacesAutocomplete'
@@ -9,8 +9,6 @@ import DatePicker from 'react-native-datepicker'
 import { createTrip } from '../../../actions/trip'
 import { getVehiculeList } from '../../../actions/vehicules'
 import { ScreenNames } from '../'
-import Foundation from 'react-native-vector-icons/Foundation'
-import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
 
 class AddTripScreen extends Component {
     static navigationOptions = {
@@ -124,7 +122,8 @@ class AddTripScreen extends Component {
                 ...this.state.trip,
                 vehicleId: selectedVehicule.id
             },
-            seats: seats
+            seats: seats,
+            selectedVehicule: `${selectedVehicule.make} ${selectedVehicule.model} ${selectedVehicule.year}`
         })
     }
 
@@ -259,111 +258,122 @@ class AddTripScreen extends Component {
 
         return (
             <Container styles={styles.container}>
-                <Content>
-                <View style={styles.header}>
-                    <Item style={styles.headerTitle}>
+                <Header noShadow>
+                    <Left>
                         <Button transparent onPress={this._closeAddTripScreen}>
-                            <Icon style={styles.headerTitleCloseButton} type="MaterialIcons" name="close" />
+                            <Icon name="close"/>
                         </Button>
-                        <Text style={styles.headerTitleText}>Add a trip</Text>
-                    </Item>
-                    <Form style={styles.form}>
-                        <Item style={styles.item}>
-                            <GooglePlacesInput placeholder='From (Pick Up Point)' onSearchResult={this._updateFrom}/>
-                        </Item>
-                        {this.state.stopsItem.map((value, index) => {
-                            return value
-                        })}
-                        <Item style={styles.addStopItem}>
-                            <Right>
-                                <Button transparent style={styles.addStopBtn} onPress={this._addStopInput}>
-                                    <Icon style={styles.addStopIcon} type="MaterialIcons" name="add" />
-                                    <Text style={styles.addStopBtnTxt}>Add a stop</Text>
+                    </Left>
+                    <Body>
+                        <Title>Add a Trip</Title>
+                    </Body>
+                    <Right/>
+                </Header>
+                <Content
+                    scrollEnabled={false}
+                    contentContainerStyle={styles.container}
+                >
+                    <View style={styles.header}>
+                        <Form style={styles.form}>
+                            <Item style={styles.item}>
+                                <GooglePlacesInput placeholder='From (Pick Up Point)' onSearchResult={this._updateFrom}/>
+                            </Item>
+                            {this.state.stopsItem.map((value, index) => {
+                                return value
+                            })}
+                            <View style={styles.addStopItem}>
+                                <Button iconLeft onPress={this._addStopInput}>
+                                    <Icon style={{color: 'white'}} name="add"/>
+                                    <Text style={{color: 'white'}}>Add Stop</Text>
                                 </Button>
-                            </Right>
-                        </Item>
-                        <Item style={styles.item}>
-                            <GooglePlacesInput placeholder='To (Drop Off Point)' onSearchResult={this._updateTo} />
-                        </Item>
-                    </Form>
-                </View>
-                <Item style={styles.pickerItem}>
-                    <DatePicker
-                        style={styles.datePicker}
-                        mode="datetime"
-                        placeholder="Leave At"
-                        date={this.state.trip.leaveAt}
-                        format="YYYY-MM-DDThh:mm:ss.sZ"
-                        minDate={this.state.minDate}
-                        confirmBtnText="Confirm"
-                        cancelBtnText="Cancel"
-                        is24Hour={true}
-                        placeholder="Leave At"
-                        onDateChange={value => this._updateLeaveAt(value)}
-                        customStyles={{
-                            dateInput: styles.dateInput
-                        }}
-                    />
-                </Item>
-                {!!this.state.leaveAtError && (
-                    <Item style={styles.errorMsgItem}>
-                        <Text style={styles.errorMsg}>{this.state.leaveAtError}</Text>
-                    </Item>
-                )}
-                <Item style={styles.pickerItem} picker>
-                    <View style={styles.pickerContainer}>
-                        <Picker style={styles.picker}
-                            placeholder='Car'
-                            placeholderStyle={styles.pickerText}
-                            selectedValue={this.state.selectedVehicule}
-                            textStyle={styles.pickerText}
-                            mode="dropdown"
-                            iosIcon={<Icon name="arrow-down" />}
-                            onValueChange={vehicle => this._updateSelectedVehicule(vehicle)}>
-                            {vehicules}
-                        </Picker>
+                            </View>
+                            <Item style={styles.item}>
+                                <GooglePlacesInput placeholder='To (Drop Off Point)' onSearchResult={this._updateTo} />
+                            </Item>
+                        </Form>
                     </View>
-                </Item>
-                <Item style={styles.pickerItem} picker>
-                    <View style={styles.pickerContainer}>
-                        <Picker style={styles.picker}
-                            placeholder='Free Places'
-                            placeholderStyle={styles.pickerText}
-                            selectedValue={this.state.trip.seats}
-                            textStyle={styles.pickerText}
-                            mode="dropdown"
-                            iosIcon={<Icon name="arrow-down" />}
-                            onValueChange={value => this._onFieldChange('seats', value)}>
-                           {seats}
-                        </Picker>
+                    <ScrollView style={styles.formContainer}>
+                        <Item style={styles.pickerItem}>
+                            <DatePicker
+                                style={styles.datePicker}
+                                mode="datetime"
+                                placeholder="Leave At"
+                                date={this.state.trip.leaveAt}
+                                format="YYYY-MM-DDThh:mm:ss.sZ"
+                                minDate={this.state.minDate}
+                                confirmBtnText="Confirm"
+                                cancelBtnText="Cancel"
+                                is24Hour={true}
+                                placeholder="Leave At"
+                                onDateChange={value => this._updateLeaveAt(value)}
+                                customStyles={{
+                                    dateInput: styles.dateInput
+                                }}
+                            />
+                        </Item>
+                        {!!this.state.leaveAtError && (
+                            <Item style={styles.errorMsgItem}>
+                                <Text style={styles.errorMsg}>{this.state.leaveAtError}</Text>
+                            </Item>
+                        )}
+                        <Item style={styles.pickerItem} picker>
+                            <View style={styles.pickerContainer}>
+                                <Picker style={styles.picker}
+                                    placeholder='Car'
+                                    placeholderStyle={styles.pickerText}
+                                    selectedValue={this.state.selectedVehicule}
+                                    textStyle={styles.pickerText}
+                                    mode="dropdown"
+                                    iosIcon={<Icon name="arrow-down" />}
+                                    onValueChange={vehicle => this._updateSelectedVehicule(vehicle)}>
+                                    {vehicules}
+                                </Picker>
+                            </View>
+                        </Item>
+                        <Item style={styles.pickerItem} picker>
+                            <View style={styles.pickerContainer}>
+                                <Picker style={styles.picker}
+                                    placeholder='Free Places'
+                                    placeholderStyle={styles.pickerText}
+                                    selectedValue={this.state.trip.seats}
+                                    textStyle={styles.pickerText}
+                                    mode="dropdown"
+                                    iosIcon={<Icon name="arrow-down" />}
+                                    onValueChange={value => this._onFieldChange('seats', value)}>
+                                {seats}
+                                </Picker>
+                            </View>
+                        </Item>
+                        <Item style={styles.selectItem}>
+                            <Button large transparent onPress={() => this._setDetail('animals', 0)}>
+                                <Icon type="Foundation" style={[styles.mediumIcon, this.state.trip.details.animals == 0 ? styles.iconSelected : '']} name='no-dogs'/>
+                            </Button>
+                            <Button large transparent onPress={() => this._setDetail('animals', 1)}>
+                                <Icon type="Foundation" style={[styles.mediumIcon, this.state.trip.details.animals == 1 ? styles.iconSelected : '']} name='guide-dog'/>
+                            </Button>
+                        </Item>
+                        <Item style={styles.selectItem}>
+                            <Button large transparent onPress={() => this._setDetail('luggages', 0)}>
+                                <Icon type="Foundation" style={[styles.smallIcon, this.state.trip.details.luggages == 0 ? styles.iconSelected : '']} name='shopping-bag'/>
+                            </Button>
+                            <Button large transparent onPress={() => this._setDetail('luggages', 1)}>
+                                <Icon type="Foundation" style={[styles.mediumIcon, this.state.trip.details.luggages == 1 ? styles.iconSelected : '']} name='shopping-bag'/>
+                            </Button>
+                            <Button large transparent onPress={() => this._setDetail('luggages', 2)}>
+                                <Icon type="Foundation" style={[styles.bigIcon, this.state.trip.details.luggages == 2 ? styles.iconSelected : '']} name='shopping-bag' />
+                            </Button>
+                        </Item>
+                    </ScrollView>
+                    <View>
+                        {
+                            addBtnVisible &&
+                            <Item style={styles.addBtnContainer}>
+                                <Button style={styles.addBtn} onPress={this._createTrip}>
+                                    <Text style={styles.submitForm}>Add</Text>
+                                </Button>
+                            </Item>
+                        }
                     </View>
-                </Item>
-                <Item style={styles.selectItem}>
-                    <Button transparent onPress={(value) => this._setDetail('animals', 0)}>
-                        <Foundation style={[styles.bigIcon, this.state.trip.details.animals == 0 ? styles.iconSelected : '']} name='no-dogs' solid />
-                    </Button>
-                    <Button transparent onPress={(value) => this._setDetail('animals', 1)}>
-                        <Foundation style={[styles.mediumIcon, this.state.trip.details.animals == 1 ? styles.iconSelected : '']} name='guide-dog' solid />
-                    </Button>
-                </Item>
-                <Item style={styles.selectItem}>
-                    <Button transparent onPress={(value) => this._setDetail('luggages', 0)}>
-                        <FontAwesome5 style={[styles.smallIcon, this.state.trip.details.luggages == 0 ? styles.iconSelected : '']} name='suitcase' solid />
-                    </Button>
-                    <Button transparent onPress={(value) => this._setDetail('luggages', 1)}>
-                        <FontAwesome5 style={[styles.mediumIcon, this.state.trip.details.luggages == 1 ? styles.iconSelected : '']} name='suitcase' solid />
-                    </Button>
-                    <Button transparent onPress={(value) => this._setDetail('luggages', 2)}>
-                        <FontAwesome5 style={[styles.bigIcon, this.state.trip.details.luggages == 2 ? styles.iconSelected : '']} name='suitcase' solid />
-                    </Button>
-                </Item>
-                {addBtnVisible &&
-                <Item style={styles.addBtnContainer}>
-                    <Button style={styles.addBtn} onPress={this._createTrip}>
-                        <Text style={styles.submitForm}>Add</Text>
-                    </Button>
-                </Item>
-                }
                 </Content>
             </Container>
         )
@@ -388,7 +398,7 @@ const headerTitle = {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        justifyContent: 'center',
+        // justifyContent: 'center',
     },
     header: {
         backgroundColor: '#2BB267',
@@ -475,29 +485,26 @@ const styles = StyleSheet.create({
         padding: 20 
     },
     addStopItem: {
-        borderBottomWidth: 0,
-        marginRight: 60
+        flexDirection: 'row',
+        justifyContent: 'flex-end'
     },
     smallIcon: {
         fontSize: 20,
-        margin: 30
+        color: 'black'
     },
     mediumIcon: {
         fontSize: 30,
-        margin: 30
+        color: 'black'
     },
     bigIcon: {
         fontSize: 50,
-        margin: 30
+        color: 'black'
     },
     selectItem: {
-        alignSelf: 'center',
-        marginTop: 30,
-        borderBottomWidth: 0
+        alignSelf: 'center'
     },
     iconSelected: {
-        color: "#2BB267",
-        borderRadius: 50,
+        color: "#2BB267"
     },
     errorMsg: {
         color: '#FF0000'
@@ -505,6 +512,9 @@ const styles = StyleSheet.create({
     errorMsgItem: {
         marginLeft: 40,
         borderBottomWidth: 0
+    },
+    formContainer: {
+        flex: 1
     }
 })
 
@@ -520,4 +530,4 @@ const mapDispatchToProps = dispatch => ({
     goToError: () => dispatch(NavigationActions.navigate({ routeName: ScreenNames.Errors.HOME }))
 })
 
-export default withStatusBar(connect(mapStateToProps, mapDispatchToProps)(AddTripScreen))
+export default astuvu(connect(mapStateToProps, mapDispatchToProps)(AddTripScreen))

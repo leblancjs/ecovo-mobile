@@ -66,7 +66,7 @@ class TripDetails extends Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        justifyContent: 'center',
+        justifyContent: 'center'
     },
     bottom: {
         flex: 1,
@@ -75,8 +75,8 @@ const styles = StyleSheet.create({
         bottom: 0,
         justifyContent: 'flex-end',
         padding: 5,
-        paddingBottom: 0,
-        height: '30%'
+        paddingBottom: 8,
+        height: '30%',
     },
     cardStyle: {
         paddingBottom: 60

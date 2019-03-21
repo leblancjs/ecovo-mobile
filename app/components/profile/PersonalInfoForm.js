@@ -60,7 +60,7 @@ class PersonalInfoForm extends Component {
                 break;
         }
 
-        if (fieldIsValid && this.props.onFieldChange) {
+        if (this.props.onFieldChange) {
             this.props.onFieldChange(field, value)
         }
     }

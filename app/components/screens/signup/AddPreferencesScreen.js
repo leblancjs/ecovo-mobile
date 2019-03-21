@@ -1,27 +1,15 @@
 import React, { Component } from 'react'
-import { StyleSheet, Text, Button as ReactButton } from 'react-native'
-import { Container, Content, View, Button, Icon } from 'native-base'
+import { StyleSheet, View } from 'react-native'
+import { Container, Header, Content, Left, Right, Body, Title, Text, Button, H1, Icon } from 'native-base'
 import { connect } from 'react-redux'
-import { NavigationActions } from 'react-navigation'
-import { withStatusBar } from '../../hoc'
+import { NavigationActions, StackActions } from 'react-navigation'
+import { astuvu } from '../../hoc'
 import { updateUser } from '../../../actions/user'
 import { logout } from '../../../actions/auth'
 import { ScreenNames } from '../'
 import PreferencesForm from '../../profile/PreferencesForm'
 
 class AddPreferencesScreen extends Component {
-    static navigationOptions = ({ navigation }) => {
-        return {
-            headerRight: (
-                <ReactButton
-                    title='Logout'
-                    onPress={navigation.getParam('logout')}
-                    color='#fff'
-                />
-            )
-        }
-    }
-
     constructor(props) {
         super(props)
 
@@ -30,10 +18,6 @@ class AddPreferencesScreen extends Component {
             conversation: 0,
             smoking: 0
         }
-    }
-
-    componentDidMount() {
-        this.props.navigation.setParams({ logout: this._logout })
     }
 
     _onPreferencesChange = (field, value) => {
@@ -61,6 +45,10 @@ class AddPreferencesScreen extends Component {
             })
     }
 
+    _back = () => {
+        this.props.back()
+    }
+
     _logout = () => {
         this.props.logout()
             .then(() => this.props.goToWelcome())
@@ -72,17 +60,41 @@ class AddPreferencesScreen extends Component {
 
     render() {
         return (
-            <Container style={styles.container}>
-                <Text style={styles.title}>Preferences</Text>
-                <Content>
-                    <PreferencesForm preferences={this.props.auth.user.preferences} onFieldChange={this._onPreferencesChange} />
-                </Content>
-                <View style={styles.nextBtn}>
-                    <Button transparent style={styles.nextBtn} onPress={this._updateUser}>
-                        <Text style={styles.textGreen}>Finish</Text>
-                        <Icon style={styles.textGreen} name="ios-arrow-forward" />
+            <Container>
+                <Header>
+                    <Left>
+                        <Button transparent onPress={this._back}>
+                            <Icon name="arrow-back"></Icon>
+                            <Text>Back</Text>
+                        </Button>
+                    </Left>
+                    <Body>
+                        <Title>Sign Up</Title>
+                    </Body>
+                    <Right>
+                        <Button transparent onPress={this._logout}>
+                            <Text>Logout</Text>
+                        </Button>
+                    </Right>
+                </Header>
+                <Content
+                    scrollEnabled={false}
+                    contentContainerStyle={styles.container}
+                >
+                    <H1>Preferences</H1>
+                    <View style={styles.form}>
+                        <PreferencesForm
+                            preferences={this.props.auth.user.preferences}
+                            onFieldChange={this._onPreferencesChange}
+                        />
+                    </View>
+                    <Button block
+                        disabled={this.props.auth.isSumitting}
+                        onPress={this._updateUser}
+                    >
+                        <Text>Finish</Text>
                     </Button>
-                </View>
+                </Content>
             </Container>
         )
     }
@@ -91,26 +103,11 @@ class AddPreferencesScreen extends Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        justifyContent: 'center',
-        margin: 15
+        margin: 16
     },
-    title: {
-        fontSize: 30,
-        textAlign: 'left',
-        margin: 20
-    },
-    nextBtn: {
-        justifyContent: 'flex-end',
-        alignSelf: 'flex-end',
-        marginBottom: 2
-    },
-    textGreen: {
-        fontSize: 20,
-        color: '#2BB267'
-    },
-    text: {
-        justifyContent: 'center',
-        fontSize: 15
+    form: {
+        flex: 1,
+        marginTop: 16
     }
 })
 
@@ -120,10 +117,11 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
     updateUser: (accessToken, user) => dispatch(updateUser(accessToken, user)),
+    back: () => dispatch(StackActions.pop()),
     logout: () => dispatch(logout()),
     goToWelcome: () => dispatch(NavigationActions.navigate({ routeName: ScreenNames.SignIn.HOME })),
     goToTrips: () => dispatch(NavigationActions.navigate({ routeName: ScreenNames.Trips.MAP })),
     goToError: () => dispatch(NavigationActions.navigate({ routeName: ScreenNames.Errors.HOME }))
 })
 
-export default withStatusBar(connect(mapStateToProps, mapDispatchToProps)(AddPreferencesScreen))
+export default astuvu(connect(mapStateToProps, mapDispatchToProps)(AddPreferencesScreen))

@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { StyleSheet, View} from 'react-native'
-import { Icon, Container, Fab } from 'native-base'
+import { Icon, Fab } from 'native-base'
 import { connect } from 'react-redux'
 import { StackActions } from 'react-navigation'
 import VehiculeList from '../../vehicules/VehiculeList'
@@ -27,8 +27,10 @@ class VehiculeScreen extends Component {
     render() {
         const { vehicules } = this.props.vehicules
         return (
-            <Container style={styles.container}>
-                <VehiculeList vehicules={vehicules} />
+            <View style={styles.container}>
+                <View style={styles.listContainer}>
+                    <VehiculeList vehicules={vehicules} />
+                </View>
                 <View style={styles.fabView}>
                     <Fab
                         active={true}
@@ -40,7 +42,7 @@ class VehiculeScreen extends Component {
                         <Icon name="md-add" />
                     </Fab>
                 </View>
-            </Container>
+            </View>
         )
     }
 }
@@ -49,8 +51,11 @@ const styles = StyleSheet.create({
     container: {
         flex: 1
     },
+    listContainer: {
+        flex: 1,
+        margin: 8
+    },
     fabView: {
-        flex: 1
     },
     fab: {
         backgroundColor: '#2BB267'

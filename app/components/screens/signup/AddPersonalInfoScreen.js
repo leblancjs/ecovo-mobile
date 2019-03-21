@@ -1,28 +1,16 @@
 import React, { Component } from 'react'
-import { StyleSheet, Text, Image, View, Button as ReactButton } from 'react-native'
-import { Icon, Container, Button, Content } from 'native-base'
+import { StyleSheet, View } from 'react-native'
+import { Container, Header, Content, Left, Right, Body, Title, Text, Button, Thumbnail, H1 } from 'native-base'
 import PhotoUpload from 'react-native-photo-upload'
 import { NavigationActions, StackActions } from 'react-navigation'
 import { connect } from 'react-redux'
-import { withStatusBar } from '../../hoc'
+import { astuvu } from '../../hoc'
 import { createUser, updateUser } from '../../../actions/user'
 import { logout } from '../../../actions/auth'
 import { ScreenNames } from '../'
 import PersonalInfoForm from '../../profile/PersonalInfoForm'
 
 class AddPersonalInfoScreen extends Component {
-    static navigationOptions = ({ navigation }) => {
-        return {
-            headerRight: (
-                <ReactButton
-                    title='Logout'
-                    onPress={navigation.getParam('logout')}
-                    color='#fff'
-                />
-            )
-        }
-    }
-    
     constructor(props) {
         super(props)
 
@@ -33,10 +21,6 @@ class AddPersonalInfoScreen extends Component {
             dateOfBirth: this.props.auth.user.dateOfBirth,
             gender: this.props.auth.user.gender || 'Male'
         }
-    }
-
-    componentDidMount() {
-        this.props.navigation.setParams({ logout: this._logout })
     }
 
     _setPhoto = (photo) => {
@@ -94,14 +78,6 @@ class AddPersonalInfoScreen extends Component {
     }
 
     render() {
-        let picStyle
-
-        if (this.state.photo == '') {
-            picStyle = styles.defaultImagePicker
-        } else {
-            picStyle = styles.imagePicker
-        }
-
         let buttonVisible = 
             this.state.firstName != '' &&
             this.state.lastName != '' &&
@@ -109,45 +85,59 @@ class AddPersonalInfoScreen extends Component {
             this.state.gender != ''
 
         return (
-            <Container style={styles.container}>
-                <Text style={styles.title}>Personal Info</Text>
-                <Content>
-                    <PhotoUpload
-                        onPhotoSelect={photo => {
-                            if (photo) {
-                                this._setPhoto(photo)
+            <Container>
+                <Header>
+                    <Left/>
+                    <Body>
+                        <Title>Sign Up</Title>
+                    </Body>
+                    <Right>
+                        <Button transparent onPress={this._logout}>
+                            <Text>Logout</Text>
+                        </Button>
+                    </Right>
+                </Header>
+                <Content
+                    scrollEnabled={false}
+                    contentContainerStyle={styles.container}
+                >
+                    <H1>Personal Info</H1>
+                    <View style={styles.photoContainer}>
+                        <PhotoUpload
+                            onPhotoSelect={photo => {
+                                if (photo) {
+                                    this._setPhoto(photo)
+                                }
+                            }}
+                        >
+                            {this.state.photo === '' ?
+                                <Thumbnail large
+                                    style={styles.imagePicker}
+                                    source={require('../../../../assets/profile_pic.png')}
+                                /> :
+                                <Thumbnail large
+                                    style={styles.imagePicker}
+                                    source={{ uri: this.state.photo }}
+                                />
                             }
-                        }}
-                    >
-                        {this.state.photo == '' &&
-                            <Image
-                                style={picStyle}
-                                resizeMode='cover'
-                                source={require('../../../../assets/profile_pic.png')}
-                            />
-                        }
-
-                        {this.state.photo != '' &&
-                            <Image
-                                style={picStyle}
-                                resizeMode='cover'
-                                source={{ uri: this.state.photo }}
-                            />
-                        }
-                    </PhotoUpload>
-                    <PersonalInfoForm user={this.props.auth.user} onFieldChange={this._onFieldChange} />
-                </Content>
-                <View style={styles.nextBtn}>
+                        </PhotoUpload>
+                    </View>
+                    <View style={styles.form}>
+                        <PersonalInfoForm
+                            user={this.props.auth.user}
+                            onFieldChange={this._onFieldChange}
+                        />
+                    </View>
                     {
                         buttonVisible &&
-                        <Button transparent disabled={this.props.auth.isSumitting}
+                        <Button block
+                            disabled={this.props.auth.isSumitting}
                             onPress={this._createUser}
                         >
-                            <Text style={styles.textGreen}>Next</Text>
-                            <Icon style={styles.textGreen} name="ios-arrow-forward" />
+                            <Text>Next</Text>
                         </Button>
                     }
-                </View>
+                </Content>
             </Container>
         )
     }
@@ -156,47 +146,18 @@ class AddPersonalInfoScreen extends Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        justifyContent: 'center',
-        margin: 15
+        margin: 16
     },
-    title: {
-        fontSize: 30,
-        textAlign: 'left',
-        margin: 20,
+    form: {
+        flex: 1
     },
-    textGreen: {
-        fontSize: 20,
-        color: '#2BB267'
-    },
-    item: {
-        margin: 15
-    },
-    nextBtn: {
-        justifyContent: 'flex-end',
-        alignSelf: 'flex-end',
-        marginBottom: 2
-    },
-    profilePicIcon: {
-        width: 70,
-        height: 70,
-        marginRight: 10
-    },
-    addPictureBtn: {
-        margin: 10,
-        height: 70
+    photoContainer: {
+        height: 80,
+        margin: 16
     },
     imagePicker: {
         marginTop: 20,
-        paddingVertical: 30,
-        width: 100,
-        height: 100,
-        borderRadius: 75
-    },
-    defaultImagePicker: {
-        marginTop: 20,
-        paddingVertical: 30,
-        width: 100,
-        height: 100
+        paddingVertical: 30
     }
 })
 
@@ -214,4 +175,4 @@ const mapDispatchToProps = dispatch => ({
 })
 
 
-export default withStatusBar(connect(mapStateToProps, mapDispatchToProps)(AddPersonalInfoScreen))
+export default astuvu(connect(mapStateToProps, mapDispatchToProps)(AddPersonalInfoScreen))

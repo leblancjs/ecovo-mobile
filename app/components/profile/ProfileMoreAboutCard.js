@@ -39,7 +39,7 @@ const styles = StyleSheet.create({
 
     slider: {
         flex: 1,
-        width: 350,
+        width: '100%'
     }
 });
 

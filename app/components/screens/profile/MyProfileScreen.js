@@ -1,48 +1,22 @@
-import React, { Component } from 'react';
-import { StyleSheet } from 'react-native';
-import { connect } from 'react-redux';
-import { StackActions } from 'react-navigation';
-import ProfileComponent from '../../profile/ProfileComponent';
-import { ScreenNames } from '../'
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
+import ProfileComponent from '../../profile/ProfileComponent'
 
 class MyProfileScreen extends Component {
-
     constructor(props) {
-        super(props);
-        this.state = {
-            user: props.auth.user,
-        };
-    }
-
-    componentWillReceiveProps(nextProps) {
-        this.setState({
-            user: nextProps.auth.user,
-        }, () => {
-            this.forceUpdate();
-          });
-
-    }
-
-    _goToUpdateProfileScreen = () => {
-        this.props.goToUpdateProfileScreen();
+        super(props)
     }
 
     render() {
         return (
-            <ProfileComponent user={this.state.user} onFabTapped={this._goToUpdateProfileScreen} fabType="edit"/>
+            <ProfileComponent user={this.props.user} onFabTapped={this.props.onFabTapped} fabType="edit"/>
         )
     }
 }
 
-const styles = StyleSheet.create({
+MyProfileScreen.propTypes = {
+    user: PropTypes.object.isRequired,
+    onFabTapped: PropTypes.func.isRequired
+}
 
-});
-const mapStateToProps = state => ({
-    auth: state.auth
-});
-
-const mapDispatchToProps = dispatch => ({
-    goToUpdateProfileScreen: () => dispatch(StackActions.push({ routeName: ScreenNames.Profile.UPDATE }))
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(MyProfileScreen);
+export default MyProfileScreen

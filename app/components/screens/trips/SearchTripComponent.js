@@ -1,17 +1,15 @@
-import React, { Component } from 'react';
-import { StyleSheet, View, Slider, ScrollView } from 'react-native';
-import { Container, Text, Icon, Button, Form, Item, Radio } from 'native-base';
-import PropTypes from 'prop-types';
-import DatePicker from 'react-native-datepicker';
-import GooglePlacesInput from '../../astuvu-native/GooglePlacesAutocomplete';
-import { Dropdown } from 'react-native-material-dropdown';
-import Foundation from 'react-native-vector-icons/Foundation'
-import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
+import React, { Component } from 'react'
+import { StyleSheet, View, Slider, ScrollView, TouchableOpacity } from 'react-native'
+import { Container, Text, Icon, Button, Form, Item, Radio } from 'native-base'
+import PropTypes from 'prop-types'
+import DatePicker from 'react-native-datepicker'
+import GooglePlacesInput from '../../astuvu-native/GooglePlacesAutocomplete'
+import { Dropdown } from 'react-native-material-dropdown'
 
 class SearchTripComponent extends Component {
 
     constructor(props) {
-        super(props);
+        super(props)
 
         this.state = {
             searchParam: {
@@ -35,7 +33,7 @@ class SearchTripComponent extends Component {
     }
     _onClosePressed = () => {
         if (this.props.onCloseComponent) {
-            this.props.onCloseComponent();
+            this.props.onCloseComponent()
         }
     }
 
@@ -104,7 +102,7 @@ class SearchTripComponent extends Component {
             ...this.state,
             searchParam: {
                 ...this.state.searchParam,
-                seats: value,                
+                seats: value,
             }
         })
     }
@@ -144,20 +142,15 @@ class SearchTripComponent extends Component {
         }
 
         if (this.props.onSearchTrips) {
-            this.props.onSearchTrips(this.state.searchParam);
+            this.props.onSearchTrips(this.state.searchParam)
         }
     }
 
     _isAdvancedSearchButtonEnabled = () => {
         return this.state.searchParam.source != ""
             && this.state.searchParam.destination != ""
-            && (this.state.searchParam.leaveAt != null || this.state.searchParam.arriveBy);
+            && (this.state.searchParam.leaveAt || this.state.searchParam.arriveBy)
 
-    }
-
-    _isSearchButtonEnabled = () => {
-        return this.state.searchParam.source != ""
-            && this.state.searchParam.destination != "";
     }
 
     render() {
@@ -168,7 +161,7 @@ class SearchTripComponent extends Component {
                         <Button transparent onPress={this._onClosePressed}>
                             <Icon style={styles.headerTitleCloseButton} type="MaterialIcons" name="close" />
                         </Button>
-                        <Text style={styles.headerTitleText}>Search a trip</Text>
+                        <Text style={styles.headerTitleText}>Find a Trip</Text>
                     </Item>
                     <Form style={styles.form}>
                         <Item style={styles.item}>
@@ -177,41 +170,34 @@ class SearchTripComponent extends Component {
                         <Item style={styles.item}>
                             <GooglePlacesInput placeholder='To' onSearchResult={this._updateTo} />
                         </Item>
-                        <View style={{ flexDirection: 'row' }}>
-                            <Button
-                                transparent
-                                disabled={!this._isSearchButtonEnabled()}
-                                style={{ marginLeft: 'auto' }}
-                                onPress={this._searchTrips}>
-                                <Text style={this._isSearchButtonEnabled() ? styles.submitForm : styles.submitFormDisabled}>Search</Text>
-                            </Button>
-                        </View>
-
                     </Form>
                 </View>
-                <ScrollView >
+                <ScrollView style={{flex: 1 }}>
                     <View style={styles.timeRadioButton}>
-                        <Item style={styles.radioButtonItem}>
+                        <TouchableOpacity
+                            style={styles.radioButtonItem}
+                            onPress={() => this.setState({isLeaveAt: true, isArriveBy: false})}
+                        >
                             <Radio
                                 color={"#2BB267"}
                                 selectedColor={"#2BB267"}
                                 selected={this.state.isLeaveAt}
-                                onPress={() => this.setState({isLeaveAt: true, isArriveBy: false})}
                             />
                             <Text style={styles.radioButtonText}>Leave At</Text>
-                        </Item>
-                        <Item style={styles.radioButtonItem}>
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                            style={styles.radioButtonItem}
+                            onPress={() => this.setState({isLeaveAt: false, isArriveBy: true})}
+                        >
                             <Radio
                                 color={"#2BB267"}
                                 selectedColor={"#2BB267"}
                                 selected={this.state.isArriveBy}
-                                onPress={() => this.setState({isLeaveAt: false, isArriveBy: true})}
                             />
                             <Text style={styles.radioButtonText}>Arrive By</Text>
-                        </Item>
+                        </TouchableOpacity>
                     </View>
-                    
-                    <View style={{height: 700}}>
+                    <View>
                         <Item>
                             { this.state.isLeaveAt && 
                                 <DatePicker
@@ -263,7 +249,6 @@ class SearchTripComponent extends Component {
                                 minimumTrackTintColor={'#2BB267'}
                                 maximumValue={50000} />
                         </View>
-
                         <View style={styles.containerFilter}>
                             <Dropdown
                                 label='Number of passengers'
@@ -273,52 +258,50 @@ class SearchTripComponent extends Component {
                             />
                         </View>
                         <Item style={styles.selectItem}>
-                            <Button transparent onPress={() => this._updateAnimals(0)}>
-                                <Foundation style={[styles.bigIcon, this.state.searchParam.detailsAnimals == 0 ? styles.iconSelected : '']} name='no-dogs' solid />
+                        {/* style={[styles.bigIcon, this.state.searchParam.detailsAnimals == 0 ? styles.iconSelected : {}]} */}
+                            <Button large transparent onPress={() => this._updateAnimals(0)}>
+                                <Icon type="Foundation" style={[styles.mediumIcon, this.state.searchParam.details.animals == 0 ? styles.iconSelected : '']} name='no-dogs'/>
                             </Button>
-                            <Button transparent onPress={() => this._updateAnimals(1)}>
-                                <Foundation style={[styles.mediumIcon, this.state.searchParam.detailsAnimals == 1 ? styles.iconSelected : '']} name='guide-dog' solid />
+                            <Button large transparent onPress={() => this._updateAnimals(1)}>
+                                <Icon type="Foundation" style={[styles.mediumIcon, this.state.searchParam.details.animals == 1 ? styles.iconSelected : '']} name='guide-dog'/>
                             </Button>
                         </Item>
                         <Item style={styles.selectItem}>
-                            <Button transparent onPress={() => this._updateLuggages(0)}>
-                                <FontAwesome5 style={[styles.smallIcon, this.state.searchParam.detailsLuggages == 0 ? styles.iconSelected : '']} name='suitcase' solid />
+                            <Button large transparent onPress={() => this._updateLuggages(0)}>
+                                <Icon type="Foundation" style={[styles.smallIcon, this.state.searchParam.details.luggages == 0 ? styles.iconSelected : '']} name='shopping-bag'/>
                             </Button>
-                            <Button transparent onPress={() => this._updateLuggages(1)}>
-                                <FontAwesome5 style={[styles.mediumIcon, this.state.searchParam.detailsLuggages == 1 ? styles.iconSelected : '']} name='suitcase' solid />
+                            <Button large transparent onPress={() => this._updateLuggages(1)}>
+                                <Icon type="Foundation" style={[styles.mediumIcon, this.state.searchParam.details.luggages == 1 ? styles.iconSelected : '']} name='shopping-bag'/>
                             </Button>
-                            <Button transparent onPress={() => this._updateLuggages(2)}>
-                                <FontAwesome5 style={[styles.bigIcon, this.state.searchParam.detailsLuggages == 2 ? styles.iconSelected : '']} name='suitcase' solid />
+                            <Button large transparent onPress={() => this._updateLuggages(2)}>
+                                <Icon type="Foundation" style={[styles.bigIcon, this.state.searchParam.details.luggages == 2 ? styles.iconSelected : '']} name='shopping-bag' />
                             </Button>
                         </Item>
                     </View>
-        
-
                 </ScrollView>
-
                 <View style={styles.updateBtnWrapper}>
                     <Button transparent
                         disabled={!this._isAdvancedSearchButtonEnabled()}
                         onPress={this._searchTrips} style={styles.updatebutton}>
-                        <Text style={this._isAdvancedSearchButtonEnabled() ? { color: '#fff' } : { color: '#ddd' }}>Advanced Search</Text>
+                        <Text style={this._isAdvancedSearchButtonEnabled() ? { color: '#fff' } : { color: '#ddd' }}>Search</Text>
                     </Button>
                 </View>
             </Container>
-        );
+        )
     }
 }
 const numberOfPassenger = [
     { value: 1 },
     { value: 2 },
     { value: 3 },
-    { value: 4, }];
+    { value: 4, }]
 const luggages = [
     { value: 0, label: 'None' },
     { value: 1, label: 'Small luggage' },
-    { value: 2, label: 'Big luggage' }];
+    { value: 2, label: 'Big luggage' }]
 const animals = [
     { value: 0, label: 'No animal' },
-    { value: 1, label: 'One animal' }];
+    { value: 1, label: 'One animal' }]
 const inputStyle = {
     backgroundColor: '#fff',
     borderTopLeftRadius: 5,
@@ -328,11 +311,11 @@ const inputStyle = {
     color: 'rgba(0, 0, 0, 0.6)',
     paddingLeft: 16,
     height: 58
-};
+}
 const headerTitle = {
     color: '#fff',
     fontSize: 24
-};
+}
 const submitForm = {
     color: '#fff',
     alignSelf: 'flex-end',
@@ -391,7 +374,6 @@ const styles = StyleSheet.create({
     updateBtnWrapper: {
         flex: 1,
         position: 'absolute',
-        backgroundColor: '#2BB267',
         width: '100%',
         bottom: 40,
         justifyContent: 'flex-end',
@@ -407,13 +389,15 @@ const styles = StyleSheet.create({
         marginBottom: 20,
     },
     timeRadioButton: {
+        flex: 1,
         flexDirection: 'row',
         margin: 20,
-        alignSelf: 'flex-start'
+        alignContent: 'center'
     },
     radioButtonItem: {
-        flex: 0.5,
-        alignContent: 'flex-start',
+        flex: 1,
+        flexDirection: 'row',
+        alignContent: 'flex-end',
         borderBottomWidth: 0
     },
     radioButtonText: {
@@ -422,28 +406,28 @@ const styles = StyleSheet.create({
     },
     smallIcon: {
         fontSize: 20,
-        margin: 30
+        color: 'black'
     },
     mediumIcon: {
         fontSize: 30,
-        margin: 30
+        color: 'black'
     },
     bigIcon: {
         fontSize: 50,
-        margin: 30
+        color: 'black'
     },
     selectItem: {
         alignSelf: 'center',
-        marginTop: 30,
-        borderBottomWidth: 0
+        padding: 8
     },
     iconSelected: {
-        color: "#2BB267",
-        borderRadius: 50,
+        color: "#2BB267"
     },
-});
+})
+
 SearchTripComponent.propTypes = {
     onCloseComponent: PropTypes.func.isRequired,
     onSearchTrips: PropTypes.func.isRequired,
 }
+
 export default SearchTripComponent
