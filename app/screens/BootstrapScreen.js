@@ -2,9 +2,9 @@ import React, { Component } from 'react'
 import { StyleSheet } from 'react-native'
 import { Container, Header, Content, Spinner } from 'native-base'
 import { connect } from 'react-redux'
-import { astuvu } from '../hoc'
-import { bootstrap } from '../../actions/bootstrap'
-import LogoFadeIn from '../astuvu-native/LogoFadeIn';
+import { astuvu } from '../components/hoc'
+import { bootstrap } from '../actions/bootstrap'
+import LogoFadeIn from '../components/astuvu-native/LogoFadeIn';
 
 class BootstrapScreen extends Component {
     constructor(props) {
@@ -22,7 +22,7 @@ class BootstrapScreen extends Component {
                 <Content padder contentContainerStyle={styles.container}>
                     <LogoFadeIn
                         style={styles.logo}
-                        source={require('../../../assets/logo.png')}
+                        source={require('../../assets/logo.png')}
                     />
                     <Spinner color="#2bb267"/>
                 </Content>

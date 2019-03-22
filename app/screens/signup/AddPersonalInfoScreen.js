@@ -4,11 +4,11 @@ import { Container, Header, Content, Left, Right, Body, Title, Text, Button, Thu
 import PhotoUpload from 'react-native-photo-upload'
 import { NavigationActions, StackActions } from 'react-navigation'
 import { connect } from 'react-redux'
-import { astuvu } from '../../hoc'
-import { createUser, updateUser } from '../../../actions/user'
-import { logout } from '../../../actions/auth'
+import { astuvu } from '../../components/hoc'
+import { createUser, updateUser } from '../../actions/user'
+import { logout } from '../../actions/auth'
 import { ScreenNames } from '../'
-import PersonalInfoForm from '../../profile/PersonalInfoForm'
+import PersonalInfoForm from '../../components/profile/PersonalInfoForm'
 
 class AddPersonalInfoScreen extends Component {
     constructor(props) {
@@ -117,7 +117,7 @@ class AddPersonalInfoScreen extends Component {
                             {this.state.photo === '' ?
                                 <Thumbnail large
                                     style={styles.imagePicker}
-                                    source={require('../../../../assets/profile_pic.png')}
+                                    source={require('../../../assets/profile_pic.png')}
                                 /> :
                                 <Thumbnail large
                                     style={styles.imagePicker}

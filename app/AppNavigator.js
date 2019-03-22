@@ -1,19 +1,19 @@
 import { connect } from 'react-redux'
 import { createStackNavigator, createSwitchNavigator } from 'react-navigation'
 import { reduxifyNavigator, createReactNavigationReduxMiddleware } from 'react-navigation-redux-helpers'
-import { ScreenNames } from './components/screens'
-import BootstrapScreen from './components/screens/BootstrapScreen'
-import SignInScreen from './components/screens/signin/SignInScreen'
-import AddPersonalInfoScreen from './components/screens/signup/AddPersonalInfoScreen'
-import AddPreferencesScreen from './components/screens/signup/AddPreferencesScreen'
-import MapScreen from './components/screens/trips/MapScreen'
-import GenericErrorScreen from './components/screens/error/GenericErrorScreen'
-import CreateVehiculeScreen from './components/screens/vehicules/CreateVehiculeScreen'
-import UpdateProfileScreen from './components/screens/profile/UpdateProfileScreen';
-import ProfileTabScreen from './components/screens/profile/ProfileTabScreen';
-import TripResultsScreen from './components/screens/trips/TripResultsScreen';
-import AddTripScreen from './components/screens/trips/AddTripScreen';
-import DetailsTripTabScreen from './components/screens/trips/DetailsTripTabScreen'
+import { ScreenNames } from './screens'
+import BootstrapScreen from './screens/BootstrapScreen'
+import SignInScreen from './screens/signin/SignInScreen'
+import AddPersonalInfoScreen from './screens/signup/AddPersonalInfoScreen'
+import AddPreferencesScreen from './screens/signup/AddPreferencesScreen'
+import MapScreen from './screens/trips/MapScreen'
+import GenericErrorScreen from './screens/error/GenericErrorScreen'
+import CreateVehiculeScreen from './screens/vehicules/CreateVehiculeScreen'
+import UpdateProfileScreen from './screens/profile/UpdateProfileScreen';
+import ProfileTabScreen from './screens/profile/ProfileTabScreen';
+import TripResultsScreen from './screens/trips/TripResultsScreen';
+import AddTripScreen from './screens/trips/AddTripScreen';
+import DetailsTripTabScreen from './screens/trips/DetailsTripTabScreen'
 
 const SignInNavigator = createStackNavigator({
     [ScreenNames.SignIn.HOME]: {

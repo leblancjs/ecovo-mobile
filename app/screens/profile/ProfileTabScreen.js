@@ -3,10 +3,10 @@ import { StyleSheet } from 'react-native'
 import { Container, Header, Content, Tabs, Tab, Left, Body, Right, Button, Title, Icon, Text } from 'native-base'
 import { connect } from 'react-redux'
 import { NavigationActions, StackActions } from 'react-navigation'
-import { logout } from '../../../actions/auth'
+import { logout } from '../../actions/auth'
 import MyProfileScreen from './MyProfileScreen'
 import VehiculeScreen from '../vehicules/VehiculeScreen'
-import { astuvu } from '../../hoc'
+import { astuvu } from '../../components/hoc'
 import { ScreenNames } from '../'
 
 class ProfileTabScreen extends Component {

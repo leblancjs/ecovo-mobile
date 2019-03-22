@@ -3,11 +3,11 @@ import { StyleSheet, View } from 'react-native'
 import { Container, Header, Content, Left, Right, Body, Title, Text, Button, H1, Icon } from 'native-base'
 import { connect } from 'react-redux'
 import { NavigationActions, StackActions } from 'react-navigation'
-import { astuvu } from '../../hoc'
-import { updateUser } from '../../../actions/user'
-import { logout } from '../../../actions/auth'
+import { astuvu } from '../../components/hoc'
+import { updateUser } from '../../actions/user'
+import { logout } from '../../actions/auth'
 import { ScreenNames } from '../'
-import PreferencesForm from '../../profile/PreferencesForm'
+import PreferencesForm from '../../components/profile/PreferencesForm'
 
 class AddPreferencesScreen extends Component {
     constructor(props) {

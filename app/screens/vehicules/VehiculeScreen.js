@@ -3,8 +3,8 @@ import { StyleSheet, View} from 'react-native'
 import { Icon, Fab } from 'native-base'
 import { connect } from 'react-redux'
 import { StackActions } from 'react-navigation'
-import VehiculeList from '../../vehicules/VehiculeList'
-import { getVehiculeList } from '../../../actions/vehicules'
+import VehiculeList from '../../components/vehicules/VehiculeList'
+import { getVehiculeList } from '../../actions/vehicules'
 import { ScreenNames } from '../'
 
 class VehiculeScreen extends Component {

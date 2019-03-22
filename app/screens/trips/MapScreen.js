@@ -2,12 +2,12 @@ import React, { Component } from 'react'
 import { StyleSheet, View, Image, TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
 import { NavigationActions, StackActions } from 'react-navigation';
-import { ScreenNames } from '../';
+import { ScreenNames } from '..';
 import { Container, Icon, Text } from 'native-base';
 import SlidingUpPanel from 'rn-sliding-up-panel';
-import SearchTripComponent from './SearchTripComponent';
-import { withStatusBar } from '../../hoc';
-import EcovoMapView from '../../astuvu-native/EcovoMapView';
+import SearchTripComponent from '../../components/trips/SearchTripComponent';
+import { withStatusBar } from '../../components/hoc';
+import EcovoMapView from '../../components/astuvu-native/EcovoMapView';
 
 class MapScreen extends Component {
     static navigationOptions = {

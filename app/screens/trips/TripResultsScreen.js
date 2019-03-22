@@ -2,18 +2,18 @@ import React, { Component } from 'react'
 import { StyleSheet, View, ActivityIndicator } from 'react-native'
 import { Container, Content, Header, Left, Right, Body, Title, Button, Text, Icon } from 'native-base'
 import { connect } from 'react-redux'
-import { astuvu } from '../../hoc'
-import TripCardCarousel from '../../astuvu-native/TripCardCarousel'
-import EcovoMapView from '../../astuvu-native/EcovoMapView'
+import { astuvu } from '../../components/hoc'
+import TripCardCarousel from '../../components/astuvu-native/TripCardCarousel'
+import EcovoMapView from '../../components/astuvu-native/EcovoMapView'
 import { NavigationActions, StackActions } from 'react-navigation'
-import { createTripSuccess } from '../../../actions/trip'
-import PubSubService from '../../../service/pubsub'
+import { createTripSuccess } from '../../actions/trip'
+import PubSubService from '../../service/pubsub'
 import {
     startSearch, stopSearch,
     ADD_SEARCH_RESULT, REMOVE_SEARCH_RESULT, CLEAR_SEARCH_RESULTS,
     addSearchResult, removeSearchResult, clearSearchResults
-} from '../../../actions/search'
-import { ScreenNames } from '../'
+} from '../../actions/search'
+import { ScreenNames } from '..'
 
 class TripResultsScreen extends Component {
     constructor(props) {

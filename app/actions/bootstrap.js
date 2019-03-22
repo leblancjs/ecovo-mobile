@@ -1,5 +1,5 @@
 import { NavigationActions } from 'react-navigation'
-import { ScreenNames } from '../components/screens'
+import { ScreenNames } from '../screens'
 import { getUserAuth } from '../storage'
 import { login, loginSuccess, logout } from './auth'
 import { getCurrentUserInfo } from './user'

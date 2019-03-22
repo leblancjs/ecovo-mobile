@@ -3,12 +3,12 @@ import { StyleSheet, View } from 'react-native'
 import { Container, Content, Header, Left, Right, Body, Title, Tab, Tabs, Button, Icon, Text } from 'native-base'
 import { connect } from 'react-redux'
 import { StackActions } from 'react-navigation'
-import { astuvu } from '../../hoc'
-import TripDetails from './TripDetails'
-import ProfileComponent from '../../profile/ProfileComponent'
-import { getTripById } from '../../../actions/trip'
-import { getUserById } from '../../../actions/user'
-import { getVehiculeById } from '../../../actions/vehicules'
+import { astuvu } from '../../components/hoc'
+import TripDetails from '../../components/trips/TripDetails'
+import ProfileComponent from '../../components/profile/ProfileComponent'
+import { getTripById } from '../../actions/trip'
+import { getUserById } from '../../actions/user'
+import { getVehiculeById } from '../../actions/vehicules'
 
 class DetailsTripTabScreen extends Component {
     constructor(props) {
