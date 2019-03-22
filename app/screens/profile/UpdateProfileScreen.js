@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { StyleSheet, View, ScrollView } from 'react-native'
 import { Container, Header, Content, Left, Right, Body, Title, Text, Button, Icon, Thumbnail } from 'native-base'
-import { TextField } from '../../astuvu-native/form'
+import { TextField } from '../../components/astuvu-native/form'
 import { NavigationActions, StackActions } from 'react-navigation'
 import { connect } from 'react-redux'
 import { astuvu } from '../../components/hoc'
