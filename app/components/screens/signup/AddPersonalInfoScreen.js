@@ -19,7 +19,9 @@ class AddPersonalInfoScreen extends Component {
             firstName: this.props.auth.user.firstName || '',
             lastName: this.props.auth.user.lastName || '',
             dateOfBirth: this.props.auth.user.dateOfBirth,
-            gender: this.props.auth.user.gender || 'Male'
+            gender: this.props.auth.user.gender || 'Male',
+            phoneNumber: this.props.auth.user.phoneNumber || '',
+            error: null,
         }
     }
 
@@ -30,10 +32,11 @@ class AddPersonalInfoScreen extends Component {
         })
     }
 
-    _onFieldChange = (field, value) => {
+    _onFieldChange = (field, value, error) => {
         this.setState({
             ...this.state,
-            [field]: value
+            [field]: value,
+            error
         })
     }
 
@@ -82,7 +85,8 @@ class AddPersonalInfoScreen extends Component {
             this.state.firstName != '' &&
             this.state.lastName != '' &&
             this.state.dateOfBirth &&
-            this.state.gender != ''
+            this.state.gender != '' &&
+            !this.state.error
 
         return (
             <Container>

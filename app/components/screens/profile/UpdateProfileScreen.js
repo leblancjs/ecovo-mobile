@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { StyleSheet, View, ScrollView } from 'react-native'
-import { Container, Header, Content, Left, Right, Body, Title, Text, Button, Textarea, Item, Form, Icon, Thumbnail } from 'native-base'
+import { Container, Header, Content, Left, Right, Body, Title, Text, Button, Icon, Thumbnail } from 'native-base'
+import { TextField } from '../../astuvu-native/form'
 import { NavigationActions, StackActions } from 'react-navigation'
 import { connect } from 'react-redux'
 import { astuvu } from '../../hoc'
@@ -36,35 +37,39 @@ class UpdateProfileScreen extends Component {
             })
     }
 
+    _onPersonalInfoFieldChange = (field, value, error) => {
+        console.log(field, value, error)
+        this.setState({
+            ...this.state,
+            user: {
+                ...this.state.user,
+                [field]: value
+            },
+            error
+        })
+    }
 
-    _onFieldChange = (field, value, preferences = false) => {
-        if (preferences) {
-            this.setState({
-                ...this.state,
-                user: {
-                    ...this.state.user,
-                    preferences: {
-                        ...this.state.user.preferences,
-                        [field]: value
-                    }
-                }
-            })
-        } else {
-            this.setState({
-                ...this.state,
-                user: {
-                    ...this.state.user,
+    _onPreferencesFieldChange = (field, value, error = null) => {
+        this.setState({
+            ...this.state,
+            user: {
+                ...this.state.user,
+                preferences: {
+                    ...this.state.user.preferences,
                     [field]: value
                 }
-            })
-        }
+            },
+            error
+        })
     }
 
     render() {
         let disableButton =
             this.state.user.firstName == '' ||
             this.state.user.lastName == '' ||
-            this.state.user.dateOfBirth == undefined
+            this.state.user.dateOfBirth == undefined ||
+            this.state.user.gender == '' ||
+            this.state.error
 
         return (
             <Container>
@@ -104,25 +109,30 @@ class UpdateProfileScreen extends Component {
                                 }
                             </PhotoUpload>
                         </View>
-                        <PersonalInfoForm user={this.props.auth.user} onFieldChange={this._onFieldChange} />
-                        <PreferencesForm preferences={this.props.auth.user.preferences} onFieldChange={(field, value) => this._onFieldChange(field, value, true)} />
-                        <Form style={styles.form}>
-                            <Item style={styles.item}>
-                                <Textarea bordered style={styles.textArea}
-                                    rowSpan={5}
-                                    placeholder="Description"
-                                    onChangeText={value => this._onFieldChange('description', value)}
-                                    value={this.state.user.description}
-                                />
-                            </Item>
-                        </Form>
+                        <PersonalInfoForm
+                            style={styles.form}
+                            user={this.state.user}
+                            onFieldChange={this._onPersonalInfoFieldChange}
+                        />
+                        <PreferencesForm
+                            style={styles.form}
+                            preferences={this.state.user.preferences}
+                            onFieldChange={this._onPreferencesFieldChange}
+                        />
+                        <TextField
+                            style={styles.form}
+                            label="Biography"
+                            rows={10}
+                            initialValue={this.state.user.description}
+                            onValueChange={(v, err) => this._onPersonalInfoFieldChange('description', v, err)}
+                        />
                     </ScrollView>
                     <View style={styles.buttonContainer}>
                         <Button block
                             disabled={disableButton || this.props.auth.isSubmitting}
                             onPress={this._updateUser}
                         >
-                            <Text style={styles.textWhite}>Update</Text>
+                            <Text>Update</Text>
                         </Button>
                     </View>
                 </Content>
@@ -130,52 +140,27 @@ class UpdateProfileScreen extends Component {
         )
     }
 }
-const inputStyle = {
-    backgroundColor: '#E8E8E8',
-    borderTopLeftRadius: 5,
-    borderTopRightRadius: 5,
-    borderBottomWidth: 1,
-    borderBottomColor: 'rgba(0, 0, 0, 0.38)',
-    fontSize: 16,
-    color: 'rgba(0, 0, 0, 0.6)',
-    paddingLeft: 16,
-    height: 58
-}
+
 const styles = StyleSheet.create({
     container: {
-        flex: 1
+        flex: 1,
     },
     formContainer: {
-        flex: 1
+        flex: 1,
+    },
+    form: {
+        padding: 16,
     },
     photoContainer: {
         height: 80,
-        margin: 16
+        margin: 16,
     },
     imagePicker: {
         marginTop: 20,
-        paddingVertical: 30
+        paddingVertical: 30,
     },
     buttonContainer: {
-        padding: 16
-    },
-    textWhite: {
-        fontSize: 20,
-        color: '#fff',
-        textAlign: 'center',
-    },
-    textArea: {
-        ...inputStyle,
-        width: '100%',
-    },
-    item: {
-        borderBottomWidth: 0,
-        marginBottom: 16
-    },
-    form: {
-        paddingTop: 16,
-        paddingBottom: 16,
-        paddingRight: 16
+        padding: 16,
     },
 })
 

@@ -1,218 +1,183 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { StyleSheet } from 'react-native'
-import { View, Form, Item, Input, DatePicker, Picker, Right, Icon, Text } from 'native-base'
+import { Form, TextField, PickerField, DatePickerField } from '../astuvu-native/form'
 
 class PersonalInfoForm extends Component {
     constructor(props) {
         super(props)
 
-        let dateOfBirth = props.user.dateOfBirth ?
-            new Date(Date.parse(props.user.dateOfBirth)) :
-            null
-
         this.state = {
             firstName: props.user ? props.user.firstName : '',
             lastName: props.user ? props.user.lastName : '',
-            dateOfBirth: dateOfBirth,
+            dateOfBirth: props.user ? this._parseDate(props.user.dateOfBirth) : null,
             gender: props.user ? props.user.gender : '',
-            firstNameError: null,
-            lastNameError: null,
-            dateOfBirthError: null,
+            phoneNumber: props.user ? props.user.phoneNumber : '',
         }
     }
 
-    _onFieldChange = (field, value) => {
+    _parseDate = (date) => {
+        if (date) {
+            return new Date(Date.parse(date))
+        }
+
+        return null
+    }
+
+    _onFieldChange = (field, value, error) => {
+        if (this.props.onFieldChange) {
+            this.props.onFieldChange(field, value, error)
+        }
+
         this.setState({
             ...this.state,
             [field]: value
         })
+    }
 
-        var fieldIsValid = false
-
-        switch(field) {
-            case 'firstName':
-                if (value.trim() === "") {
-                    this.setState(() => ({firstNameError: "First name required."}));
-                } else {
-                    fieldIsValid = true
-                    this.setState(() => ({firstNameError: null}));
-                }
-                break;
-            case 'lastName':
-                if (value.trim() === "") {
-                    this.setState(() => ({lastNameError: "Last name required."}));
-                } else {
-                    fieldIsValid = true
-                    this.setState(() => ({lastNameError: null}));
-                }
-                break;
-            case 'dateOfBirth': {
-                if (this._getAge(value) < 18) {
-                    this.setState(() => ({dateOfBirthError: "Must be 18 and older.", dateOfBirth: null}));
-                } else {
-                    fieldIsValid = true
-                    this.setState(() => ({dateOfBirthError: null}));
-                }
-                break;
-            }
+    _onValidateField = (field, value) => {
+        switch (field) {
+            case FieldNames.DATE_OF_BIRTH:
+                return this._validateAge(value)
+            case FieldNames.FIRST_NAME:
+            case FieldNames.LAST_NAME:
+            case FieldNames.GENDER:
+                return this._validateString(field, value)
+            case FieldNames.PHONE_NUMBER:
+                // Phone number is optional, so we won't do anything.
             default:
-                break;
-        }
-
-        if (this.props.onFieldChange) {
-            this.props.onFieldChange(field, value)
+                return null
         }
     }
 
-    _getAge(dateOfBirth) {
-        var today = new Date();
-        var birthDate = new Date(dateOfBirth);
-        var age = today.getFullYear() - birthDate.getFullYear();
-        var m = today.getMonth() - birthDate.getMonth();
-        if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
-            age--;
-        }    
-        return age;
+    _validateString = (field, value) => {
+        const error = `Please enter your ${FieldLabels[field].toLowerCase()}.`
+
+        if (typeof value !== 'string') {
+            return error
+        }
+
+        let trimmedValue = value.trim()
+        if (trimmedValue === '') {
+            return error
+        }
+
+        return null
     }
+
+    _validateAge(value) {
+        const minimumAge = 18
+
+        if (!value) {
+            return `Please enter your ${FieldLabels[FieldNames.DATE_OF_BIRTH].toLowerCase()}.`
+        }
+
+        let today = new Date()
+        let birthDate = new Date(value)
+
+        let age = today.getFullYear() - birthDate.getFullYear()
+
+        let month = today.getMonth() - birthDate.getMonth()
+        if (month < 0 || (month === 0 && today.getDate() < birthDate.getDate())) {
+            age--
+        }
+
+        if (age < minimumAge) {
+            return `You must be ${minimumAge} years or older.`
+        }
+
+        return null
+    }
+
+    _renderTextField = (field, style = styles.field) => (
+        <TextField
+            style={style}
+            label={FieldLabels[field]}
+            initialValue={this.state[[field]]}
+            required={true}
+            onValueChange={(v, err) => this._onFieldChange(field, v, err)}
+            onValidate={v => this._onValidateField(field, v)}
+        />
+    )
 
     render() {
+        const genderItems = [{
+            label: 'Male',
+            value: 'Male',
+        }, {
+            label: 'Female',
+            value: 'Female',
+        }, {
+            label: 'Other',
+            value: 'Other',
+        }]
+
         return (
-            <Form style={styles.form}>
-                <Item style={styles.item}>
-                    <Input style={styles.input}
-                        placeholder='First Name'
-                        value={this.state.firstName}
-                        onChangeText={value => this._onFieldChange('firstName', value)} />
-                </Item>
-                {!!this.state.firstNameError && (
-                    <Item style={styles.item}>
-                        <Text style={styles.errorMsg}>{this.state.firstNameError}</Text>
-                    </Item>
-                )}
-                <Item style={styles.item}>
-                    <Input style={styles.input}
-                        placeholder='Last Name'
-                        value={this.state.lastName}
-                        onChangeText={value => this._onFieldChange('lastName', value)} />
-                </Item>
-                {!!this.state.lastNameError && (
-                    <Item style={styles.item}>
-                        <Text style={styles.errorMsg}>{this.state.lastNameError}</Text>
-                    </Item>
-                )}
-                <Item style={styles.item} picker stackedLabel>
-                    <View style={styles.datePickerContainer}>
-                        <DatePicker
-                            textStyle={styles.datePickerText}
-                            placeHolderText={this.state.dateOfBirth ? null : 'Date of Birth'}
-                            placeHolderTextStyle={styles.datePickerText}
-                            defaultDate={this.state.dateOfBirth}
-                            locale={"en"}
-                            timeZoneOffsetInMinutes={undefined}
-                            modalTransparent={false}
-                            animationType={"fade"}
-                            androidMode={"default"}
-                            onDateChange={value => this._onFieldChange('dateOfBirth', value)}
-                            disabled={false}/>
-                        <Right>
-                            <Icon name='calendar' style={styles.datePickerIcon} />
-                        </Right>
-                    </View>
-                </Item>
-                {!!this.state.dateOfBirthError && (
-                    <Item style={styles.item}>
-                        <Text style={styles.errorMsg}>{this.state.dateOfBirthError}</Text>
-                    </Item>
-                )}
-                <Item style={styles.lastItem} picker>
-                    <View style={styles.genderPickerContainer}>
-                        <Picker style={styles.genderPicker}
-                            placeholder='Gender'
-                            placeholderStyle={styles.genderPickerText}
-                            selectedValue={this.state.gender}
-                            textStyle={styles.genderPickerText}
-                            mode="dropdown"
-                            iosIcon={<Icon name="arrow-down" />}
-                            onValueChange={value => this._onFieldChange('gender', value)}>
-                            <Picker.Item label="Male" value="Male"/>
-                            <Picker.Item label="Female" value="Female"/>
-                            <Picker.Item label="Other" value="Other"/>
-                        </Picker>
-                    </View>
-                </Item>
+            <Form style={{ ...styles.form, ...this.props.style }}>
+                {this._renderTextField(FieldNames.FIRST_NAME)}
+                {this._renderTextField(FieldNames.LAST_NAME)}
+                <DatePickerField
+                    style={styles.field}
+                    label='Date of Birth'
+                    placeholder='Please select a date'
+                    initialValue={this.state[FieldNames.DATE_OF_BIRTH]}
+                    required={true}
+                    onValueChange={(v, err) => this._onFieldChange(FieldNames.DATE_OF_BIRTH, v, err)}
+                    onValidate={v => this._onValidateField(FieldNames.DATE_OF_BIRTH, v)}
+                />
+                <PickerField
+                    style={styles.field}
+                    label="Gender"
+                    initialValue={genderItems[0].value}
+                    items={genderItems}
+                    required={true}
+                    onValueChange={(v, err) => this._onFieldChange(FieldNames.GENDER, v, err)}
+                    onValidate={v => this._onValidateField(FieldNames.GENDER, v)}
+                />
+                {this._renderTextField(FieldNames.PHONE_NUMBER, styles.lastField)}
             </Form>
         )
     }
 }
 
-const inputStyle = {
-    backgroundColor: '#E8E8E8',
-    borderTopLeftRadius: 5,
-    borderTopRightRadius: 5,
-    borderBottomWidth: 1,
-    borderBottomColor: 'rgba(0, 0, 0, 0.38)',
-    fontSize: 16,
-    color: 'rgba(0, 0, 0, 0.6)',
-    paddingLeft: 16,
-    height: 58
+const FieldNames = {
+    FIRST_NAME: 'firstName',
+    LAST_NAME: 'lastName',
+    DATE_OF_BIRTH: 'dateOfBirth',
+    GENDER: 'gender',
+    PHONE_NUMBER: 'phoneNumber',
+}
+
+const FieldLabels = {
+    [FieldNames.FIRST_NAME]: 'First Name',
+    [FieldNames.LAST_NAME]: 'Last Name',
+    [FieldNames.DATE_OF_BIRTH]: 'Date of Birth',
+    [FieldNames.GENDER]: 'Gender',
+    [FieldNames.PHONE_NUMBER]: 'Phone Number',
 }
 
 const styles = StyleSheet.create({
     form: {
-        paddingTop: 16,
-        paddingBottom: 16,
-        paddingRight: 16
+        // If needed, we can add default style for the form.
     },
-    item: {
-        borderBottomWidth: 0,
-        marginBottom: 16
+    field: {
+        marginBottom: 16,
     },
-    lastItem: {
-        borderBottomWidth: 0,
-        marginBottom: 0
+    lastField: {
+        // Don't really need anything special here...
     },
-    input: {
-        ...inputStyle,
-    },
-    genderPickerContainer: {
-        ...inputStyle,
-        flex: 1,
-        justifyContent: 'center',
-        marginBottom: 0,
-        marginLeft: 14,
-        paddingLeft: 0,
-    },
-    genderPicker: {
-        width: '100%'
-    },
-    genderPickerText: {
-        color: 'rgba(0, 0, 0, 0.6)'
-    },
-    datePickerContainer: {
-        ...inputStyle,
-        flex: 1,
-        flexDirection: 'row',
-        justifyContent: 'center',
-        paddingRight: 16
-    },
-    datePickerText: {
-        fontSize: 16,
-        color: 'rgba(0, 0, 0, 0.6)',
-        marginLeft: -10,
-        paddingTop: 22
-    },
-    datePickerIcon: {
-        opacity: 0.8
-    },
-    errorMsg: {
-        color: '#FF0000'
-    }
 })
 
 PersonalInfoForm.propTypes = {
+    style: PropTypes.object,
     user: PropTypes.object,
-    onFieldChange: PropTypes.func.isRequired
+    onFieldChange: PropTypes.func.isRequired,
+}
+
+PersonalInfoForm.defaultProps = {
+    style: {},
+    user: null,
+    onFieldChange: null,
 }
 
 export default PersonalInfoForm

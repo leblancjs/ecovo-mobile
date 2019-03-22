@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { Container, Content, Header, Text } from 'native-base'
 import PersonalInfoForm from '../profile/PersonalInfoForm'
 import PreferencesForm from '../profile/PreferencesForm'
+import { Form, TextField, PickerField, DatePickerField } from '../astuvu-native/form'
 
 class AstuvuNativeDemoScreen extends Component {
     constructor(props) {
@@ -10,17 +11,29 @@ class AstuvuNativeDemoScreen extends Component {
         this.user = {
             firstName: 'Harold',
             lastName: 'The Great',
-            dateOfBirth: new Date(),
+            dateOfBirth: null,
             gender: 'Male',
             preferences: {
                 music: 0,
                 smoking: 1,
-                conversation: 2
-            }
+                conversation: 2,
+            },
         }
 
         this.state = {
-            ...this.user
+            ...this.user,
+            text: 'Initial Value',
+            pickerItems: [{
+                label: 'The First Value',
+                value: 'Hide'
+            }, {
+                label: 'The Second Value',
+                value: 'The'
+            }, {
+                label: 'The Third Value',
+                value: 'Pain'
+            }],
+            date: new Date(),
         }
     }
 
@@ -41,14 +54,44 @@ class AstuvuNativeDemoScreen extends Component {
         })
     }
 
+    _onTextChange = (value) => {
+        this.setState({
+            ...this.state,
+            text: value
+        })
+    }
+
+    _onPickerChange = (value) => {
+        this.setState({
+            ...this.state,
+            picker: value
+        })
+    }
+
+    _onDatePickerChange = (value) => {
+        this.setState({
+            ...this.state,
+            date: value
+        })
+    }
+
+    _validateAge = (value) => {
+        return `This is a custom validator error.`
+    }
+
     render() {
         return (
             <Container>
                 <Header />
                 <Content>
-                    <PersonalInfoForm user={this.user} onFieldChange={this._onPersonalInfoChange} />
-                    <PreferencesForm preferences={this.user.preferences} onFieldChange={this._onPreferencesChange} />
+                    {/* <PersonalInfoForm user={this.user} onFieldChange={this._onPersonalInfoChange} />
+                    <PreferencesForm preferences={this.user.preferences} onFieldChange={this._onPreferencesChange} /> */}
                     <Text>{JSON.stringify(this.state)}</Text>
+                    <Form>
+                        <TextField label="Text" initialValue={this.state.text} required={true} onValueChange={this._onTextChange} />
+                        <PickerField label="Picker" initialValue={this.state.pickerItems[0].value} items={this.state.pickerItems} required={true} error={`I'm not happy with the value.`} onValueChange={this._onPickerChange} />
+                        <DatePickerField label="Date Picker" initialValue={this.state.date} required={true} onValueChange={this._onDatePickerChange} onValidate={this._validateAge} bottomBorder={false} />
+                    </Form>
                 </Content>
             </Container>
         )
