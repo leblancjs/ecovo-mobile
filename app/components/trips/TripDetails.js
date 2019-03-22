@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { StyleSheet, View, ActivityIndicator } from 'react-native'
 import { Container, Card } from 'native-base'
 import moment from 'moment'
-import EcovoMapView from '../../astuvu-native/EcovoMapView'
+import EcovoMapView from '../astuvu-native/EcovoMapView'
 import TripCarDetails from './TripCarDetails'
 import TripStopDetails from './TripStopDetails'
 

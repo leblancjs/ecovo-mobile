@@ -3,9 +3,9 @@ import { StyleSheet, View } from 'react-native'
 import { Container, Header, Content, Left, Right, Body, Title, Text, Button, Icon } from 'native-base'
 import { connect } from 'react-redux'
 import { StackActions } from 'react-navigation'
-import { astuvu } from '../../hoc'
-import { createVehicule } from '../../../actions/vehicules'
-import VehiculesForm from "../../vehicules/VehiculesForm"
+import { astuvu } from '../../components/hoc'
+import { createVehicule } from '../../actions/vehicules'
+import VehiculesForm from "../../components/vehicules/VehiculesForm"
 
 class CreateVehiculeScreen extends Component {
 

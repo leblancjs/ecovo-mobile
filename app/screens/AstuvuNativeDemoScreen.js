@@ -1,8 +1,6 @@
 import React, { Component } from 'react'
 import { Container, Content, Header, Text } from 'native-base'
-import PersonalInfoForm from '../profile/PersonalInfoForm'
-import PreferencesForm from '../profile/PreferencesForm'
-import { Form, TextField, PickerField, DatePickerField } from '../astuvu-native/form'
+import { Form, TextField, PickerField, DatePickerField } from '../components/astuvu-native/form'
 
 class AstuvuNativeDemoScreen extends Component {
     constructor(props) {

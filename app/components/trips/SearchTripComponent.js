@@ -3,7 +3,7 @@ import { StyleSheet, View, Slider, ScrollView, TouchableOpacity } from 'react-na
 import { Container, Text, Icon, Button, Form, Item, Radio } from 'native-base'
 import PropTypes from 'prop-types'
 import DatePicker from 'react-native-datepicker'
-import GooglePlacesInput from '../../astuvu-native/GooglePlacesAutocomplete'
+import GooglePlacesInput from '../astuvu-native/GooglePlacesAutocomplete'
 import { Dropdown } from 'react-native-material-dropdown'
 
 class SearchTripComponent extends Component {

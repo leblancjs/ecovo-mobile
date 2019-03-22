@@ -1,14 +1,14 @@
 import React, { Component } from 'react'
 import { StyleSheet, View, ScrollView } from 'react-native'
 import { Container, Header, Content, Left, Right, Body, Title, Text, Button, Icon, Thumbnail } from 'native-base'
-import { TextField } from '../../astuvu-native/form'
+import { TextField } from '../../components/astuvu-native/form'
 import { NavigationActions, StackActions } from 'react-navigation'
 import { connect } from 'react-redux'
-import { astuvu } from '../../hoc'
-import { updateUser } from '../../../actions/user'
+import { astuvu } from '../../components/hoc'
+import { updateUser } from '../../actions/user'
 import PhotoUpload from 'react-native-photo-upload'
-import PersonalInfoForm from '../../profile/PersonalInfoForm'
-import PreferencesForm from '../../profile/PreferencesForm'
+import PersonalInfoForm from '../../components/profile/PersonalInfoForm'
+import PreferencesForm from '../../components/profile/PreferencesForm'
 import { ScreenNames } from '../'
 
 class UpdateProfileScreen extends Component {
@@ -100,7 +100,7 @@ class UpdateProfileScreen extends Component {
                                 {this.state.user.photo === '' ?
                                     <Thumbnail large
                                         style={styles.imagePicker}
-                                        source={require('../../../../assets/profile_pic.png')}
+                                        source={require('../../../assets/profile_pic.png')}
                                     /> :
                                     <Thumbnail large
                                         style={styles.imagePicker}

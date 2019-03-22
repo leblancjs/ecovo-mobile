@@ -1,14 +1,14 @@
 import React, { Component } from 'react'
 import { StyleSheet, View, ScrollView } from 'react-native'
 import { Container, Header, Left, Right, Body, Title, Text, Item, Icon, Button, Form, Picker, Content } from 'native-base'
-import { astuvu } from '../../hoc'
+import { astuvu } from '../../components/hoc'
 import { connect } from 'react-redux'
 import { NavigationActions, StackActions } from 'react-navigation'
-import GooglePlacesInput from '../../astuvu-native/GooglePlacesAutocomplete'
+import GooglePlacesInput from '../../components/astuvu-native/GooglePlacesAutocomplete'
 import DatePicker from 'react-native-datepicker'
-import { createTrip } from '../../../actions/trip'
-import { getVehiculeList } from '../../../actions/vehicules'
-import { ScreenNames } from '../'
+import { createTrip } from '../../actions/trip'
+import { getVehiculeList } from '../../actions/vehicules'
+import { ScreenNames } from '..'
 
 class AddTripScreen extends Component {
     static navigationOptions = {

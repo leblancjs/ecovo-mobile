@@ -2,9 +2,9 @@ import React, { Component } from 'react'
 import { StyleSheet, View } from 'react-native'
 import { Container, Header, Content, Title, Left, Right, Body, Text, Button, Card, CardItem } from 'native-base'
 import { connect } from 'react-redux'
-import { bootstrap } from '../../../actions/bootstrap'
-import { astuvu } from '../../hoc'
-import LogoFadeIn from "../../astuvu-native/LogoFadeIn"
+import { bootstrap } from '../../actions/bootstrap'
+import { astuvu } from '../../components/hoc'
+import LogoFadeIn from "../../components/astuvu-native/LogoFadeIn"
 
 class SignInScreen extends Component {
     constructor(props) {
@@ -30,7 +30,7 @@ class SignInScreen extends Component {
                     <View style={styles.logoContainer}>
                         <LogoFadeIn
                             style={styles.logo}
-                            source={require('../../../../assets/logo.png')}
+                            source={require('../../../assets/logo.png')}
                         />
                         <Text>The smart way to carpool</Text>
                     </View>

@@ -3,7 +3,7 @@ import { Container, Header, Content, Left, Body, Right, Title, Button, Text } fr
 import { StyleSheet, View, Image } from 'react-native'
 import { connect } from 'react-redux'
 import { NavigationActions } from 'react-navigation'
-import { astuvu } from '../../hoc'
+import { astuvu } from '../../components/hoc'
 import { ScreenNames } from '..'
 
 class GenericErrorScreen extends Component {

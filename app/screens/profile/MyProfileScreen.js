@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import ProfileComponent from '../../profile/ProfileComponent'
+import ProfileComponent from '../../components/profile/ProfileComponent'
 
 class MyProfileScreen extends Component {
     constructor(props) {
