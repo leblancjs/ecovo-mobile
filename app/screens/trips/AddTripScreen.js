@@ -4,7 +4,7 @@ import { Container, Header, Left, Right, Body, Title, Text, Item, Icon, Button, 
 import { astuvu } from '../../components/hoc'
 import { connect } from 'react-redux'
 import { NavigationActions, StackActions } from 'react-navigation'
-import GooglePlacesInput from '../../components/astuvu-native/GooglePlacesAutocomplete'
+import PlacesSearchField from '../../components/astuvu-native/form/PlacesSearchField'
 import DatePicker from 'react-native-datepicker'
 import { createTrip } from '../../actions/trip'
 import { getVehiculeList } from '../../actions/vehicules'
@@ -137,7 +137,7 @@ class AddTripScreen extends Component {
         let stopsItem = this.state.stopsItem
         stopsItem.push(
                 <Item key={key} style={styles.item}>
-                    <GooglePlacesInput style={styles.stopsInput} placeholder='Pass by' onSearchResult={this._addStop} />
+                    <PlacesSearchField style={styles.stopsInput} placeholder='Pass by' onSearchResult={this._addStop} />
                     <Icon style={styles.removeStopBtnIcon} type="MaterialIcons" name="close" onPress={this._removeSearchInput} />
                 </Item>)
         this.setState({stopsItem})
@@ -276,7 +276,7 @@ class AddTripScreen extends Component {
                     <View style={styles.header}>
                         <Form style={styles.form}>
                             <Item style={styles.item}>
-                                <GooglePlacesInput placeholder='From (Pick Up Point)' onSearchResult={this._updateFrom}/>
+                                <PlacesSearchField placeholder='From (Pick Up Point)' onSearchResult={this._updateFrom}/>
                             </Item>
                             {this.state.stopsItem.map((value, index) => {
                                 return value
@@ -288,7 +288,7 @@ class AddTripScreen extends Component {
                                 </Button>
                             </View>
                             <Item style={styles.item}>
-                                <GooglePlacesInput placeholder='To (Drop Off Point)' onSearchResult={this._updateTo} />
+                                <PlacesSearchField placeholder='To (Drop Off Point)' onSearchResult={this._updateTo} />
                             </Item>
                         </Form>
                     </View>
