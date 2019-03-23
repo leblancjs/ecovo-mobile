@@ -90,7 +90,7 @@ class AstuvuNativeDemoScreen extends Component {
                         <TextField label="Text" initialValue={this.state.text} required={true} onValueChange={this._onTextChange} />
                         <PickerField label="Picker" initialValue={this.state.pickerItems[0].value} items={this.state.pickerItems} required={true} error={`I'm not happy with the value.`} onValueChange={this._onPickerChange} />
                         <DatePickerField label="Date Picker" initialValue={this.state.date} required={true} onValueChange={this._onDatePickerChange} onValidate={this._validateAge} bottomBorder={false} />
-                        <SubmitButton text="As tu vu?" loading={false} disabled={false}></SubmitButton>
+                        <SubmitButton transparent={false} formError={true} text="As tu vu?" loading={false} disabled={false}></SubmitButton>
                     </Form>
                 </Content>
             </Container>

@@ -21,7 +21,7 @@ class SubmitButton extends Component {
     render = () => {
         return (
             <StyleProvider style={getTheme(commonColors)}>
-                <Button style={{ ...this.props.style }} transparent={this.props.transparent} disabled={this.props.disabled}>
+                <Button style={{ ...this.props.style }} transparent={this.props.transparent} disabled={this.props.disabled || this.props.formError} danger={this.props.formError}>
                     {this._renderText()}
                 </Button>
             </StyleProvider>
@@ -38,6 +38,7 @@ export const FieldPropTypes = {
     transparent: PropTypes.boolean,
     disabled: PropTypes.boolean,
     loading: PropTypes.boolean,
+    formError: PropTypes.boolean,
 }
 
 export const FieldDefaultProps = {
@@ -46,6 +47,7 @@ export const FieldDefaultProps = {
     transparent: false,
     disabled: false,
     loading: false,
+    formError: false,
 }
 
 export default SubmitButton
