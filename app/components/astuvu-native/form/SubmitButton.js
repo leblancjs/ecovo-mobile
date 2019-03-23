@@ -1,26 +1,30 @@
 import React, { Component } from 'react'
-import { StyleSheet } from 'react-native'
-import { Button, Text, Spinner } from 'native-base'
+import { StyleSheet, View } from 'react-native'
+import { Button, Text, StyleProvider, Spinner } from 'native-base'
 import PropTypes from 'prop-types'
+import getTheme from '../native-base-theme/components'
+import commonColors from '../native-base-theme/variables/commonColor'
 
 class SubmitButton extends Component {
     constructor(props) {
         super(props)
     }
     _renderText = () => {
-        if (this.props.isLoading) {
-            return <Spinner/>
+        if (this.props.loading) {
+            return <Spinner color='white'/>
 
-        } else { 
+        } else {
             return <Text>{this.props.text}</Text>
         }
-     }
+    }
 
     render = () => {
         return (
-            <Button style={{ ...this.props.style }} transparent={this.props.isTransparent} disabled={this.props.isDisabled}>
-                {this._renderText()}
-            </Button>
+            <StyleProvider style={getTheme(commonColors)}>
+                <Button style={{ ...this.props.style }} transparent={this.props.transparent} disabled={this.props.disabled}>
+                    {this._renderText()}
+                </Button>
+            </StyleProvider>
         )
     }
 }
@@ -31,17 +35,17 @@ export const FieldStyles = StyleSheet.create({
 export const FieldPropTypes = {
     style: PropTypes.object,
     text: PropTypes.string,
-    isTransparent: PropTypes.boolean,
-    isDisabled: PropTypes.boolean,
-    isLoading: PropTypes.boolean,
+    transparent: PropTypes.boolean,
+    disabled: PropTypes.boolean,
+    loading: PropTypes.boolean,
 }
 
 export const FieldDefaultProps = {
     style: {},
     text: 'Submit',
-    isTransparent: false,
-    isDisabled: false,
-    isLoading: false,
+    transparent: false,
+    disabled: false,
+    loading: false,
 }
 
 export default SubmitButton

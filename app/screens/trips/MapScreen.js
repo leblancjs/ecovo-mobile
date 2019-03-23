@@ -8,7 +8,7 @@ import SlidingUpPanel from 'rn-sliding-up-panel';
 import SearchTripComponent from '../../components/trips/SearchTripComponent';
 import { withStatusBar } from '../../components/hoc';
 import EcovoMapView from '../../components/astuvu-native/EcovoMapView';
-
+import AstuvuNativeDemoScreen from '../AstuvuNativeDemoScreen';
 class MapScreen extends Component {
     static navigationOptions = {
         header: null
@@ -36,33 +36,7 @@ class MapScreen extends Component {
 
     render() {
         return (
-            <Container style={styles.container}>
-
-                <EcovoMapView />
-                <View style={styles.menuWrapper}>
-                    <TouchableOpacity style={styles.touchableIcon} onPress={this._goToMyProfile}>
-                        <Image style={styles.profile} source={{ uri: this.state.user.photo }} />
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.touchableIcon} onPress={this._goToCreateTrip}>
-                        <Container style={styles.iconTripsWrapper} >
-                            <Icon style={styles.iconTrips} type="FontAwesome5" name="map-marked"></Icon>
-                        </Container>
-                    </TouchableOpacity>
-                </View>
-                <View style={styles.bottom}>
-                    <Text style={styles.footerHeaderText}>
-                        Find a Trip
-                    </Text>
-                    <TouchableOpacity style={styles.itemRow} onPress={() => this._panel.show()}>
-                        <Icon active name='search' style={styles.searchIcon} />
-                        <Text style={styles.search}>From</Text>
-                    </TouchableOpacity>
-
-                </View>
-                <SlidingUpPanel allowDragging={false} ref={c => this._panel = c} allowMomentum={false}>
-                    <SearchTripComponent onSearchTrips={this._searchTrips} onCloseComponent={this._slideDown}></SearchTripComponent>
-                </SlidingUpPanel>
-            </Container>
+            <AstuvuNativeDemoScreen></AstuvuNativeDemoScreen>
         )
     }
 }
