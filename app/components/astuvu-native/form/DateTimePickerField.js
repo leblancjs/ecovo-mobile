@@ -87,7 +87,6 @@ class DateTimePickerField extends Component {
                             placeholder={this.state.placeholder}
                             date={this.state.value}
                             format={this.props.dateFormat}
-                            minDate={this.props.minDate}
                             confirmBtnText="Confirm"
                             cancelBtnText="Cancel"
                             showIcon={false}

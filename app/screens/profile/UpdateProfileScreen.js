@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { StyleSheet, View, ScrollView } from 'react-native'
 import { Container, Header, Content, Left, Right, Body, Title, Text, Button, Icon, Thumbnail } from 'native-base'
-import { TextField } from '../../components/astuvu-native/form'
+import { TextField, FooterButton } from '../../components/astuvu-native/form'
 import { NavigationActions, StackActions } from 'react-navigation'
 import { connect } from 'react-redux'
 import { astuvu } from '../../components/hoc'
@@ -39,6 +39,8 @@ class UpdateProfileScreen extends Component {
 
     _onPersonalInfoFieldChange = (field, value, error) => {
         console.log(field, value, error)
+        console.log("HELLO")
+
         this.setState({
             ...this.state,
             user: {
@@ -64,25 +66,18 @@ class UpdateProfileScreen extends Component {
     }
 
     render() {
-        let disableButton =
-            this.state.user.firstName == '' ||
-            this.state.user.lastName == '' ||
-            this.state.user.dateOfBirth == undefined ||
-            this.state.user.gender == '' ||
-            this.state.error
-
         return (
             <Container>
                 <Header noShadow>
                     <Left>
                         <Button transparent onPress={this.props.goToProfile}>
-                            <Icon name="close"/>
+                            <Icon name="close" />
                         </Button>
                     </Left>
                     <Body>
                         <Title>Edit Profile</Title>
                     </Body>
-                    <Right/>
+                    <Right />
                 </Header>
                 <Content
                     scrollEnabled={false}
@@ -127,14 +122,12 @@ class UpdateProfileScreen extends Component {
                             onValueChange={(v, err) => this._onPersonalInfoFieldChange('description', v, err)}
                         />
                     </ScrollView>
-                    <View style={styles.buttonContainer}>
-                        <Button block
-                            disabled={disableButton || this.props.auth.isSubmitting}
-                            onPress={this._updateUser}
-                        >
-                            <Text>Update</Text>
-                        </Button>
-                    </View>
+                    <FooterButton
+                        loading={this.props.auth.isSubmitting}
+                        text="Update"
+                        formError={this.state.error != null}
+                        onPress={this._updateUser}
+                    />
                 </Content>
             </Container>
         )
@@ -158,10 +151,7 @@ const styles = StyleSheet.create({
     imagePicker: {
         marginTop: 20,
         paddingVertical: 30,
-    },
-    buttonContainer: {
-        padding: 16,
-    },
+    }
 })
 
 const mapStateToProps = state => ({

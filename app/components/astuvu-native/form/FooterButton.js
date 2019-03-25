@@ -14,7 +14,7 @@ class FooterButton extends Component {
         return (
             <StyleProvider style={getTheme(commonColors)}>
                 <Footer>
-                    <SubmitButton transparent={false} formError={this.props.formError} text={this.props.text} loading={this.props.loading} disabled={this.props.disabled} style={{ borderRadius:0, ...this.props.style }}></SubmitButton>
+                    <SubmitButton onPress={this.props.onPress} transparent={false} formError={this.props.formError} text={this.props.text} loading={this.props.loading} disabled={this.props.disabled} style={{ borderRadius:0, ...this.props.style }}></SubmitButton>
                 </Footer>
             </StyleProvider>
         )
@@ -27,11 +27,12 @@ export const FieldPropTypes = {
     disabled: PropTypes.boolean,
     loading: PropTypes.boolean,
     formError: PropTypes.boolean,
+    onPress: PropTypes.func.isRequired
 }
 
 export const FieldDefaultProps = {
     style: {},
-    text: 'Submit',
+    text: "Submit",
     disabled: false,
     loading: false,
     formError: false,
