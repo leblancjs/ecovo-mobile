@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { Container, Content, Header, Text } from 'native-base'
 import { Form, TextField, PickerField, DatePickerField, DateTimePickerField, SubmitButton, FooterButton } from '../components/astuvu-native/form'
+import { astuvu } from '../components/hoc'
 
 class AstuvuNativeDemoScreen extends Component {
     constructor(props) {
@@ -102,4 +103,4 @@ class AstuvuNativeDemoScreen extends Component {
     }
 }
 
-export default AstuvuNativeDemoScreen
+export default astuvu(AstuvuNativeDemoScreen)

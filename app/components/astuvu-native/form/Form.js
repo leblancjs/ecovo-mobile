@@ -23,13 +23,11 @@ const styles = StyleSheet.create({
 })
 
 Form.propTypes = {
-    style: PropTypes.object,
-    errorHandler: PropTypes.func,
+    style: PropTypes.object
 }
 
 Form.defaultProps = {
-    style: {},
-    errorHandler: null
+    style: {}
 }
 
 export default Form

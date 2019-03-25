@@ -1,9 +1,7 @@
 import React, { Component } from 'react'
-import { StyleSheet, View } from 'react-native'
-import { Button, Text, StyleProvider, Spinner } from 'native-base'
+import { StyleSheet } from 'react-native'
+import { Button, Text, Spinner } from 'native-base'
 import PropTypes from 'prop-types'
-import getTheme from '../native-base-theme/components'
-import commonColors from '../native-base-theme/variables/commonColor'
 
 class SubmitButton extends Component {
     constructor(props) {
@@ -11,7 +9,7 @@ class SubmitButton extends Component {
     }
     _renderText = () => {
         if (this.props.loading) {
-            return <Spinner color='white'/>
+            return <Spinner color='white' />
 
         } else {
             return <Text>{this.props.text}</Text>
@@ -20,11 +18,9 @@ class SubmitButton extends Component {
 
     render = () => {
         return (
-            <StyleProvider style={getTheme(commonColors)}>
-                <Button style={{ ...this.props.style }} onPress={this.props.onPress} transparent={this.props.transparent} disabled={this.props.disabled || this.props.formError || this.props.loading } danger={this.props.formError}>
-                    {this._renderText()}
-                </Button>
-            </StyleProvider>
+            <Button style={{ ...this.props.style }} onPress={this.props.onPress} transparent={this.props.transparent} disabled={this.props.disabled || this.props.formError || this.props.loading} danger={this.props.formError}>
+                {this._renderText()}
+            </Button>
         )
     }
 }
