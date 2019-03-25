@@ -38,9 +38,6 @@ class UpdateProfileScreen extends Component {
     }
 
     _onPersonalInfoFieldChange = (field, value, error) => {
-        console.log(field, value, error)
-        console.log("HELLO")
-
         this.setState({
             ...this.state,
             user: {
