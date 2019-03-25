@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
-import { StyleSheet, View } from 'react-native'
-import { Button, Text, StyleProvider, Spinner, Footer } from 'native-base'
+import { StyleProvider, Footer } from 'native-base'
 import PropTypes from 'prop-types'
 import getTheme from '../native-base-theme/components'
 import commonColors from '../native-base-theme/variables/commonColor'
@@ -14,7 +13,7 @@ class FooterButton extends Component {
         return (
             <StyleProvider style={getTheme(commonColors)}>
                 <Footer>
-                    <SubmitButton onPress={this.props.onPress} transparent={false} formError={this.props.formError} text={this.props.text} loading={this.props.loading} disabled={this.props.disabled} style={{ borderRadius:0, ...this.props.style }}></SubmitButton>
+                    <SubmitButton onPress={this.props.onPress} transparent={false} formError={this.props.formError} text={this.props.text} loading={this.props.loading} disabled={this.props.disabled} style={{ borderRadius: 0, ...this.props.style }}></SubmitButton>
                 </Footer>
             </StyleProvider>
         )

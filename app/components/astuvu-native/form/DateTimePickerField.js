@@ -8,36 +8,7 @@ import DatePicker from 'react-native-datepicker'
 class DateTimePickerField extends Component {
     constructor(props) {
         super(props)
-
-        /*
-         * For some reason, NativeBase's date picker doesn't show the default
-         * date when it is set. So, we need to trick it by using the
-         * placeholder.
-         * 
-         * No worries, once you select a date, it will behave correctly.
-         * 
-         * This is what astuvu-native is all about: making sh*tty things work.
-         */
-        let placeholder = this.props.placeholder
-        let placeholderStyle = styles.placeholderText
-
-        if (this.props.initialValue) {
-            // This line needs to stay as it is for it to format correctly. I know it's long...
-            placeholder = `${this.props.initialValue.getDate()}/${this.props.initialValue.getMonth()}/${this.props.initialValue.getFullYear()}`
-            placeholderStyle = {}
-        }
-
-        /*
-         * It's intentional that we don't validate the initial value.
-         *
-         * We don't want to tell the user they've done something wrong before
-         * they've even started to write in the text field!
-         *
-         * However, we can preset an error if we want.
-         */
         this.state = {
-            placeholder,
-            placeholderStyle,
             value: this.props.initialValue,
             error: this.props.error,
         }
@@ -84,7 +55,7 @@ class DateTimePickerField extends Component {
                         <DatePicker
                             style={{ width: '100%', padding: 0 }}
                             mode="datetime"
-                            placeholder={this.state.placeholder}
+                            placeholder={this.props.placeholder}
                             date={this.state.value}
                             format={this.props.dateFormat}
                             confirmBtnText="Confirm"
