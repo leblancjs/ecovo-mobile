@@ -23,11 +23,11 @@ const styles = StyleSheet.create({
 })
 
 Form.propTypes = {
-    style: PropTypes.object,
+    style: PropTypes.object
 }
 
 Form.defaultProps = {
-    style: {},
+    style: {}
 }
 
 export default Form

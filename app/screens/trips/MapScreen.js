@@ -8,7 +8,6 @@ import SlidingUpPanel from 'rn-sliding-up-panel';
 import SearchTripComponent from '../../components/trips/SearchTripComponent';
 import { withStatusBar } from '../../components/hoc';
 import EcovoMapView from '../../components/astuvu-native/EcovoMapView';
-
 class MapScreen extends Component {
     static navigationOptions = {
         header: null
@@ -36,8 +35,8 @@ class MapScreen extends Component {
 
     render() {
         return (
-            <Container style={styles.container}>
 
+            <Container style={styles.container}>
                 <EcovoMapView />
                 <View style={styles.menuWrapper}>
                     <TouchableOpacity style={styles.touchableIcon} onPress={this._goToMyProfile}>
@@ -57,7 +56,6 @@ class MapScreen extends Component {
                         <Icon active name='search' style={styles.searchIcon} />
                         <Text style={styles.search}>From</Text>
                     </TouchableOpacity>
-
                 </View>
                 <SlidingUpPanel allowDragging={false} ref={c => this._panel = c} allowMomentum={false}>
                     <SearchTripComponent onSearchTrips={this._searchTrips} onCloseComponent={this._slideDown}></SearchTripComponent>

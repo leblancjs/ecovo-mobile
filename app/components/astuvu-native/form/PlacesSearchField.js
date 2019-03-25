@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import { StyleSheet } from 'react-native';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import PropTypes from 'prop-types';
-import { googleMapsApiKey } from '../../../app.json'
+import { googleMapsApiKey } from '../../../../app.json'
 
-class GooglePlacesInput extends Component {
+class PlacesSearchField extends Component {
     constructor(props) {
         super(props);
     }
@@ -82,9 +82,9 @@ const styles = StyleSheet.create({
         padding: 10,
     }
 });
-GooglePlacesInput.propTypes = {
+PlacesSearchField.propTypes = {
     onSearchResult: PropTypes.func.isRequired,
     placeholder: PropTypes.string.isRequired,
 }
 
-export default GooglePlacesInput;
+export default PlacesSearchField;

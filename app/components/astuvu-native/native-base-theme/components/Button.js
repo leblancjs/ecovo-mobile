@@ -381,6 +381,8 @@ export default (variables /*: * */ = variable) => {
     borderColor: variables.btnPrimaryBg,
     borderWidth: null,
     height: 45,
+    width: '100%',
+    textAlign: 'center',
     alignSelf: "flex-start",
     flexDirection: "row",
     elevation: 2,
@@ -390,7 +392,7 @@ export default (variables /*: * */ = variable) => {
     shadowOpacity: platformStyle === "material" ? 0.2 : undefined,
     shadowRadius: platformStyle === "material" ? 1.2 : undefined,
     alignItems: "center",
-    justifyContent: "space-between"
+    justifyContent: "center"
   };
   return buttonTheme;
 };

@@ -3,7 +3,7 @@ import { StyleSheet, View, Slider, ScrollView, TouchableOpacity } from 'react-na
 import { Container, Text, Icon, Button, Form, Item, Radio } from 'native-base'
 import PropTypes from 'prop-types'
 import DatePicker from 'react-native-datepicker'
-import GooglePlacesInput from '../astuvu-native/GooglePlacesAutocomplete'
+import PlacesSearchField from '../astuvu-native/form/PlacesSearchField'
 import { Dropdown } from 'react-native-material-dropdown'
 
 class SearchTripComponent extends Component {
@@ -165,10 +165,10 @@ class SearchTripComponent extends Component {
                     </Item>
                     <Form style={styles.form}>
                         <Item style={styles.item}>
-                            <GooglePlacesInput placeholder='From' onSearchResult={this._updateFrom} />
+                            <PlacesSearchField placeholder='From' onSearchResult={this._updateFrom} />
                         </Item>
                         <Item style={styles.item}>
-                            <GooglePlacesInput placeholder='To' onSearchResult={this._updateTo} />
+                            <PlacesSearchField placeholder='To' onSearchResult={this._updateTo} />
                         </Item>
                     </Form>
                 </View>
