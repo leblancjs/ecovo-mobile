@@ -9,14 +9,14 @@ class VehiculeList extends Component {
     }
 
     render() {
-        const { vehicules } = this.props
+        const { vehicules, onDeleteVehicle } = this.props
         let doMap = vehicules != undefined && vehicules.length > 0
         return (
             <ScrollView styles={styles.container}>
                 {doMap &&
                     vehicules.map((v, i) => {
                         return (
-                            <VehiculeListItem key={i} vehicule={v} />
+                            <VehiculeListItem key={i} vehicule={v} onDeleteVehicle={onDeleteVehicle}/>
                         )
                     })}
             </ScrollView>
@@ -31,7 +31,8 @@ const styles = StyleSheet.create({
 })
 
 VehiculeList.propTypes = {
-    vehicules: PropTypes.array
+    vehicules: PropTypes.array,
+    onDeleteVehicle: PropTypes.func
 }
 
 export default VehiculeList

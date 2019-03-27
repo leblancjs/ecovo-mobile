@@ -1,13 +1,13 @@
 import React, { Component } from 'react'
-import { StyleSheet, View } from 'react-native'
-import { Container, Header, Content, Left, Right, Body, Title, Text, Button, H1, Icon } from 'native-base'
 import { connect } from 'react-redux'
 import { NavigationActions, StackActions } from 'react-navigation'
+import { StyleSheet, View } from 'react-native'
+import { Container, Header, Content, Left, Right, Body, Title, Text, Button, H1, Icon } from 'native-base'
 import { astuvu } from '../../components/hoc'
-import { updateUser } from '../../actions/user'
-import { logout } from '../../actions/auth'
-import { ScreenNames } from '../'
 import PreferencesForm from '../../components/profile/PreferencesForm'
+import { AuthService, UserService } from '../../service'
+import { isFetching, UsersSelector, AuthSelector } from '../../selectors'
+import { ScreenNames } from '../'
 
 class AddPreferencesScreen extends Component {
     constructor(props) {
@@ -29,9 +29,9 @@ class AddPreferencesScreen extends Component {
 
     _updateUser = () => {
         this.props.updateUser(
-            this.props.auth.credentials.accessToken,
+            this.props.accessToken,
             {
-                id: this.props.auth.user.id,
+                id: this.props.user.id,
                 preferences: {
                     ...this.state
                 },
@@ -84,12 +84,12 @@ class AddPreferencesScreen extends Component {
                     <H1>Preferences</H1>
                     <View style={styles.form}>
                         <PreferencesForm
-                            preferences={this.props.auth.user.preferences}
+                            preferences={this.props.user.preferences}
                             onFieldChange={this._onPreferencesChange}
                         />
                     </View>
                     <Button block
-                        disabled={this.props.auth.isSumitting}
+                        disabled={this.props.isFetching}
                         onPress={this._updateUser}
                     >
                         <Text>Finish</Text>
@@ -112,13 +112,15 @@ const styles = StyleSheet.create({
 })
 
 const mapStateToProps = state => ({
-    auth: state.auth
+    user: UsersSelector.getUserConnected(state),
+    accessToken: AuthSelector.getAccessToken(state),
+    isFetching: isFetching(state)
 })
 
 const mapDispatchToProps = dispatch => ({
-    updateUser: (accessToken, user) => dispatch(updateUser(accessToken, user)),
+    updateUser: (accessToken, user) => dispatch(UserService.update(accessToken, user)),
     back: () => dispatch(StackActions.pop()),
-    logout: () => dispatch(logout()),
+    logout: () => dispatch(AuthService.logout()),
     goToWelcome: () => dispatch(NavigationActions.navigate({ routeName: ScreenNames.SignIn.HOME })),
     goToTrips: () => dispatch(NavigationActions.navigate({ routeName: ScreenNames.Trips.MAP })),
     goToError: () => dispatch(NavigationActions.navigate({ routeName: ScreenNames.Errors.HOME }))

@@ -1,23 +1,18 @@
 import React, { Component } from 'react'
-import { StyleSheet } from 'react-native'
-import { Container, Header, Content, Tabs, Tab, Left, Body, Right, Button, Title, Icon, Text } from 'native-base'
 import { connect } from 'react-redux'
+import { StyleSheet } from 'react-native'
 import { NavigationActions, StackActions } from 'react-navigation'
-import { logout } from '../../actions/auth'
+import { Container, Header, Content, Tabs, Tab, Left, Body, Right, Button, Title, Icon, Text } from 'native-base'
+import { AuthService } from '../../service'
 import MyProfileScreen from './MyProfileScreen'
 import VehiculeScreen from '../vehicules/VehiculeScreen'
+import { UsersSelector } from '../../selectors'
 import { astuvu } from '../../components/hoc'
 import { ScreenNames } from '../'
 
 class ProfileTabScreen extends Component {
     constructor(props) {
         super(props)
-
-        this.state = {
-            user: {
-                ...this.props.user
-            }
-        }
     }
 
     _logout = () => {
@@ -84,11 +79,11 @@ const styles = StyleSheet.create({
 })
 
 const mapStateToProps = state => ({
-    user: state.auth.user
+    user: UsersSelector.getUserConnected(state)
 })
 
 const mapDispatchToProps = dispatch => ({
-    logout: () => dispatch(logout()),
+    logout: () => dispatch(AuthService.logout()),
     goToWelcome: () => dispatch(NavigationActions.navigate({ routeName: ScreenNames.SignIn.HOME })),
     goMapScreen: () => dispatch(NavigationActions.navigate({ routeName: ScreenNames.Trips.HOME })),
     goToUpdateProfileScreen: () => dispatch(StackActions.push({ routeName: ScreenNames.Profile.UPDATE }))

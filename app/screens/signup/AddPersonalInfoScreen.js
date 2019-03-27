@@ -1,26 +1,26 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
+import { NavigationActions, StackActions } from 'react-navigation'
 import { StyleSheet, View } from 'react-native'
 import { Container, Header, Content, Left, Right, Body, Title, Text, Button, Thumbnail, H1 } from 'native-base'
 import PhotoUpload from 'react-native-photo-upload'
-import { NavigationActions, StackActions } from 'react-navigation'
-import { connect } from 'react-redux'
 import { astuvu } from '../../components/hoc'
-import { createUser, updateUser } from '../../actions/user'
-import { logout } from '../../actions/auth'
-import { ScreenNames } from '../'
 import PersonalInfoForm from '../../components/profile/PersonalInfoForm'
+import { AuthService, UserService } from '../../service'
+import { isFetching, UsersSelector, AuthSelector } from '../../selectors'
+import { ScreenNames } from '../'
 
 class AddPersonalInfoScreen extends Component {
     constructor(props) {
         super(props)
 
         this.state = {
-            photo: this.props.auth.user.photo || '',
-            firstName: this.props.auth.user.firstName || '',
-            lastName: this.props.auth.user.lastName || '',
-            dateOfBirth: this.props.auth.user.dateOfBirth,
-            gender: this.props.auth.user.gender || 'Male',
-            phoneNumber: this.props.auth.user.phoneNumber || '',
+            photo: this.props.user.photo || '',
+            firstName: this.props.user.firstName || '',
+            lastName: this.props.user.lastName || '',
+            dateOfBirth: this.props.user.dateOfBirth,
+            gender: this.props.user.gender || 'Male',
+            phoneNumber: this.props.user.phoneNumber || '',
             error: null,
         }
     }
@@ -41,13 +41,13 @@ class AddPersonalInfoScreen extends Component {
     }
 
     _createUser = () => {
-        if (this.props.auth.user.id) {
-            if (!this.props.auth.isSumitting) {
+        if (this.props.user.id) {
+            if (!this.props.isFetching) {
                 this.props.updateUser(
-                    this.props.auth.credentials.accessToken,
+                    this.props.accessToken,
                     {
                         ...this.state,
-                        id: this.props.auth.user.id
+                        id: this.props.user.id
                     }
                 )
                     .then(() => this.props.goToPreferences())
@@ -57,9 +57,9 @@ class AddPersonalInfoScreen extends Component {
                     })
             }
         } else {
-            if (!this.props.auth.isSumitting) {
+            if (!this.props.isFetching) {
                 this.props.createUser(
-                    this.props.auth.credentials.accessToken,
+                    this.props.accessToken,
                     this.state
                 )
                     .then(() => this.props.goToPreferences())
@@ -128,14 +128,14 @@ class AddPersonalInfoScreen extends Component {
                     </View>
                     <View style={styles.form}>
                         <PersonalInfoForm
-                            user={this.props.auth.user}
+                            user={this.props.user}
                             onFieldChange={this._onFieldChange}
                         />
                     </View>
                     {
                         buttonVisible &&
                         <Button block
-                            disabled={this.props.auth.isSumitting}
+                            disabled={this.props.isFetching}
                             onPress={this._createUser}
                         >
                             <Text>Next</Text>
@@ -166,13 +166,15 @@ const styles = StyleSheet.create({
 })
 
 const mapStateToProps = state => ({
-    auth: state.auth
+    user: UsersSelector.getUserConnected(state),
+    accessToken: AuthSelector.getAccessToken(state),
+    isFetching: isFetching(state)
 })
 
 const mapDispatchToProps = dispatch => ({
-    createUser: (accessToken, user) => dispatch(createUser(accessToken, user)),
-    updateUser: (accessToken, user) => dispatch(updateUser(accessToken, user)),
-    logout: () => dispatch(logout()),
+    createUser: (accessToken, user) => dispatch(UserService.create(accessToken, user)),
+    updateUser: (accessToken, user) => dispatch(UserService.update(accessToken, user)),
+    logout: () => dispatch(AuthService.logout()),
     goToWelcome: () => dispatch(NavigationActions.navigate({ routeName: ScreenNames.SignIn.HOME })),
     goToPreferences: () => dispatch(StackActions.push({ routeName: ScreenNames.SignUp.PREFERENCES })),
     goToError: () => dispatch(NavigationActions.navigate({ routeName: ScreenNames.Errors.HOME }))

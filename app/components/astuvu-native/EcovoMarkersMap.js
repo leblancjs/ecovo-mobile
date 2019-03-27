@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Marker } from 'react-native-maps'
 import PropTypes from 'prop-types'
-import { View } from 'react-native';
+import { View } from 'react-native'
 
 class EcovoMarkersMap extends Component {
     static navigationOptions = {
@@ -12,19 +12,21 @@ class EcovoMarkersMap extends Component {
     }
 
     render() {
-        const { markers } = this.props;
+        const { markers } = this.props
         return (
             <View>
                 {markers.map((m, i) => {
-                    return <Marker
-                        key={i}
-                        coordinate={{
-                            latitude: m.latitude,
-                            longitude: m.longitude
-                        }}
-                        title={m.title}
-                        description={m.description}
-                    />
+                    if (m !== null && (m.latitude !== null || m.latitude !== 0) && (m.longitude !== null || m.longitude !== 0)) {
+                        return <Marker
+                            key={i}
+                            coordinate={{
+                                latitude: m.latitude,
+                                longitude: m.longitude
+                            }}
+                            title={m.title}
+                            description={m.description}
+                        />
+                    }
                 })}
             </View>
         )

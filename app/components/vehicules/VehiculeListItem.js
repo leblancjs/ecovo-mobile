@@ -2,8 +2,6 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { StyleSheet, View, Alert } from 'react-native'
 import { Text, Button, Card, CardItem, Body, H1, H2, H3 } from 'native-base'
-import { connect } from 'react-redux'
-import { deleteVehicule } from '../../actions/vehicules'
 
 class VehiculeListItem extends Component {
     constructor(props) {
@@ -11,13 +9,11 @@ class VehiculeListItem extends Component {
     }
 
     _deleteVehicule = (vehiculeId) => {
-        const { credentials, user } = this.props.auth;
-
         Alert.alert(
-            'Vehocile delete',
-            'Are you sure to delete this vehicule?',
+            'Vehicle delete',
+            'Are you sure to delete this vehicle?',
             [
-                { text: 'Yes', onPress: () => this.props.deleteVehicule(credentials.accessToken, user.id, vehiculeId) },
+                { text: 'Yes', onPress: () => this.props.onDeleteVehicle(vehiculeId) },
                 {
                     text: 'No',
                     onPress: () => console.log('Cancel Pressed'),
@@ -64,15 +60,8 @@ const styles = StyleSheet.create({
 })
 
 VehiculeListItem.propTypes = {
-    vehicule: PropTypes.object
+    vehicule: PropTypes.object,
+    onDeleteVehicle: PropTypes.func
 }
 
-const mapStateToProps = state => ({
-    auth: state.auth
-})
-
-const mapDispatchToProps = dispatch => ({
-    deleteVehicule: (accessToken, userId, vehiculeId) => dispatch(deleteVehicule(accessToken, userId, vehiculeId))
-})
-
-export default connect(mapStateToProps, mapDispatchToProps)(VehiculeListItem)
+export default VehiculeListItem

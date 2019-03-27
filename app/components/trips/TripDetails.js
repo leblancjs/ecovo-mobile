@@ -17,7 +17,7 @@ class TripDetails extends Component {
 
     renderLoadingMap() {
         const { trip } = this.props;
-        if (trip == undefined) {
+        if (!trip) {
             return <ActivityIndicator size="large" color="#2bb267" />
         } else {
             let marker = [];
@@ -31,7 +31,7 @@ class TripDetails extends Component {
 
     renderStopDetail() {
         const { trip } = this.props;
-        if (trip == undefined) {
+        if (!trip || !trip.source || !trip.destination) {
             return <ActivityIndicator size="large" color="#2bb267" />
         } else {
             let marker = [];

@@ -1,11 +1,11 @@
 import { NavigationActions } from 'react-navigation'
 import { ScreenNames } from '../screens'
 import { getUserAuth } from '../storage'
-import { login, loginSuccess, logout } from './auth'
-import { getCurrentUserInfo } from './user'
+import { AuthAction } from './auth'
+import { AuthService, UserService } from '../service'
 
 const _redirect = (dispatch, accessToken) => {
-    return dispatch(getCurrentUserInfo(accessToken))
+    return dispatch(UserService.getCurrentUser(accessToken))
         .then(user => {
             let screenName
 
@@ -28,6 +28,8 @@ const _redirect = (dispatch, accessToken) => {
                 routeName: screenName
             }))
 
+            dispatch(AuthAction.userConnected(user.id))
+
             return Promise.resolve()
         })
         .catch(error => {
@@ -40,7 +42,7 @@ const _redirect = (dispatch, accessToken) => {
 }
 
 const _login = dispatch => {
-    return dispatch(login())
+    return dispatch(AuthService.login())
         .then(credentials => {
             return _redirect(dispatch, credentials.accessToken)
         })
@@ -62,7 +64,7 @@ const _login = dispatch => {
 }
 
 const _restoreSession = (dispatch, credentials) => {
-    dispatch(loginSuccess(credentials))
+    dispatch(AuthAction.loginSuccess(credentials))
 
     return _redirect(dispatch, credentials.accessToken)
 }
@@ -76,7 +78,7 @@ export const bootstrap = () => {
                 } else {
                     return _restoreSession(dispatch, credentials).catch(error => {
                         if(error.code == 401 || error.message == "unauthorized"){
-                            dispatch(logout()).then(() => {
+                            dispatch(AuthService.logout()).then(() => {
                                 return _login(dispatch)
                             });
                         }

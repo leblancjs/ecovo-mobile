@@ -1,21 +1,24 @@
 import React, { Component } from 'react'
-import { StyleSheet, View, Image, TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
 import { NavigationActions, StackActions } from 'react-navigation';
-import { ScreenNames } from '..';
 import { Container, Icon, Text } from 'native-base';
 import SlidingUpPanel from 'rn-sliding-up-panel';
-import SearchTripComponent from '../../components/trips/SearchTripComponent';
+import { StyleSheet, View, Image, TouchableOpacity } from 'react-native';
 import { withStatusBar } from '../../components/hoc';
+import SearchTripComponent from '../../components/trips/SearchTripComponent';
 import EcovoMapView from '../../components/astuvu-native/EcovoMapView';
+import { UsersSelector } from '../../selectors'
+import { ScreenNames } from '..';
+
 class MapScreen extends Component {
     static navigationOptions = {
         header: null
     }
     constructor(props) {
         super(props)
+
         this.state = {
-            user: props.auth.user,
+            user: props.user,
         };
     }
 
@@ -149,7 +152,7 @@ const styles = StyleSheet.create({
 })
 
 const mapStateToProps = state => ({
-    auth: state.auth
+    user: UsersSelector.getUserConnected(state)
 });
 const mapDispatchToProps = dispatch => ({
     goToProfile: () => dispatch(NavigationActions.navigate({ routeName: ScreenNames.Profile.HOME })),

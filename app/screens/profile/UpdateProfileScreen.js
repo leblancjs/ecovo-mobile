@@ -1,21 +1,27 @@
 import React, { Component } from 'react'
-import { StyleSheet, View, ScrollView } from 'react-native'
-import { Container, Header, Content, Left, Right, Body, Title, Text, Button, Icon, Thumbnail } from 'native-base'
-import { TextField, FooterButton } from '../../components/astuvu-native/form'
-import { NavigationActions, StackActions } from 'react-navigation'
 import { connect } from 'react-redux'
-import { astuvu } from '../../components/hoc'
-import { updateUser } from '../../actions/user'
+import { NavigationActions, StackActions } from 'react-navigation'
+import { StyleSheet, View, ScrollView } from 'react-native'
 import PhotoUpload from 'react-native-photo-upload'
+import { Container, Header, Content, Left, Right, Body, Title, Button, Icon, Thumbnail } from 'native-base'
+import { TextField, FooterButton } from '../../components/astuvu-native/form'
+import { astuvu } from '../../components/hoc'
 import PersonalInfoForm from '../../components/profile/PersonalInfoForm'
 import PreferencesForm from '../../components/profile/PreferencesForm'
+import { UserService } from '../../service'
+import { isFetching, UsersSelector, AuthSelector } from '../../selectors'
 import { ScreenNames } from '../'
 
 class UpdateProfileScreen extends Component {
     constructor(props) {
         super(props)
 
-        this.state = { user: { ...props.auth.user } }
+        this.state = {
+            user: {
+                ...props.user,
+                preferences: { ...props.user.preferences }
+            }
+        }
     }
 
     _setPhoto = (photo) => {
@@ -29,7 +35,7 @@ class UpdateProfileScreen extends Component {
     }
 
     _updateUser = () => {
-        this.props.updateUser(this.props.auth.credentials.accessToken, this.state.user)
+        this.props.updateUser(this.props.accessToken, this.state.user)
             .then(() => this.props.goToProfile(this.state.user))
             .catch(error => {
                 console.log(error)
@@ -120,7 +126,7 @@ class UpdateProfileScreen extends Component {
                         />
                     </ScrollView>
                     <FooterButton
-                        loading={this.props.auth.isSubmitting}
+                        loading={this.props.isFetching}
                         text="Update"
                         formError={this.state.error != null}
                         onPress={this._updateUser}
@@ -152,11 +158,13 @@ const styles = StyleSheet.create({
 })
 
 const mapStateToProps = state => ({
-    auth: state.auth
+    user: UsersSelector.getUserConnected(state),
+    accessToken: AuthSelector.getAccessToken(state),
+    isFetching: isFetching(state)
 })
 
 const mapDispatchToProps = dispatch => ({
-    updateUser: (accessToken, user) => dispatch(updateUser(accessToken, user)),
+    updateUser: (accessToken, user) => dispatch(UserService.update(accessToken, user)),
     goToProfile: () => dispatch(StackActions.pop()),
     goToError: () => dispatch(NavigationActions.navigate({ routeName: ScreenNames.Errors.HOME }))
 })

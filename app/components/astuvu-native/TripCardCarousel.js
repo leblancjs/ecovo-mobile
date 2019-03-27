@@ -18,20 +18,21 @@ class TripCardCarousel extends Component {
         }
     }
 
-    _onItemMorePressed = (index) => {
+    _onItemMorePressed = (id) => {
         if (this.props.onItemMorePressed) {
-            this.props.onItemMorePressed(index)
+            this.props.onItemMorePressed(id)
         }
     }
 
     _renderItem = ({ item, index }) => {
         item = {
+            id: item.id ? item.id : null,
             time: item.leaveAt && item.arriveBy ? Date.parse(item.arriveBy) - Date.parse(item.leaveAt) : 0,
             price: item.price ? item.price : "",
             departure: item.departure ? item.departure : new Date(),
             arrival: item.arrival ? item.arrival : new Date(),
             stops: item.stops ? item.stops.length : 0,
-            car: item.car != null ? item.car : { make: "Toyota", year: 1999, model: "Tercel" }
+            car: item.car != null ? item.car : { make: "", year: 0, model: "" }
         }
 
         return (
@@ -51,7 +52,7 @@ class TripCardCarousel extends Component {
                             <Text style={styles.carMake}>{item.car.make && item.car.make || ""} {item.car.model && item.car.model || ""}</Text>
                             <Text style={styles.carYear}> {item.car.year && item.car.year || ""}</Text>
                         </View>
-                        <Button style={styles.button} onPress={() => this._onItemMorePressed(index)}><Text style={styles.buttonText}>MORE</Text></Button>
+                        <Button style={styles.button} onPress={() => this._onItemMorePressed(item.id)}><Text style={styles.buttonText}>MORE</Text></Button>
                     </View>
 
                 </View>

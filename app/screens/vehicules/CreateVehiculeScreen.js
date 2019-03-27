@@ -4,7 +4,8 @@ import { Container, Header, Content, Left, Right, Body, Title, Text, Button, Ico
 import { connect } from 'react-redux'
 import { StackActions } from 'react-navigation'
 import { astuvu } from '../../components/hoc'
-import { createVehicule } from '../../actions/vehicules'
+import { VehicleService } from '../../service'
+import { isFetching, UsersSelector, AuthSelector } from '../../selectors'
 import VehiculesForm from "../../components/vehicules/VehiculesForm"
 
 class CreateVehiculeScreen extends Component {
@@ -29,9 +30,9 @@ class CreateVehiculeScreen extends Component {
     }
 
     _createVehicule = () => {
-        const { credentials, user } = this.props.auth;
+        const { accessToken, user } = this.props;
 
-        this.props.createVehicule(credentials.accessToken, user.id, this.state)
+        this.props.createVehicule(accessToken, user.id, this.state)
             .then(() => this.props.goToProfile())
             .catch(err => console.log(err))
     }
@@ -70,7 +71,7 @@ class CreateVehiculeScreen extends Component {
                     {
                         buttonVisible &&
                         <Button block
-                            disabled={this.props.vehicules.isSubmitting}
+                            disabled={this.props.isFetching}
                             onPress={this._createVehicule}
                         >
                             <Text>Add</Text>
@@ -93,12 +94,13 @@ const styles = StyleSheet.create({
 })
 
 const mapStateToProps = state => ({
-    auth: state.auth,
-    vehicules: state.vehicules
+    accessToken: AuthSelector.getAccessToken(state),
+    user: UsersSelector.getUserConnected(state),
+    isFetching: isFetching(state)
 })
 
 const mapDispatchToProps = dispatch => ({
-    createVehicule: (accessToken, userId, vehiculeData) => dispatch(createVehicule(accessToken, userId, vehiculeData)),
+    createVehicule: (accessToken, userId, vehiculeData) => dispatch(VehicleService.create(accessToken, userId, vehiculeData)),
     goToProfile: () => dispatch(StackActions.pop())
 })
 

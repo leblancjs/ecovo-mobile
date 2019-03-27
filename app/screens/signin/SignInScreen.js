@@ -5,6 +5,7 @@ import { connect } from 'react-redux'
 import { bootstrap } from '../../actions/bootstrap'
 import { astuvu } from '../../components/hoc'
 import LogoFadeIn from "../../components/astuvu-native/LogoFadeIn"
+import { isFetching } from '../../selectors'
 
 class SignInScreen extends Component {
     constructor(props) {
@@ -94,7 +95,7 @@ const styles = StyleSheet.create({
 })
 
 const mapStateToProps = state => ({
-    isFetching: state.auth.isFetching
+    isFetching: isFetching(state)
 })
 
 const mapDispatchToProps = dispatch => ({

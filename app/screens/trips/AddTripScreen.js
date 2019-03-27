@@ -1,13 +1,13 @@
 import React, { Component } from 'react'
-import { StyleSheet, View, ScrollView } from 'react-native'
-import { Container, Header, Left, Right, Body, Title, Text, Item, Icon, Button, Form, Picker, Content } from 'native-base'
-import { astuvu } from '../../components/hoc'
 import { connect } from 'react-redux'
 import { NavigationActions, StackActions } from 'react-navigation'
-import PlacesSearchField from '../../components/astuvu-native/form/PlacesSearchField'
+import { StyleSheet, View, ScrollView } from 'react-native'
+import { Container, Header, Left, Right, Body, Title, Text, Item, Icon, Button, Form, Picker, Content } from 'native-base'
 import DatePicker from 'react-native-datepicker'
-import { createTrip } from '../../actions/trip'
-import { getVehiculeList } from '../../actions/vehicules'
+import { astuvu } from '../../components/hoc'
+import PlacesSearchField from '../../components/astuvu-native/form/PlacesSearchField'
+import { TripService, VehicleService } from '../../service'
+import { isFetching, UsersSelector, AuthSelector } from '../../selectors'
 import { ScreenNames } from '..'
 
 class AddTripScreen extends Component {
@@ -157,15 +157,15 @@ class AddTripScreen extends Component {
             ...this.state,
             trip: {
                 ...this.state.trip,
-                driverId: this.props.auth.user.id
+                driverId: this.props.user.id
             }
         })
     }
 
     _getVehiculeList = () => {
-        const { credentials, user } = this.props.auth
+        const { accessToken, user } = this.props
 
-        this.props.getVehiculeList(credentials.accessToken, user.id).then(v => {
+        this.props.getVehiculeList(accessToken, user.id).then(v => {
             if (v != null) {
                 this._updateVehicules(v)
                 this._updateSelectedVehicule(v[0])
@@ -206,10 +206,10 @@ class AddTripScreen extends Component {
     }
 
     _createTrip = () => {
-        if (this.props.auth.user.id) {
-            if (!this.props.auth.isSumitting) {
+        if (this.props.user.id) {
+            if (!this.props.isFetching) {
                 this.props.createTrip(
-                    this.props.auth.credentials.accessToken,
+                    this.props.accessToken,
                     {
                         ...this.state.trip
                     }
@@ -221,9 +221,9 @@ class AddTripScreen extends Component {
                     })
             }
         } else {
-            if (!this.props.auth.isSumitting) {
+            if (!this.props.isFetching) {
                 this.props.createTrip(
-                    this.props.auth.credentials.accessToken,
+                    this.props.accessToken,
                     ...this.state.trip
                 )
                     .then(() => this.props.closeAddTripScreen())
@@ -519,14 +519,15 @@ const styles = StyleSheet.create({
 })
 
 const mapStateToProps = state => ({
-    auth: state.auth,
-    vehicules: state.vehicules
+    user: UsersSelector.getUserConnected(state),
+    accessToken: AuthSelector.getAccessToken(state),
+    isFetching: isFetching(state)
 })
 
 const mapDispatchToProps = dispatch => ({
     closeAddTripScreen: () => dispatch(StackActions.pop({n: 1})),
-    createTrip: (accessToken, trip) => dispatch(createTrip(accessToken, trip)),
-    getVehiculeList: (accessToken, userId) => dispatch(getVehiculeList(accessToken, userId)),
+    createTrip: (accessToken, trip) => dispatch(TripService.create(accessToken, trip)),
+    getVehiculeList: (accessToken, userId) => dispatch(VehicleService.getVehiclesByUserId(accessToken, userId)),
     goToError: () => dispatch(NavigationActions.navigate({ routeName: ScreenNames.Errors.HOME }))
 })
 
