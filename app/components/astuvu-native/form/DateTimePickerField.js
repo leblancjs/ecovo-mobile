@@ -4,6 +4,7 @@ import { Icon, Right } from 'native-base'
 import Field, { FieldPropTypes, FieldDefaultProps, FieldStyles, FieldLabelTypes } from './Field'
 import PropTypes from 'prop-types'
 import DatePicker from 'react-native-datepicker'
+import moment from 'moment'
 
 class DateTimePickerField extends Component {
     constructor(props) {
@@ -15,6 +16,7 @@ class DateTimePickerField extends Component {
     }
 
     _onValueChange = (value) => {
+        value = moment(value, this.props.dateFormat);
         let error = null
         if (this.props.required) {
             error = this._validate(value)
@@ -128,6 +130,7 @@ DateTimePickerField.propTypes = {
     onValueChange: PropTypes.func,
     onValidate: PropTypes.func,
     dateFormat: PropTypes.string,
+
 }
 
 DateTimePickerField.defaultProps = {
@@ -138,7 +141,7 @@ DateTimePickerField.defaultProps = {
     error: null,
     onValueChange: null,
     onValidate: null,
-    dateFormat: "DD/MM/YYYY hh:mm:ss"
+    dateFormat: "DD/MM/YYYY hh:mm:ss",
 }
 
 export default DateTimePickerField

@@ -1,12 +1,12 @@
 import React, { Component } from 'react'
 import { StyleSheet, View} from 'react-native'
-import { Icon, Fab } from 'native-base'
 import { connect } from 'react-redux'
 import { StackActions } from 'react-navigation'
 import VehiculeList from '../../components/vehicules/VehiculeList'
 import { VehicleService } from '../../service'
 import { UsersSelector, VehiclesSelector, AuthSelector } from '../../selectors'
 import { ScreenNames } from '../'
+import Fab from '../../components/astuvu-native/Fab';
 
 class VehiculeScreen extends Component {
     constructor(props) {
@@ -42,17 +42,7 @@ class VehiculeScreen extends Component {
                 <View style={styles.listContainer}>
                     <VehiculeList vehicules={vehicles} onDeleteVehicle={this._deleteVehicule}/>
                 </View>
-                <View style={styles.fabView}>
-                    <Fab
-                        active={true}
-                        direction="up"
-                        containerStyle={{}}
-                        style={styles.fab}
-                        position="bottomRight"
-                        onPress={this.props.goToCreateVehicule}>
-                        <Icon name="md-add" />
-                    </Fab>
-                </View>
+                <Fab onPress={this.props.goToCreateVehicule} icon="md-add"></Fab>
             </View>
         )
     }
@@ -65,11 +55,6 @@ const styles = StyleSheet.create({
     listContainer: {
         flex: 1,
         margin: 8
-    },
-    fabView: {
-    },
-    fab: {
-        backgroundColor: '#2BB267'
     }
 })
 
