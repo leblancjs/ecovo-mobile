@@ -1,9 +1,10 @@
 import React, { Component } from 'react'
-import { StyleSheet, View, Slider, ScrollView, TouchableOpacity } from 'react-native'
-import { Container, Text, Icon, Button, Form, Item, Radio } from 'native-base'
+import { StyleSheet, View, Slider, ScrollView } from 'react-native'
+import { Container, Text, Icon, Button, Form, Item } from 'native-base'
 import PropTypes from 'prop-types'
 import DatePicker from 'react-native-datepicker'
 import PlacesSearchField from '../astuvu-native/form/PlacesSearchField'
+import RadioButtonField from '../astuvu-native/form/RadioButtonField'
 import { Dropdown } from 'react-native-material-dropdown'
 
 class SearchTripComponent extends Component {
@@ -106,7 +107,7 @@ class SearchTripComponent extends Component {
             }
         })
     }
-    
+
 
     _updateLuggages = (value) => {
         this.setState({
@@ -153,7 +154,18 @@ class SearchTripComponent extends Component {
 
     }
 
+    onChangeRadioButton = (type) => {
+        this.setState({
+            isLeaveAt: type === "isLeaveAt",
+            isArriveBy: type === "isArriveBy"
+        })
+    }
+
     render() {
+        let radioButtonNameValue = [
+            { name: "Leave At", type: "isLeaveAt", value: this.state.isLeaveAt },
+            { name: "Arrive By", type: "isArriveBy", value: this.state.isArriveBy }
+        ]
         return (
             <Container>
                 <View style={styles.header}>
@@ -172,34 +184,11 @@ class SearchTripComponent extends Component {
                         </Item>
                     </Form>
                 </View>
-                <ScrollView style={{flex: 1 }}>
-                    <View style={styles.timeRadioButton}>
-                        <TouchableOpacity
-                            style={styles.radioButtonItem}
-                            onPress={() => this.setState({isLeaveAt: true, isArriveBy: false})}
-                        >
-                            <Radio
-                                color={"#2BB267"}
-                                selectedColor={"#2BB267"}
-                                selected={this.state.isLeaveAt}
-                            />
-                            <Text style={styles.radioButtonText}>Leave At</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity
-                            style={styles.radioButtonItem}
-                            onPress={() => this.setState({isLeaveAt: false, isArriveBy: true})}
-                        >
-                            <Radio
-                                color={"#2BB267"}
-                                selectedColor={"#2BB267"}
-                                selected={this.state.isArriveBy}
-                            />
-                            <Text style={styles.radioButtonText}>Arrive By</Text>
-                        </TouchableOpacity>
-                    </View>
+                <ScrollView style={{ flex: 1 }}>
+                    <RadioButtonField radioButtonNameValue={radioButtonNameValue} onChange={this.onChangeRadioButton} />
                     <View>
                         <Item>
-                            { this.state.isLeaveAt && 
+                            {this.state.isLeaveAt &&
                                 <DatePicker
                                     style={{ width: '100%', padding: 20 }}
                                     mode="datetime"
@@ -218,7 +207,7 @@ class SearchTripComponent extends Component {
                                     }}
                                 />
                             }
-                            { this.state.isArriveBy && 
+                            {this.state.isArriveBy &&
                                 <DatePicker
                                     style={{ width: '100%', padding: 20 }}
                                     mode="datetime"
@@ -258,20 +247,20 @@ class SearchTripComponent extends Component {
                             />
                         </View>
                         <Item style={styles.selectItem}>
-                        {/* style={[styles.bigIcon, this.state.searchParam.detailsAnimals == 0 ? styles.iconSelected : {}]} */}
+                            {/* style={[styles.bigIcon, this.state.searchParam.detailsAnimals == 0 ? styles.iconSelected : {}]} */}
                             <Button large transparent onPress={() => this._updateAnimals(0)}>
-                                <Icon type="Foundation" style={[styles.mediumIcon, this.state.searchParam.details.animals == 0 ? styles.iconSelected : '']} name='no-dogs'/>
+                                <Icon type="Foundation" style={[styles.mediumIcon, this.state.searchParam.details.animals == 0 ? styles.iconSelected : '']} name='no-dogs' />
                             </Button>
                             <Button large transparent onPress={() => this._updateAnimals(1)}>
-                                <Icon type="Foundation" style={[styles.mediumIcon, this.state.searchParam.details.animals == 1 ? styles.iconSelected : '']} name='guide-dog'/>
+                                <Icon type="Foundation" style={[styles.mediumIcon, this.state.searchParam.details.animals == 1 ? styles.iconSelected : '']} name='guide-dog' />
                             </Button>
                         </Item>
                         <Item style={styles.selectItem}>
                             <Button large transparent onPress={() => this._updateLuggages(0)}>
-                                <Icon type="Foundation" style={[styles.smallIcon, this.state.searchParam.details.luggages == 0 ? styles.iconSelected : '']} name='shopping-bag'/>
+                                <Icon type="Foundation" style={[styles.smallIcon, this.state.searchParam.details.luggages == 0 ? styles.iconSelected : '']} name='shopping-bag' />
                             </Button>
                             <Button large transparent onPress={() => this._updateLuggages(1)}>
-                                <Icon type="Foundation" style={[styles.mediumIcon, this.state.searchParam.details.luggages == 1 ? styles.iconSelected : '']} name='shopping-bag'/>
+                                <Icon type="Foundation" style={[styles.mediumIcon, this.state.searchParam.details.luggages == 1 ? styles.iconSelected : '']} name='shopping-bag' />
                             </Button>
                             <Button large transparent onPress={() => this._updateLuggages(2)}>
                                 <Icon type="Foundation" style={[styles.bigIcon, this.state.searchParam.details.luggages == 2 ? styles.iconSelected : '']} name='shopping-bag' />
@@ -387,22 +376,6 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         padding: 10,
         marginBottom: 20,
-    },
-    timeRadioButton: {
-        flex: 1,
-        flexDirection: 'row',
-        margin: 20,
-        alignContent: 'center'
-    },
-    radioButtonItem: {
-        flex: 1,
-        flexDirection: 'row',
-        alignContent: 'flex-end',
-        borderBottomWidth: 0
-    },
-    radioButtonText: {
-        textAlign: 'left',
-        marginLeft: 20
     },
     smallIcon: {
         fontSize: 20,
