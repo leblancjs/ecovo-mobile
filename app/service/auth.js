@@ -3,56 +3,64 @@ import Auth0 from 'react-native-auth0'
 import { clientId, domain } from '../../auth0.config.json'
 import { deleteUserAuth, setUserAuth } from '../storage'
 import { request, response, error, AuthAction } from '../actions'
+import store from '../store'
+
 const auth0 = new Auth0({ domain, clientId })
 
+const handleError = (err) => {
+    store.dispatch(error(err))
+
+    return Promise.reject(err)
+}
+
 const login = () => {
-    return dispatch => {
-        dispatch(request())
+    store.dispatch(request())
 
-        params = {
-            scope: 'openid profile email',
-            audience: `https://${domain}/userinfo`,
-            prompt: 'login'
-        }
-        return auth0.webAuth.authorize(params)
-            .then(credentials => {
-                setUserAuth(credentials.accessToken)
-
-                dispatch(AuthAction.loginSuccess(credentials))
-                dispatch(response)
-                return Promise.resolve(credentials)
-            })
-            .catch(err => {
-                dispatch(error(err))
-                return Promise.reject(err)
-            })
+    params = {
+        scope: 'openid profile email',
+        audience: `https://${domain}/userinfo`,
+        prompt: 'login'
     }
+
+    return auth0.webAuth.authorize(params)
+        .then(credentials => {
+            return setUserAuth(credentials.accessToken)
+                .then(() => {
+                    store.dispatch(AuthAction.loginSuccess(credentials))
+                    store.dispatch(response())
+
+                    return Promise.resolve(credentials)
+                })
+                .catch(handleError)
+        })
+        .catch(handleError)
 }
 
 export const logout = () => {
-    return dispatch => {
-        dispatch(request())
+    store.dispatch(request())
 
-        if (Platform.OS === 'ios') {
-            return auth0.webAuth.clearSession({})
-                .then(() => {
-                    deleteUserAuth()
+    if (Platform.OS === 'ios') {
+        return auth0.webAuth.clearSession({})
+            .then(() => {
+                return deleteUserAuth()
+                    .then(() => {
+                        store.dispatch(AuthAction.logoutSuccess())
+                        store.dispatch(response())
 
-                    dispatch(AuthAction.logoutSuccess())
-                    dispatch(response)
-                    return Promise.resolve()
-                })
-                .catch(err => {
-                    dispatch(error(err))
-                    return Promise.reject(err)
-                })
-        } else {
-            deleteUserAuth()
+                        return Promise.resolve()
+                    })
+                    .catch(handleError)
+            })
+            .catch(handleError)
+    } else {
+        return deleteUserAuth()
+            .then(() => {
+                store.dispatch(AuthAction.logoutSuccess())
+                store.dispatch(response())
 
-            dispatch(AuthAction.logoutSuccess())
-            dispatch(response)
-            return Promise.resolve()
-        }
+                return Promise.resolve()
+            })
+            .catch(handleError)
     }
 }
 

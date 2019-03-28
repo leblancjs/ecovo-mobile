@@ -28,7 +28,7 @@ class AddPreferencesScreen extends Component {
     }
 
     _updateUser = () => {
-        this.props.updateUser(
+        UserService.update(
             this.props.accessToken,
             {
                 id: this.props.user.id,
@@ -50,7 +50,7 @@ class AddPreferencesScreen extends Component {
     }
 
     _logout = () => {
-        this.props.logout()
+        AuthService.logout()
             .then(() => this.props.goToWelcome())
             .catch(error => {
                 console.log(error)
@@ -118,9 +118,7 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = dispatch => ({
-    updateUser: (accessToken, user) => dispatch(UserService.update(accessToken, user)),
     back: () => dispatch(StackActions.pop()),
-    logout: () => dispatch(AuthService.logout()),
     goToWelcome: () => dispatch(NavigationActions.navigate({ routeName: ScreenNames.SignIn.HOME })),
     goToTrips: () => dispatch(NavigationActions.navigate({ routeName: ScreenNames.Trips.MAP })),
     goToError: () => dispatch(NavigationActions.navigate({ routeName: ScreenNames.Errors.HOME }))

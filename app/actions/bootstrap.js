@@ -5,7 +5,7 @@ import { AuthAction } from './auth'
 import { AuthService, UserService } from '../service'
 
 const _redirect = (dispatch, accessToken) => {
-    return dispatch(UserService.getCurrentUser(accessToken))
+    return UserService.getCurrentUser(accessToken)
         .then(user => {
             let screenName
 
@@ -42,7 +42,7 @@ const _redirect = (dispatch, accessToken) => {
 }
 
 const _login = dispatch => {
-    return dispatch(AuthService.login())
+    return AuthService.login()
         .then(credentials => {
             return _redirect(dispatch, credentials.accessToken)
         })
@@ -77,8 +77,8 @@ export const bootstrap = () => {
                     return _login(dispatch)
                 } else {
                     return _restoreSession(dispatch, credentials).catch(error => {
-                        if(error.code == 401 || error.message == "unauthorized"){
-                            dispatch(AuthService.logout()).then(() => {
+                        if (error.code == 401 || error.message == "unauthorized"){
+                            AuthService.logout().then(() => {
                                 return _login(dispatch)
                             });
                         }

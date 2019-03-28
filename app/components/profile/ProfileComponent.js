@@ -12,10 +12,15 @@ import ProfileRating from './ProfileRating'
 class ProfileComponent extends Component {
     constructor(props) {
         super(props)
+
+        this.state = {
+            user: props.user || {}
+        }
     }
 
     render() {
-        const {photo, firstName, lastName, dateOfBirth, gender, phoneNumber, preferences, description, driverRating, userRating} = this.props.user
+        const {photo, firstName, lastName, dateOfBirth, gender, phoneNumber, preferences, description, driverRating, userRating} = this.state.user
+        
         return (
             <View style={styles.container}>
                 <ProfileHeaderComponent photo={photo} firstName={firstName} lastName={lastName} />

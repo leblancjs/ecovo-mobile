@@ -43,7 +43,7 @@ class AddPersonalInfoScreen extends Component {
     _createUser = () => {
         if (this.props.user.id) {
             if (!this.props.isFetching) {
-                this.props.updateUser(
+                UserService.update(
                     this.props.accessToken,
                     {
                         ...this.state,
@@ -58,7 +58,7 @@ class AddPersonalInfoScreen extends Component {
             }
         } else {
             if (!this.props.isFetching) {
-                this.props.createUser(
+                UserService.create(
                     this.props.accessToken,
                     this.state
                 )
@@ -72,7 +72,7 @@ class AddPersonalInfoScreen extends Component {
     }
 
     _logout = () => {
-        this.props.logout()
+        AuthService.logout()
             .then(() => this.props.goToWelcome())
             .catch(error => {
                 console.log(error)
@@ -159,9 +159,6 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = dispatch => ({
-    createUser: (accessToken, user) => dispatch(UserService.create(accessToken, user)),
-    updateUser: (accessToken, user) => dispatch(UserService.update(accessToken, user)),
-    logout: () => dispatch(AuthService.logout()),
     goToWelcome: () => dispatch(NavigationActions.navigate({ routeName: ScreenNames.SignIn.HOME })),
     goToPreferences: () => dispatch(StackActions.push({ routeName: ScreenNames.SignUp.PREFERENCES })),
     goToError: () => dispatch(NavigationActions.navigate({ routeName: ScreenNames.Errors.HOME }))

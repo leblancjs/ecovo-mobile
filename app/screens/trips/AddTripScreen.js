@@ -165,7 +165,7 @@ class AddTripScreen extends Component {
     _getVehiculeList = () => {
         const { accessToken, user } = this.props
 
-        this.props.getVehiculeList(accessToken, user.id).then(v => {
+        VehicleService.getVehiclesByUserId(accessToken, user.id).then(v => {
             if (v != null) {
                 this._updateVehicules(v)
                 this._updateSelectedVehicule(v[0])
@@ -208,7 +208,7 @@ class AddTripScreen extends Component {
     _createTrip = () => {
         if (this.props.user.id) {
             if (!this.props.isFetching) {
-                this.props.createTrip(
+                TripService.create(
                     this.props.accessToken,
                     {
                         ...this.state.trip
@@ -526,8 +526,6 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
     closeAddTripScreen: () => dispatch(StackActions.pop({n: 1})),
-    createTrip: (accessToken, trip) => dispatch(TripService.create(accessToken, trip)),
-    getVehiculeList: (accessToken, userId) => dispatch(VehicleService.getVehiclesByUserId(accessToken, userId)),
     goToError: () => dispatch(NavigationActions.navigate({ routeName: ScreenNames.Errors.HOME }))
 })
 

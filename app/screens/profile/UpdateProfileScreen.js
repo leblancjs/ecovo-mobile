@@ -34,7 +34,7 @@ class UpdateProfileScreen extends Component {
     }
 
     _updateUser = () => {
-        this.props.updateUser(this.props.accessToken, this.state.user)
+        UserService.update(this.props.accessToken, this.state.user)
             .then(() => this.props.goToProfile())
             .catch(error => {
                 console.log(error)
@@ -150,7 +150,6 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = dispatch => ({
-    updateUser: (accessToken, user) => dispatch(UserService.update(accessToken, user)),
     goToProfile: () => dispatch(StackActions.pop()),
     goToError: () => dispatch(NavigationActions.navigate({ routeName: ScreenNames.Errors.HOME }))
 })

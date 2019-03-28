@@ -17,7 +17,7 @@ class VehiculeScreen extends Component {
     _getVehiculeList = () => {
         const { accessToken, user } = this.props;
 
-        this.props.getVehiculeList(accessToken, user.id).then(v => {
+        VehicleService.getVehiclesByUserId(accessToken, user.id).then(v => {
             console.log("Vehicule Screen")
             console.log(v)
         }).catch(error => {
@@ -28,7 +28,7 @@ class VehiculeScreen extends Component {
     _deleteVehicule = (vehiculeId) => {
         const { accessToken, user } = this.props;
 
-        this.props.deleteVehicule(accessToken, user.id, vehiculeId).then(v => {
+        VehicleService.remove(accessToken, user.id, vehiculeId).then(v => {
 
         }).catch(error => {
             console.log(error)
@@ -80,9 +80,7 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = dispatch => ({
-    getVehiculeList: (accessToken, userId) => dispatch(VehicleService.getVehiclesByUserId(accessToken, userId)),
     goToCreateVehicule: () => dispatch(StackActions.push({ routeName: ScreenNames.Vehicules.CREATE })),
-    deleteVehicule: (accessToken, userId, vehiculeId) => dispatch(VehicleService.remove(accessToken, userId, vehiculeId))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(VehiculeScreen)

@@ -39,9 +39,9 @@ class TripResultsScreen extends Component {
 
     _onItemMorePressed = (tripId) => {
         let trip = this.props.results.find(r => r.id === tripId)
-        this.props.getDriverById(this.props.accessToken, trip.driverId).then(() => {
+        UserService.getDriverById(this.props.accessToken, trip.driverId).then(() => {
             //TODO then for the vehicle too, but vehicle catch execption
-            this.props.getVehiculeById(this.props.accessToken, trip.vehicleId);
+            VehicleService.getVehiculeById(this.props.accessToken, trip.vehicleId);
             this.props.selectSearchResult(tripId)
             this.props.goToDetails()
         })
@@ -109,7 +109,7 @@ class TripResultsScreen extends Component {
     }
 
     _subscribe = () => {
-        this.props.startSearch(this.props.accessToken, this.state.searchParam)
+        SearchService.start(this.props.accessToken, this.state.searchParam)
             .then((search) => {
                 PubSubService.subscribe(search.id, (msg) => {
                     let payload = msg.data ? JSON.parse(msg.data) : {}
@@ -143,7 +143,7 @@ class TripResultsScreen extends Component {
         if (this.props.search) {
             let searchId = this.props.search.id
 
-            this.props.stopSearch(this.props.accessToken, searchId)
+            SearchService.stop(this.props.accessToken, searchId)
                 .then(() => PubSubService.unsubscribe(searchId))
                 .catch((error) => {
                     console.log(error)
@@ -178,8 +178,6 @@ const mapStateToProps = state => ({
     results: TripsSelector.getAllSearchResult(state)
 })
 const mapDispatchToProps = dispatch => ({
-    startSearch: (accessToken, filters) => dispatch(SearchService.start(accessToken, filters)),
-    stopSearch: (accessToken, id) => dispatch(SearchService.stop(accessToken, id)),
     addSearchIdResult: (trip) => dispatch(SearchUIAction.addSearchIdResult(trip)),
     removeSearchIdResult: (tripId) => dispatch(SearchUIAction.removeSearchIdResult(tripId)),
     clearSearchIdResults: () => dispatch(SearchUIAction.clearSearchIdResults()),
@@ -188,8 +186,6 @@ const mapDispatchToProps = dispatch => ({
     goToError: () => dispatch(NavigationActions.navigate({ routeName: ScreenNames.Errors.HOME })),
     goToDetails: () => dispatch(StackActions.push({ routeName: ScreenNames.Trips.DETAILS })),
     selectSearchResult: (tripId) => dispatch(SearchUIAction.selectSearchResult(tripId)),
-    getDriverById: (accessToken, userId) => dispatch(UserService.getDriverById(accessToken, userId)),
-    getVehiculeById: (accessToken, vehicleId) => dispatch(VehicleService.getVehiculeById(accessToken, vehicleId)),
     back: () => dispatch(StackActions.pop())
 })
 

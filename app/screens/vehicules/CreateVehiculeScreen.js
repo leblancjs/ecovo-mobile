@@ -32,7 +32,7 @@ class CreateVehiculeScreen extends Component {
     _createVehicule = () => {
         const { accessToken, user } = this.props;
 
-        this.props.createVehicule(accessToken, user.id, this.state)
+        VehicleService.create(accessToken, user.id, this.state)
             .then(() => this.props.goToProfile())
             .catch(err => console.log(err))
     }
@@ -100,7 +100,6 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = dispatch => ({
-    createVehicule: (accessToken, userId, vehiculeData) => dispatch(VehicleService.create(accessToken, userId, vehiculeData)),
     goToProfile: () => dispatch(StackActions.pop())
 })
 
