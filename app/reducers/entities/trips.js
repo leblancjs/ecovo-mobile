@@ -17,6 +17,7 @@ const trips = (state = initialState, action) => {
             return state.map(t => {
                 if (t.id === action.trip.id) {
                     return {
+                        ...t,
                         ...action.trip,
                         stops: action.trip.stops.map(s => ({ ...s })),
                         details: { ...action.trip.details }

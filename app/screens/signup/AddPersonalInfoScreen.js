@@ -3,12 +3,12 @@ import { connect } from 'react-redux'
 import { NavigationActions, StackActions } from 'react-navigation'
 import { StyleSheet, View } from 'react-native'
 import { Container, Header, Content, Left, Right, Body, Title, Text, Button, Thumbnail, H1 } from 'native-base'
-import PhotoUpload from 'react-native-photo-upload'
 import { astuvu } from '../../components/hoc'
 import PersonalInfoForm from '../../components/profile/PersonalInfoForm'
 import { AuthService, UserService } from '../../service'
 import { isFetching, UsersSelector, AuthSelector } from '../../selectors'
 import { ScreenNames } from '../'
+import { PhotoPickerField } from '../../components/astuvu-native/form'
 
 class AddPersonalInfoScreen extends Component {
     constructor(props) {
@@ -106,26 +106,13 @@ class AddPersonalInfoScreen extends Component {
                     contentContainerStyle={styles.container}
                 >
                     <H1>Personal Info</H1>
-                    <View style={styles.photoContainer}>
-                        <PhotoUpload
-                            onPhotoSelect={photo => {
-                                if (photo) {
-                                    this._setPhoto(photo)
-                                }
-                            }}
-                        >
-                            {this.state.photo === '' ?
-                                <Thumbnail large
-                                    style={styles.imagePicker}
-                                    source={require('../../../assets/profile_pic.png')}
-                                /> :
-                                <Thumbnail large
-                                    style={styles.imagePicker}
-                                    source={{ uri: this.state.photo }}
-                                />
-                            }
-                        </PhotoUpload>
-                    </View>
+                    <PhotoPickerField
+                        style={{ container: styles.photoContainer }}
+                        initialPhoto={this.state.photo}
+                        viewerEnabled={true}
+                        viewerTitle='Profile Photo'
+                        onPhotoChange={this._setPhoto}
+                    />
                     <View style={styles.form}>
                         <PersonalInfoForm
                             user={this.props.user}

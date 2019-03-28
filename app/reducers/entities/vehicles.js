@@ -14,6 +14,7 @@ const vehicles = (state = initialState, action) => {
             return state.map(v => {
                 if (v.id === action.vehicle.id) {
                     return {
+                        ...v,
                         ...action.vehicle
                     }
                 } else {

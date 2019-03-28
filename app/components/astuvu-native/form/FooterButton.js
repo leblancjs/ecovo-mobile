@@ -20,9 +20,9 @@ class FooterButton extends Component {
 FooterButton.propTypes = {
     style: PropTypes.object,
     text: PropTypes.string,
-    disabled: PropTypes.boolean,
-    loading: PropTypes.boolean,
-    formError: PropTypes.boolean,
+    disabled: PropTypes.bool,
+    loading: PropTypes.bool,
+    formError: PropTypes.bool,
     onPress: PropTypes.func.isRequired
 }
 

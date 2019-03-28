@@ -1,12 +1,13 @@
 import React, { Component } from 'react'
+import { StyleSheet, View, TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
 import { NavigationActions, StackActions } from 'react-navigation';
 import { Container, Icon, Text } from 'native-base';
 import SlidingUpPanel from 'rn-sliding-up-panel';
-import { StyleSheet, View, Image, TouchableOpacity } from 'react-native';
 import { withStatusBar } from '../../components/hoc';
 import SearchTripComponent from '../../components/trips/SearchTripComponent';
 import EcovoMapView from '../../components/astuvu-native/EcovoMapView';
+import { Photo } from '../../components/astuvu-native';
 import { UsersSelector } from '../../selectors'
 import { ScreenNames } from '..';
 
@@ -43,7 +44,10 @@ class MapScreen extends Component {
                 <EcovoMapView />
                 <View style={styles.menuWrapper}>
                     <TouchableOpacity style={styles.touchableIcon} onPress={this._goToMyProfile}>
-                        <Image style={styles.profile} source={{ uri: this.state.user.photo }} />
+                        <Photo
+                            style={styles.profile}
+                            source={this.state.user.photo}
+                        />
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.touchableIcon} onPress={this._goToCreateTrip}>
                         <Container style={styles.iconTripsWrapper} >
@@ -90,8 +94,6 @@ const styles = StyleSheet.create({
         width: 40,
         height: 40,
         borderRadius: 20,
-        borderWidth: 1,
-        borderColor: "#eee"
     },
     iconTripsWrapper: {
         borderColor: "#eee",

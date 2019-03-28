@@ -93,7 +93,7 @@ export const FieldPropTypes = {
     labelType: PropTypes.oneOf([FieldLabelTypes.FLOATING, FieldLabelTypes.STACKED]),
     label: PropTypes.string.isRequired,
     error: PropTypes.string,
-    errorIcon: PropTypes.boolean,
+    errorIcon: PropTypes.bool,
 }
 
 export const FieldDefaultProps = {

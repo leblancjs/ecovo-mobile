@@ -130,7 +130,7 @@ const update = (accessToken, user) => {
             })
             .then(() => {
                 dispatch(UsersEntitiesAction.update(user))
-                dispatch(response)
+                dispatch(response())
                 return Promise.resolve(payload)
             })
             .catch(err => {

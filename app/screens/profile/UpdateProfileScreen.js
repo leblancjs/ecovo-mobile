@@ -1,10 +1,9 @@
 import React, { Component } from 'react'
-import { connect } from 'react-redux'
+import { StyleSheet, ScrollView } from 'react-native'
+import { Container, Header, Content, Left, Right, Body, Title, Button, Icon } from 'native-base'
+import { TextField, FooterButton, PhotoPickerField } from '../../components/astuvu-native/form'
 import { NavigationActions, StackActions } from 'react-navigation'
-import { StyleSheet, View, ScrollView } from 'react-native'
-import PhotoUpload from 'react-native-photo-upload'
-import { Container, Header, Content, Left, Right, Body, Title, Button, Icon, Thumbnail } from 'native-base'
-import { TextField, FooterButton } from '../../components/astuvu-native/form'
+import { connect } from 'react-redux'
 import { astuvu } from '../../components/hoc'
 import PersonalInfoForm from '../../components/profile/PersonalInfoForm'
 import PreferencesForm from '../../components/profile/PreferencesForm'
@@ -36,7 +35,7 @@ class UpdateProfileScreen extends Component {
 
     _updateUser = () => {
         this.props.updateUser(this.props.accessToken, this.state.user)
-            .then(() => this.props.goToProfile(this.state.user))
+            .then(() => this.props.goToProfile())
             .catch(error => {
                 console.log(error)
                 this.props.goToError()
@@ -87,26 +86,13 @@ class UpdateProfileScreen extends Component {
                     contentContainerStyle={styles.container}
                 >
                     <ScrollView style={styles.formContainer}>
-                        <View style={styles.photoContainer}>
-                            <PhotoUpload
-                                onPhotoSelect={photo => {
-                                    if (photo) {
-                                        this._setPhoto(photo)
-                                    }
-                                }}
-                            >
-                                {this.state.user.photo === '' ?
-                                    <Thumbnail large
-                                        style={styles.imagePicker}
-                                        source={require('../../../assets/profile_pic.png')}
-                                    /> :
-                                    <Thumbnail large
-                                        style={styles.imagePicker}
-                                        source={{ uri: this.state.user.photo }}
-                                    />
-                                }
-                            </PhotoUpload>
-                        </View>
+                        <PhotoPickerField
+                            style={{ container: styles.photoContainer }}
+                            initialPhoto={this.state.user.photo}
+                            viewerEnabled={true}
+                            viewerTitle='Profile Photo'
+                            onPhotoChange={this._setPhoto}
+                        />
                         <PersonalInfoForm
                             style={styles.form}
                             user={this.state.user}
@@ -148,7 +134,7 @@ const styles = StyleSheet.create({
         padding: 16,
     },
     photoContainer: {
-        height: 80,
+        height: 120,
         margin: 16,
     },
     imagePicker: {

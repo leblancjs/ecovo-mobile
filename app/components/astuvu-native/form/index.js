@@ -5,6 +5,7 @@ import DatePickerField from './DatePickerField'
 import DateTimePickerField from './DateTimePickerField'
 import SubmitButton from './SubmitButton'
 import FooterButton from './FooterButton'
+import PhotoPickerField from './PhotoPickerField'
 
 export {
     Form,
@@ -14,4 +15,5 @@ export {
     DateTimePickerField,
     SubmitButton,
     FooterButton,
+    PhotoPickerField,
 }

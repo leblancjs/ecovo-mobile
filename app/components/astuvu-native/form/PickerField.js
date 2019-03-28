@@ -70,7 +70,7 @@ class PickerField extends Component {
                         >
                             {
                                 this.props.items.map(item =>
-                                    <Picker.Item label={item.label} value={item.value}/>
+                                    <Picker.Item label={item.label} value={item.value} key={item.label}/>
                                 )
                             }
                         </Picker>

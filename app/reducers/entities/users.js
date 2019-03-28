@@ -19,6 +19,7 @@ const users = (state = initialState, action) => {
             return state.map(u => {
                 if (u.id === action.user.id) {
                     return {
+                        ...u,
                         ...action.user,
                         preferences: {
                             ...action.user.preferences
