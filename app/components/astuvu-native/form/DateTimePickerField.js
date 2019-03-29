@@ -16,7 +16,7 @@ class DateTimePickerField extends Component {
     }
 
     _onValueChange = (value) => {
-        value = moment(value, this.props.dateFormat);
+        value = moment(value, "YYYY-MM-DDThh:mm:ss.sZ");
         let error = null
         if (this.props.required) {
             error = this._validate(value)

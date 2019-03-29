@@ -14,7 +14,7 @@ class AnimalPickerField extends Component {
 
     onValueChange = (value) => {
         this.setState({ value: value });
-        if (this.props.onValueChange()) {
+        if (this.props.onValueChange) {
             this.props.onValueChange(value)
         }
 

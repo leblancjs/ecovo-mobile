@@ -18,11 +18,11 @@ class AddTripScreen extends Component {
         super(props)
         this.state = {
             trip: {
-                source: undefined,
-                destination: undefined,
-                leaveAt: '',
+                leaveAt: "0001-01-01T00:00:00Z",
+                arriveBy: "0001-01-01T00:00:00Z",
                 driverId: '',
                 vehicleId: '',
+                full: false,
                 seats: 1,
                 stops: [],
                 details: {
@@ -33,6 +33,8 @@ class AddTripScreen extends Component {
             vehicules: [],
             seats: [],
             selectedVehicule: undefined,
+            source: undefined,
+            destination: undefined,
             stopsItem: [],
             minDate: new Date(),
             error: ""
@@ -103,9 +105,11 @@ class AddTripScreen extends Component {
 
     _addStop = (stop, details) => {
         newStop = {
-            latitude: details.geometry.location.lat,
-            longitude: details.geometry.location.lng,
-            name: stop.description
+            point: {
+                latitude: details.geometry.location.lat,
+                longitude: details.geometry.location.lng,
+                name: stop.description
+            }
         }
 
         this.setState({
@@ -185,10 +189,8 @@ class AddTripScreen extends Component {
     _updateFrom = (from, details) => {
         this.setState({
             ...this.state,
-            trip: {
-                ...this.state.trip,
-                source: {
-                    ...this.state.trip.source,
+            source: {
+                point: {
                     latitude: details.geometry.location.lat,
                     longitude: details.geometry.location.lng,
                     name: from.description
@@ -200,10 +202,8 @@ class AddTripScreen extends Component {
     _updateTo = (to, details) => {
         this.setState({
             ...this.state,
-            trip: {
-                ...this.state.trip,
-                destination: {
-                    ...this.state.trip.destination,
+            destination: {
+                point: {
                     latitude: details.geometry.location.lat,
                     longitude: details.geometry.location.lng,
                     name: to.description
@@ -213,6 +213,17 @@ class AddTripScreen extends Component {
     }
 
     _createTrip = () => {
+        var stops = [];
+        stops[0] = this.state.source;
+        stops.concat(this.state.trip.stops);
+        stops[stops.length] = this.state.destination;
+        this.state = {
+            ...this.state,
+            trip: {
+                ...this.state.trip,
+                stops: stops
+            }
+        }
         if (this.props.user.id) {
             if (!this.props.isFetching) {
                 TripService.create(
