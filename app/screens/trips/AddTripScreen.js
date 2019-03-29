@@ -3,12 +3,12 @@ import { connect } from 'react-redux'
 import { NavigationActions, StackActions } from 'react-navigation'
 import { StyleSheet, View, ScrollView } from 'react-native'
 import { Container, Header, Left, Right, Body, Title, Text, Item, Icon, Button, Form, Picker, Content } from 'native-base'
-import DatePicker from 'react-native-datepicker'
 import { astuvu } from '../../components/hoc'
 import PlacesSearchField from '../../components/astuvu-native/form/PlacesSearchField'
 import { TripService, VehicleService } from '../../service'
 import { isFetching, UsersSelector, AuthSelector } from '../../selectors'
 import { ScreenNames } from '..'
+import { AnimalPickerField, LuggagePickerField, DateTimePickerField, FooterButton, PickerField } from '../../components/astuvu-native/form';
 
 class AddTripScreen extends Component {
     static navigationOptions = {
@@ -35,39 +35,46 @@ class AddTripScreen extends Component {
             selectedVehicule: undefined,
             stopsItem: [],
             minDate: new Date(),
-            leaveAtError: null
+            error: ""
         }
     }
 
     componentDidMount() {
-        if(this.state.trip.driverId == '') {
+        if (this.state.trip.driverId == '') {
             this._updateDriver()
         }
 
-        if(this.state.trip.vehicules === undefined || this.state.trip.vehicules.length == 0) {
+        if (this.state.trip.vehicules === undefined || this.state.trip.vehicules.length == 0) {
             this._getVehiculeList()
-        } 
+        }
     }
 
     _closeAddTripScreen = () => {
         this.props.closeAddTripScreen()
     }
 
-    _updateLeaveAt = (selectedDate) => {
+    _updateLeaveAt = (selectedDate, err) => {
         var currentDate = new Date()
         var newDate = new Date(selectedDate)
 
         if (currentDate > newDate) {
-            this.setState({leaveAtError: "Selected date must be in the future."});
+            this.setState({ ...this.state, error: err });
         } else {
             this.setState({
                 ...this.state,
-                leaveAtError: null,
+                error: null,
                 trip: {
                     ...this.state.trip,
                     leaveAt: selectedDate
                 }
             })
+        }
+    }
+    _validateDeparture = (selectedDate) => {
+        var currentDate = new Date()
+        var newDate = new Date(selectedDate)
+        if (currentDate > newDate) {
+            return "Selected date must be in the future."
         }
     }
 
@@ -99,7 +106,7 @@ class AddTripScreen extends Component {
             latitude: details.geometry.location.lat,
             longitude: details.geometry.location.lng,
             name: stop.description
-        } 
+        }
 
         this.setState({
             ...this.state,
@@ -112,7 +119,7 @@ class AddTripScreen extends Component {
 
     _updateSelectedVehicule = (selectedVehicule) => {
         let seats = []
-        for(let i = 1; i <= selectedVehicule.seats; i++) {
+        for (let i = 1; i <= selectedVehicule.seats; i++) {
             seats.push(i)
         }
 
@@ -130,29 +137,29 @@ class AddTripScreen extends Component {
     _removeSearchInput = (key) => {
         let stopsItem = this.state.stopsItem
         stopsItem.pop(key)
-        this.setState({stopsItem})
+        this.setState({ stopsItem })
     }
-    
+
     _addStopInput = (key) => {
         let stopsItem = this.state.stopsItem
         stopsItem.push(
-                <Item key={key} style={styles.item}>
-                    <PlacesSearchField style={styles.stopsInput} placeholder='Pass by' onSearchResult={this._addStop} />
-                    <Icon style={styles.removeStopBtnIcon} type="MaterialIcons" name="close" onPress={this._removeSearchInput} />
-                </Item>)
-        this.setState({stopsItem})
+            <Item key={key} style={styles.item}>
+                <PlacesSearchField style={styles.stopsInput} placeholder='Pass by' onSearchResult={this._addStop} />
+                <Icon style={styles.removeStopBtnIcon} type="MaterialIcons" name="close" onPress={this._removeSearchInput} />
+            </Item>)
+        this.setState({ stopsItem })
     }
 
-    _updateVehicules = (vehicules) => {
+    _updateVehicules = (vehicules) => {
         this.setState(prevState => ({
             vehicules: [
-                ...prevState.vehicules, 
+                ...prevState.vehicules,
                 ...vehicules
             ]
-          }))
+        }))
     }
 
-    _updateDriver = () => {
+    _updateDriver = () => {
         this.setState({
             ...this.state,
             trip: {
@@ -190,7 +197,7 @@ class AddTripScreen extends Component {
         })
     }
 
-    _updateTo= (to, details) => {
+    _updateTo = (to, details) => {
         this.setState({
             ...this.state,
             trip: {
@@ -236,7 +243,7 @@ class AddTripScreen extends Component {
     }
 
     render() {
-        let addBtnVisible = 
+        let addBtnVisible =
             this.state.trip.source != undefined &&
             this.state.trip.destination != undefined &&
             this.state.trip.leaveAt != '' &&
@@ -245,15 +252,15 @@ class AddTripScreen extends Component {
             this.state.trip.seats > 0
 
         let vehicules = (this.state.vehicules === undefined || this.state.vehicules.length == 0) ?
-            <Picker.Item color="grey" value="" label="No vehicle on your profile" /> :
-            this.state.vehicules.map( (vehicule, i) => {
-                return <Picker.Item key={i} value={vehicule} label={vehicule.make + " " + vehicule.model} />
+            [{ value: "", label: "No vehicle on your profile" }] :
+            this.state.vehicules.map((vehicule, i) => {
+                return { value: vehicule, label: vehicule.make + " " + vehicule.model }
             })
 
         let seats = (this.state.seats === undefined || this.state.seats.length == 0) ?
-            <Picker.Item color="grey" value="" label="Seats available" /> :
-            this.state.seats.map( (seat, i) => {
-                return <Picker.Item key={i} value={seat} label={String(seat)} />
+            [{ value: "", label: "Seats available" }] :
+            this.state.seats.map((seat, i) => {
+                return { value: seat, label: seat.toString() }
             })
 
         return (
@@ -261,13 +268,13 @@ class AddTripScreen extends Component {
                 <Header noShadow>
                     <Left>
                         <Button transparent onPress={this._closeAddTripScreen}>
-                            <Icon name="close"/>
+                            <Icon name="close" />
                         </Button>
                     </Left>
                     <Body>
                         <Title>Add a Trip</Title>
                     </Body>
-                    <Right/>
+                    <Right />
                 </Header>
                 <Content
                     scrollEnabled={false}
@@ -276,15 +283,15 @@ class AddTripScreen extends Component {
                     <View style={styles.header}>
                         <Form style={styles.form}>
                             <Item style={styles.item}>
-                                <PlacesSearchField placeholder='From (Pick Up Point)' onSearchResult={this._updateFrom}/>
+                                <PlacesSearchField placeholder='From (Pick Up Point)' onSearchResult={this._updateFrom} />
                             </Item>
                             {this.state.stopsItem.map((value, index) => {
                                 return value
                             })}
                             <View style={styles.addStopItem}>
                                 <Button iconLeft onPress={this._addStopInput}>
-                                    <Icon style={{color: 'white'}} name="add"/>
-                                    <Text style={{color: 'white'}}>Add Stop</Text>
+                                    <Icon style={{ color: 'white' }} name="add" />
+                                    <Text style={{ color: 'white' }}>Add Stop</Text>
                                 </Button>
                             </View>
                             <Item style={styles.item}>
@@ -293,106 +300,17 @@ class AddTripScreen extends Component {
                         </Form>
                     </View>
                     <ScrollView style={styles.formContainer}>
-                        <Item style={styles.pickerItem}>
-                            <DatePicker
-                                style={styles.datePicker}
-                                mode="datetime"
-                                placeholder="Leave At"
-                                date={this.state.trip.leaveAt}
-                                format="YYYY-MM-DDThh:mm:ss.sZ"
-                                minDate={this.state.minDate}
-                                confirmBtnText="Confirm"
-                                cancelBtnText="Cancel"
-                                is24Hour={true}
-                                placeholder="Leave At"
-                                onDateChange={value => this._updateLeaveAt(value)}
-                                customStyles={{
-                                    dateInput: styles.dateInput
-                                }}
-                            />
-                        </Item>
-                        {!!this.state.leaveAtError && (
-                            <Item style={styles.errorMsgItem}>
-                                <Text style={styles.errorMsg}>{this.state.leaveAtError}</Text>
-                            </Item>
-                        )}
-                        <Item style={styles.pickerItem} picker>
-                            <View style={styles.pickerContainer}>
-                                <Picker style={styles.picker}
-                                    placeholder='Car'
-                                    placeholderStyle={styles.pickerText}
-                                    selectedValue={this.state.selectedVehicule}
-                                    textStyle={styles.pickerText}
-                                    mode="dropdown"
-                                    iosIcon={<Icon name="arrow-down" />}
-                                    onValueChange={vehicle => this._updateSelectedVehicule(vehicle)}>
-                                    {vehicules}
-                                </Picker>
-                            </View>
-                        </Item>
-                        <Item style={styles.pickerItem} picker>
-                            <View style={styles.pickerContainer}>
-                                <Picker style={styles.picker}
-                                    placeholder='Free Places'
-                                    placeholderStyle={styles.pickerText}
-                                    selectedValue={this.state.trip.seats}
-                                    textStyle={styles.pickerText}
-                                    mode="dropdown"
-                                    iosIcon={<Icon name="arrow-down" />}
-                                    onValueChange={value => this._onFieldChange('seats', value)}>
-                                {seats}
-                                </Picker>
-                            </View>
-                        </Item>
-                        <Item style={styles.selectItem}>
-                            <Button large transparent onPress={() => this._setDetail('animals', 0)}>
-                                <Icon type="Foundation" style={[styles.mediumIcon, this.state.trip.details.animals == 0 ? styles.iconSelected : '']} name='no-dogs'/>
-                            </Button>
-                            <Button large transparent onPress={() => this._setDetail('animals', 1)}>
-                                <Icon type="Foundation" style={[styles.mediumIcon, this.state.trip.details.animals == 1 ? styles.iconSelected : '']} name='guide-dog'/>
-                            </Button>
-                        </Item>
-                        <Item style={styles.selectItem}>
-                            <Button large transparent onPress={() => this._setDetail('luggages', 0)}>
-                                <Icon type="Foundation" style={[styles.smallIcon, this.state.trip.details.luggages == 0 ? styles.iconSelected : '']} name='shopping-bag'/>
-                            </Button>
-                            <Button large transparent onPress={() => this._setDetail('luggages', 1)}>
-                                <Icon type="Foundation" style={[styles.mediumIcon, this.state.trip.details.luggages == 1 ? styles.iconSelected : '']} name='shopping-bag'/>
-                            </Button>
-                            <Button large transparent onPress={() => this._setDetail('luggages', 2)}>
-                                <Icon type="Foundation" style={[styles.bigIcon, this.state.trip.details.luggages == 2 ? styles.iconSelected : '']} name='shopping-bag' />
-                            </Button>
-                        </Item>
+                        <DateTimePickerField label="Leave At" required={true} onValueChange={this._updateLeaveAt} onValidate={this._validateDeparture} error={'Selected date must be in the future.'} bottomBorder={true}></DateTimePickerField>
+                        <PickerField label="Select a car" initialValue={this.state.selectedVehicule} items={vehicules} required={true} error={'Please select a car'} onValueChange={this._updateSelectedVehicule} />
+                        <PickerField label="Number of free places (excluding driver)" initialValue={this.state.seats[0] ? this.state.seats[0].toString() : ""} items={seats} required={true} error={'Please select available seats'} onValueChange={value => this._onFieldChange('seats', value)} />
+                        <AnimalPickerField label="Accept animal onboard" intialValue={this.state.trip.details.animals} onValueChange={(value) => this._setDetail('animals', value)}></AnimalPickerField>
+                        <LuggagePickerField label="Size of accepted luggages" intialValue={this.state.trip.details.luggages} onValueChange={(value) => this._setDetail('luggages', value)}></LuggagePickerField>
                     </ScrollView>
-                    <View>
-                        {
-                            addBtnVisible &&
-                            <Item style={styles.addBtnContainer}>
-                                <Button style={styles.addBtn} onPress={this._createTrip}>
-                                    <Text style={styles.submitForm}>Add</Text>
-                                </Button>
-                            </Item>
-                        }
-                    </View>
+                    <FooterButton formError={this.state.error != null} onPress={this._createTrip} text="Add a new trip"></FooterButton>
                 </Content>
             </Container>
         )
     }
-}
-
-const inputStyle = {
-    backgroundColor: '#fff',
-    borderTopLeftRadius: 5,
-    borderTopRightRadius: 5,
-    borderBottomColor: 'rgba(0, 0, 0, 0.38)',
-    fontSize: 16,
-    color: 'rgba(0, 0, 0, 0.6)',
-    paddingLeft: 16,
-    height: 58
-}
-const headerTitle = {
-    color: '#fff',
-    fontSize: 24
 }
 
 const styles = StyleSheet.create({
@@ -403,33 +321,11 @@ const styles = StyleSheet.create({
     header: {
         backgroundColor: '#2BB267',
     },
-    headerTitle: {
-        borderBottomWidth: 0,
-    },
-    headerTitleText: {
-        ...headerTitle
-    },
-    headerTitleCloseButton: {
-        ...headerTitle
-    },
-    addStopBtn: {
-        ...headerTitle,
-        width: '35%'
-    },
-    addStopBtnTxt: {
-        color: '#FFF',
-        padding: 0
-    },
-    addStopIcon: {
-        color: '#FFF',
-        marginRight: 0,
-        marginLeft: 0
-    }, 
     removeStopBtnIcon: {
         color: '#FFF',
         marginRight: 0,
         marginLeft: 0
-    },
+    },  
     form: {
         paddingTop: 16,
         paddingBottom: 16,
@@ -439,81 +335,16 @@ const styles = StyleSheet.create({
         borderBottomWidth: 0,
         marginBottom: 16
     },
-    input: {
-        ...inputStyle,
-    },
-    submitForm: {
-        color: '#fff',
-        fontSize: 18,
-    },
-    dateInput: {
-        ...inputStyle,
-        borderColor: '#fff',
-        borderBottomColor: 'rgba(0, 0, 0, 0.38)',
-        textAlign: 'left',
-    },
-    addBtnContainer: {
-        width: 300,
-        alignSelf: 'center',
-    },
-    addBtn: {
-        width: '100%',
-        marginTop: 80,
-        marginBottom: 20,
-        justifyContent: 'center',
-        backgroundColor: "#2BB267",
-    },
-    pickerContainer: {
-        ...inputStyle,
-        width: '100%',
-        justifyContent: 'center',
-        alignSelf: 'center'
-    },
-    pickerItem: {
-        alignSelf: 'center',
-        width: '80%'
-    },
-    picker: {
-        width: '100%'
-    },
-    pickerText: {
-        color: 'rgba(0, 0, 0, 0.6)'
-    },
-    datePicker: { 
-        width: '80%', 
-        alignSelf: 'center', 
-        padding: 20 
-    },
+
     addStopItem: {
         flexDirection: 'row',
-        justifyContent: 'flex-end'
+        justifyContent: 'flex-end',
     },
-    smallIcon: {
-        fontSize: 20,
-        color: 'black'
-    },
-    mediumIcon: {
-        fontSize: 30,
-        color: 'black'
-    },
-    bigIcon: {
-        fontSize: 50,
-        color: 'black'
-    },
-    selectItem: {
-        alignSelf: 'center'
-    },
-    iconSelected: {
-        color: "#2BB267"
-    },
-    errorMsg: {
-        color: '#FF0000'
-    },
-    errorMsgItem: {
-        marginLeft: 40,
-        borderBottomWidth: 0
-    },
+
+
+
     formContainer: {
+        margin: 10,
         flex: 1
     }
 })

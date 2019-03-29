@@ -1,12 +1,13 @@
 import React, { Component } from 'react'
-import { StyleSheet, View, Slider, ScrollView } from 'react-native'
-import { Container, Text, Icon, Button, Form, Item } from 'native-base'
+import { StyleSheet, View, Slider, ScrollView, TouchableOpacity } from 'react-native'
+import { Container, Text, Icon, Button, Form, Item, Radio, Footer } from 'native-base'
 import PropTypes from 'prop-types'
 import DatePicker from 'react-native-datepicker'
 import PlacesSearchField from '../astuvu-native/form/PlacesSearchField'
 import RadioButtonField from '../astuvu-native/form/RadioButtonField'
 import { Dropdown } from 'react-native-material-dropdown'
-
+import { astuvu} from '../hoc'
+import { FooterButton } from '../astuvu-native/form'
 class SearchTripComponent extends Component {
 
     constructor(props) {
@@ -275,7 +276,7 @@ class SearchTripComponent extends Component {
                         <Text style={this._isAdvancedSearchButtonEnabled() ? { color: '#fff' } : { color: '#ddd' }}>Search</Text>
                     </Button>
                 </View>
-            </Container>
+                </Container>
         )
     }
 }

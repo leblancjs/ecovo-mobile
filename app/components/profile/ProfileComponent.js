@@ -6,7 +6,7 @@ import ProfileHeaderComponent from './ProfileHeaderComponent'
 import ProfileBasicInfoCard from './ProfileBasicInfoCard'
 import ProfileMoreAboutCard from './ProfileMoreAboutCard'
 import ProfileDescriptionCard from './ProfileDescriptionCard'
-import ProfileFab from './ProfileFab'
+import Fab from '../astuvu-native/Fab'
 import ProfileRating from './ProfileRating'
 
 class ProfileComponent extends Component {
@@ -30,7 +30,7 @@ class ProfileComponent extends Component {
                     <ProfileMoreAboutCard firstName={firstName} preferences={preferences} />
                     <ProfileDescriptionCard description={description} />
                 </ScrollView>
-                <ProfileFab fabName={this.props.fabType} onFabTapped={this.props.onFabTapped}/>
+                <Fab icon={this.props.fabType} onPress={this.props.onFabTapped} iconStyle="MaterialIcons"/>
             </View>
         )
     }
