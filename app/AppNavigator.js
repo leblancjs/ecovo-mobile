@@ -1,19 +1,24 @@
 import { connect } from 'react-redux'
 import { createStackNavigator, createSwitchNavigator } from 'react-navigation'
 import { reduxifyNavigator, createReactNavigationReduxMiddleware } from 'react-navigation-redux-helpers'
-import { ScreenNames } from './screens'
-import BootstrapScreen from './screens/BootstrapScreen'
-import SignInScreen from './screens/signin/SignInScreen'
-import AddPersonalInfoScreen from './screens/signup/AddPersonalInfoScreen'
-import AddPreferencesScreen from './screens/signup/AddPreferencesScreen'
+import {
+    ScreenNames,
+    BootstrapScreen,
+    SignInScreen,
+    AddPersonalInfoScreen,
+    AddPreferencesScreen,
+    GenericErrorScreen,
+    CreateVehicleScreen,
+} from './screens'
+
+// TODO: Move these up there
 import MapScreen from './screens/trips/MapScreen'
-import GenericErrorScreen from './screens/error/GenericErrorScreen'
-import CreateVehiculeScreen from './screens/vehicules/CreateVehiculeScreen'
-import UpdateProfileScreen from './screens/profile/UpdateProfileScreen';
-import ProfileTabScreen from './screens/profile/ProfileTabScreen';
-import TripResultsScreen from './screens/trips/TripResultsScreen';
-import AddTripScreen from './screens/trips/AddTripScreen';
+import UpdateProfileScreen from './screens/profile/UpdateProfileScreen'
+import ProfileTabScreen from './screens/profile/ProfileTabScreen'
+import TripResultsScreen from './screens/trips/TripResultsScreen'
+import AddTripScreen from './screens/trips/AddTripScreen'
 import DetailsTripTabScreen from './screens/trips/DetailsTripTabScreen'
+import TripSearchScreen from './screens/trips/TripSearchScreen'
 
 const SignInNavigator = createStackNavigator({
     [ScreenNames.SignIn.HOME]: {
@@ -43,7 +48,7 @@ const ProfileNavigator = createStackNavigator({
         screen: UpdateProfileScreen
     },
     [ScreenNames.Vehicules.CREATE]: {
-        screen: CreateVehiculeScreen
+        screen: CreateVehicleScreen
     }
 }, {
     initialRouteName: ScreenNames.Profile.HOME,
@@ -55,6 +60,8 @@ const TripsNavigator = createStackNavigator({
     [ScreenNames.Trips.RESULTS]: TripResultsScreen,
     [ScreenNames.Trips.DETAILS]: DetailsTripTabScreen,
     [ScreenNames.Trips.ADD]: AddTripScreen,
+    [ScreenNames.Trips.SEARCH]: TripSearchScreen,
+    [ScreenNames.Vehicules.CREATE]: CreateVehicleScreen,
 }, {
     initialRouteName: ScreenNames.Trips.MAP,
     headerMode: 'none'
@@ -86,12 +93,12 @@ const AppNavigator = createSwitchNavigator({
 
 const AppNavigatorMiddleware = createReactNavigationReduxMiddleware(
     'root',
-    state => state.navigation
+    (state: any) => state.navigation
 )
 
 const App = reduxifyNavigator(AppNavigator, 'root')
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
     state: state.navigation
 })
 
