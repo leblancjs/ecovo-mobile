@@ -3,7 +3,7 @@ import store, { EntitiesTripsActions, UIFetchingActions } from '../store'
 import Service from './service'
 import { PubSubService, Message } from './pubsub'
 import { RESTRequestFactory } from './rest'
-import { Trip, Point, Details } from '../entities'
+import { Trip, Point, Details, Reservation } from '../entities'
 
 export interface CreateTripRequestStop {
     point: Point
@@ -21,6 +21,14 @@ export interface CreateTripRequest {
     seats: number
     stops: CreateTripRequestStop
     details: Details
+}
+
+export interface ReservationRequest {
+    tripId: string,
+	userId: string,
+	sourceId: string,
+	destinationId: string,
+	seats: number
 }
 
 class TripService extends Service {
@@ -60,6 +68,18 @@ class TripService extends Service {
             .then(() => {
                 store.dispatch(EntitiesTripsActions.removeTrip(tripId))
                 store.dispatch(UIFetchingActions.receiveResponse())
+
+                return Promise.resolve()
+            })
+            .catch(this.handleError)
+    }
+
+    addReservation(reservation: ReservationRequest): Promise<void> {
+        store.dispatch(UIFetchingActions.sendRequest())
+        
+        return RESTRequestFactory.post(`reservations`, reservation).send()
+            .then((reservat: Reservation) => {
+                store.dispatch(UIFetchingActions.receiveResponse(reservat))
 
                 return Promise.resolve()
             })

@@ -1,19 +1,22 @@
 import React, { Component } from 'react'
 import { StyleSheet, TouchableOpacity } from 'react-native'
-import { Container, Content, Header, Left, Right, Body, Title, Tab, Tabs, Button, Icon, Text, Card, CardItem} from 'native-base'
+import { Container, Content, Header, Left, Right, Body, Title, Tab, Tabs, Button, Icon, Text, Card, CardItem } from 'native-base'
 import { connect } from 'react-redux'
 import { StackActions } from 'react-navigation'
 import { TripDetails, ProfileComponent } from '../../components'
 import { TripSelectors, UserSelectors, VehicleSelectors, AuthSelector } from '../../selectors'
+import { TripService } from '../../services'
 import { Trip, User, Vehicle } from '../../entities'
 import { Dispatch, AnyAction } from 'redux'
 import { AppState } from '../../store'
-import Modal from "react-native-modal";
+import Modal from "react-native-modal"
 
 export interface DetailsTripTabScreenProps {
+    user: User
     driver: User
     trip: Trip
     vehicle: Vehicle
+    nbSeats: number
     back: () => void
 }
 
@@ -35,7 +38,20 @@ class DetailsTripTabScreen extends Component<DetailsTripTabScreenProps> {
     }
 
     _onReserve = () => {
-        // TODO call the reserve service
+        let numStop = this.props.trip.stops.length - 1
+        let reservation = {
+            tripId: this.props.trip.id,
+            userId: this.props.user.id,
+            sourceId: this.props.trip.stops[0].id,
+            destinationId: this.props.trip.stops[numStop].id,
+            seats: this.props.nbSeats
+        }
+        console.log(reservation)
+        TripService.addReservation(reservation)
+            .then(() => this._toggleModal)
+            .catch(error => {
+                console.log(`Failed to create trip.`, error)
+            })
     }
 
     _toggleModal = () => {
@@ -125,7 +141,8 @@ const mapStateToProps = (state: AppState) => ({
     accessToken: AuthSelector.getAccessToken(state),
     trip: TripSelectors.getTripSelected(state),
     driver: UserSelectors.getDriver(state),
-    vehicle: VehicleSelectors.getVehicle(state)
+    vehicle: VehicleSelectors.getVehicle(state),
+    nbSeats: TripSelectors.getNbSeatsSearch(state)
 })
 
 const mapDispatchToProps = (dispatch: Dispatch<AnyAction>) => ({
