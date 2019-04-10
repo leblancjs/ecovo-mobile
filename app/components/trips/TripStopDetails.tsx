@@ -3,6 +3,7 @@ import { StyleSheet, View, Image } from 'react-native'
 import { Text, CardItem, Body, Icon, H1 } from 'native-base'
 import { ScrollView } from 'react-native-gesture-handler'
 import { Stop } from '../../entities'
+import Moment from 'moment'
 
 export interface TripStopDetailsProps {
     stops: Stop[]
@@ -30,20 +31,18 @@ class TripStopDetails extends Component<TripStopDetailsProps> {
                             </View>
                             <View style={styles.viewRightStyle}>
                                 {stops.map((stop, i) => {
-                                    let title = stop.point.name ? 'Stop ' + i : stop.point.name || ''
                                     return (
                                         <View key={i}>
                                             <View style={styles.viewMarker}>
                                                 <View style={styles.textSameLine}>
-                                                    <H1>{title}</H1>
-                                                    {stop.timestamp && <Text style={styles.txtHourStyle}>- {stop.timestamp}</Text>}
+                                                    <H1>{stop.point.name}</H1>
                                                 </View>
-                                                <Text>{stop.point.name}</Text>
+                                                {stop.timestamp && <Text style={styles.txtHourStyle}>{Moment(stop.timestamp).format('llll')}</Text>}
                                             </View>
 
                                             {stop.timestamp &&
                                                 <View>
-                                                    <Text style={styles.textBold}>{stop.timestamp}</Text>
+                                                    <Text style={styles.textBold}>{Moment(stop.timestamp).format('LT')}</Text>
                                                 </View>
                                             }
                                         </View>
