@@ -20,6 +20,11 @@ const getSearch = createSelector(
         search.search
 )
 
+const getNbSeatsSearch = createSelector(
+    [uiSearchSelector], (search) =>
+        search.search.filters.seats
+)
+
 const getSearchResults = createSelector(
     [entitiesTripsSelector, uiSearchSelector], (trips, search) =>
         search.allResultIds.map(resultId =>
@@ -32,6 +37,7 @@ const TripSelectors = {
     getTripSelected,
     getSearch,
     getSearchResults,
+    getNbSeatsSearch,
 }
 
 export default TripSelectors
