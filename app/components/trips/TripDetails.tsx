@@ -5,10 +5,13 @@ import EcovoMapView from '../astuvu-native/EcovoMapView'
 import TripCarDetails from './TripCarDetails'
 import TripStopDetails from './TripStopDetails'
 import { Trip, Vehicle, Point } from '../../entities'
+import Fab from '../astuvu-native/Fab';
 
 export interface TripDetailsProps {
     trip: Trip
     vehicle: Vehicle
+    isReservable?: boolean
+    onFabTapped?: Function
 }
 
 class TripDetails extends Component<TripDetailsProps> {
@@ -24,13 +27,16 @@ class TripDetails extends Component<TripDetailsProps> {
         return (
             <Container style={styles.container}>
                 <EcovoMapView markers={markers} source={markers[0]} destination={markers[markers.length - 1]} stops={markers} />
-
                 <View style={styles.bottom}>
                     <Card style={styles.cardStyle}>
                         <TripCarDetails vehicle={this.props.vehicle} />
                         <TripStopDetails stops={this.props.trip.stops} />
                     </Card>
                 </View>
+                {
+                    this.props.isReservable &&
+                    <Fab icon="add-shopping-cart" iconStyle="MaterialIcons" onPress={this.props.onFabTapped}></Fab>
+                }
             </Container>
         )
     }
