@@ -27,6 +27,7 @@ class ProfileTabScreen extends Component<ProfileTabScreenProps> {
     }
 
     _logout = () => {
+        this.props.goToWelcome() //hacky, but hey it works ¯\_(ツ)_/¯
         AuthService.logout()
             .then(() => this.props.goToWelcome())
             .catch(error => {
@@ -94,7 +95,7 @@ const mapStateToProps  = (state: AppState) => ({
 })
 
 const mapDispatchToProps = (dispatch: Dispatch<AnyAction>) => ({
-    goToWelcome: () => dispatch(NavigationActions.navigate({ routeName: ScreenNames.SignIn.HOME })),
+    goToWelcome: () => dispatch(NavigationActions.navigate({ routeName: ScreenNames.BOOTSTRAP })),
     goToMapScreen: () => dispatch(NavigationActions.navigate({ routeName: ScreenNames.Trips.HOME })),
     goToUpdateProfileScreen: () => dispatch(StackActions.push({ routeName: ScreenNames.Profile.UPDATE }))
 })
