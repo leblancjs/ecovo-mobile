@@ -35,3 +35,12 @@ export interface Trip {
     pricePerSeat?: number
     totalDistance?: number
 }
+
+export interface Reservation {
+    id?: string
+	tripId: string
+	userId: string
+	sourceId: string
+	destinationId: string
+	seats: number
+}
