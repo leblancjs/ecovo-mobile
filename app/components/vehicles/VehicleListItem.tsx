@@ -37,10 +37,8 @@ class VehicleListItem extends Component<VehicleListItemProps> {
                 <CardItem>
                     <Body>
                         <View style={styles.titleCard}>
-                            <H1>{vehicle.make.toUpperCase()}</H1>
-                            <H2> - {vehicle.model}</H2>
+                            <H1>{`${vehicle.make} ${vehicle.model} ${vehicle.year}`}</H1>
                         </View>
-                        <H3>{vehicle.year}</H3>
                         <Text>{vehicle.color.toUpperCase()}</Text>
                         <View style={styles.deletebtn}>
                             <Button transparent onPress={() => this.deleteVehicle(vehicle.id || '')}>

@@ -124,7 +124,7 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-end',
         padding: 20,
         paddingBottom: 0,
-        marginBottom: Platform.OS === "ios" ? -40 : 0,
+        // marginBottom: Platform.OS === "ios" ? -40 : 0,
     },
     footerHeaderText: {
         color: '#fff',

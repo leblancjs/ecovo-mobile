@@ -26,7 +26,7 @@ class TripDetails extends Component<TripDetailsProps> {
         
         return (
             <Container style={styles.container}>
-                <EcovoMapView markers={markers} source={markers[0]} destination={markers[markers.length - 1]} stops={markers} />
+                <EcovoMapView stops={markers} />
                 <View style={styles.bottom}>
                     <Card style={styles.cardStyle}>
                         <TripCarDetails vehicle={this.props.vehicle} />

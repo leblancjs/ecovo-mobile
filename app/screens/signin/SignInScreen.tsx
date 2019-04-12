@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { StyleSheet, View } from 'react-native'
+import { StyleSheet, View, ScrollView } from 'react-native'
 import { Container, Header, Content, Title, Left, Right, Body, Text, Button, Card, CardItem } from 'native-base'
 import { connect } from 'react-redux'
 import { LogoFadeIn } from '../../components'
@@ -31,14 +31,18 @@ class SignInScreen extends Component<SignInScreenProps> {
                     </Body>
                     <Right />
                 </Header>
-                <Content padder scrollEnabled={false}>
+                <Content
+                    padder
+                    scrollEnabled={false}
+                    contentContainerStyle={{ flex: 1 }}
+                >
                     <View style={styles.logoContainer}>
                         <LogoFadeIn
                             source={require('../../../assets/logo.png')}
                         />
                         <Text>The smart way to carpool</Text>
                     </View>
-                    <View style={styles.shamelessPublicityContainer}>
+                    <ScrollView style={styles.shamelessPublicityContainer}>
                         <Card>
                             <CardItem header>
                                 <Text>Drivers</Text>
@@ -67,7 +71,7 @@ class SignInScreen extends Component<SignInScreenProps> {
                                 </Body>
                             </CardItem>
                         </Card>
-                    </View>
+                    </ScrollView>
                     <Button block
                         disabled={this.props.fetching}
                         onPress={this.getStarted}

@@ -48,7 +48,7 @@ class DetailsTripTabScreen extends Component<DetailsTripTabScreenProps> {
         }
         console.log(reservation)
         TripService.addReservation(reservation)
-            .then(() => this._toggleModal)
+            .then(() => this._toggleModal())
             .catch(error => {
                 console.log(`Failed to create trip.`, error)
             })
@@ -121,7 +121,7 @@ class DetailsTripTabScreen extends Component<DetailsTripTabScreenProps> {
                             textStyle={{ color: '#fff' }}
                             activeTabStyle={{ backgroundColor: '#2bb267' }}
                             activeTextStyle={{ color: '#fff' }}>
-                            <ProfileComponent {...this.props} user={this.state.user} onFabTapped={this._fabClickHandle} fabType="message" />
+                            <ProfileComponent {...this.props} user={this.state.user} onFabTapped={this._fabClickHandle} fabIcon="message" />
                         </Tab>
                     </Tabs>
                 </Content>

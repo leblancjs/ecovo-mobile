@@ -51,11 +51,11 @@ class TripCardCarousel extends Component<TripCardCarouselProps> {
                     <View style={styles.inline}>
                         <Text style={styles.time}>{Math.floor(moment.duration(content.duration).asHours()) + moment.utc(content.duration).format(":mm:ss")}</Text>
                         <View style={styles.priceWrapper}>
-                            <Text style={styles.price}>{content.pricePerSeat}$</Text>
+                            <Text style={styles.price}>{(content.totalTripPrice / content.seats).toFixed(2)}$</Text>
                         </View>
                     </View>
-                    <Text>Leave At: {moment(content.leaveAt).format("ddd, MMM Do [at] h:hh A")}</Text>
-                    <Text>Arrive By: {moment(content.arriveBy).format("ddd, MMM Do [at] h:hh A")}</Text>
+                    <Text>Leave At: {moment(Date.parse(content.leaveAt)).format("ddd, MMM Do [at] h:hh A")}</Text>
+                    <Text>Arrive By: {moment(Date.parse(content.arriveBy)).format("ddd, MMM Do [at] h:hh A")}</Text>
                     <Text>{content.stops} stop(s)</Text>
                     <View style={styles.inline}>
                         <View style={styles.inline}>

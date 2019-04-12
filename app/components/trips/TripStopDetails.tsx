@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { StyleSheet, View, Image } from 'react-native'
-import { Text, CardItem, Body, Icon, H1 } from 'native-base'
+import { Text, CardItem, Body, Icon, H3 } from 'native-base'
 import { ScrollView } from 'react-native-gesture-handler'
 import { Stop } from '../../entities'
 import Moment from 'moment'
@@ -35,7 +35,7 @@ class TripStopDetails extends Component<TripStopDetailsProps> {
                                         <View key={i}>
                                             <View style={styles.viewMarker}>
                                                 <View style={styles.textSameLine}>
-                                                    <H1>{stop.point.name}</H1>
+                                                    <H3>{stop.point.name}</H3>
                                                 </View>
                                                 {stop.timestamp && <Text style={styles.txtHourStyle}>{Moment(stop.timestamp).format('llll')}</Text>}
                                             </View>
@@ -82,7 +82,8 @@ const styles = StyleSheet.create({
         marginLeft: 12,
     },
     viewRightStyle: {
-        paddingHorizontal: 25,
+        paddingLeft: 25,
+        paddingRight: 80,
     },
     txtHourStyle: {
         paddingTop: 7,
